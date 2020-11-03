@@ -10,13 +10,12 @@ import classes from './PlaygroundBar.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faQuestionCircle, faStar } from '@fortawesome/free-solid-svg-icons';
 
-import {PawnSwitch} from '@global-components/PawnSwitch';
 
 
 export default function PlaygroundBar() {
 
 
-    const [showFullTabs, setShowingFullTabs] = useState(false);
+    const [showAllTabs, setShowingAllTabs] = useState(false);
 
   const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon}   style={{fontSize: 28}} size="lg"/>
 
@@ -24,9 +23,9 @@ export default function PlaygroundBar() {
 
     return (
 <OverlayTrigger
-      show={true}
+      show={showAllTabs}
       placement={'right'}
-      delay={{hide: 800}}
+      delay={{hide: 8000}}
       overlay={
         <Popover id={`tooltip-${eventKey}`}>
           <Popover.Content>
@@ -52,12 +51,12 @@ export default function PlaygroundBar() {
         <Tab.Container style={{backgroundColor: 'red'}} id="playground-tabs" defaultActiveKey="help">
         <Row>
           <Col 
-          sm={1} 
-          onMouseEnter={() => setShowingFullTabs(true)}
-          onMouseLeave={() => setShowingFullTabs(false)}
+          xs={1} 
           >
             <Nav variant="pills" 
-            className={`flex-column ${classes.Standard}  ${showFullTabs && classes.Show}`}
+            className={`flex-column ${classes.Standard}  ${showAllTabs && classes.Show}`}
+            onMouseEnter={() => setShowingAllTabs(true)}
+            onMouseLeave={() => setShowingAllTabs(false)}
             >
             <TabItem 
             text={'Dodaj pola'} 

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-
+import Image from 'react-bootstrap/Image';
+import  Favicon from './assets/favicon-32x32.png'; 
 
 const NavLink = ({children, ...props}) => <Nav.Link className="text-light" {...props}>{children}
 </Nav.Link>
@@ -17,7 +18,7 @@ export default function MainNavbar() {
         text="light"
         >
           <Navbar.Brand className="text-light">
-      Creative Chess
+      <Image src={Favicon} alt="favicon - website logo" className="bg-light"/>
           </Navbar.Brand>
         <Nav
         fill
