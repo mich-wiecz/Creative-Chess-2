@@ -1,8 +1,18 @@
-// $theme-colors: (
-//     "primary": purple,
-//     "info": tomato,
-//     "danger": teal
-// );
+
+// @import "~bootstrap/scss/";
+
+$theme-colors: (
+    "primary":#200849,
+    // "info": tomato,
+    // "danger": teal
+);
+
+// $body-bg: #000;
+// $body-color: #e6f;
+
+.cursor-pointer {
+    cursor: pointer;
+}
 
 /* import bootstrap to set changes */
 @import "~bootstrap/scss/bootstrap";
