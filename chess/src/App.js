@@ -1,6 +1,6 @@
 import React from 'react';
 import MainNavbar from './Navbar'
-import PlaygroundBar from './PlaygroundBar';
+import PlaygroundBar from './game/playground/PlaygroundBar';
 
 // import Badge from 'react-bootstrap/Badge'
 
