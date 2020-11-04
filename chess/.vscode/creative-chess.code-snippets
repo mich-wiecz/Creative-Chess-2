@@ -29,5 +29,12 @@
 			"body": [
 				"import $1 from '@global-components/$1';$2"
 			]
+		},
+		"Import global function": {
+			"scope": "javascript,typescript",
+			"prefix": "imgf",
+			"body": [
+				"import $1 from '@global-functions/$1';$2"
+			]
 		}
 }

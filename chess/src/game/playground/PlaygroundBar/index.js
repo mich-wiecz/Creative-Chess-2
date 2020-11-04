@@ -10,7 +10,10 @@ import classes from './PlaygroundBar.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faQuestionCircle, faStar } from '@fortawesome/free-solid-svg-icons';
 
-import {AdditionalOptions} from '@playground/AdditionalOptions/index'
+import {AdditionalOptions} from '@playground/AdditionalOptions';
+import Help from '@playground/Help';
+import ColorMotivePanel from '@playground/ColorMotivePanel'
+
 
 const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}} size="lg"/>
 
@@ -22,7 +25,7 @@ const TabItem = ({showAllTabs, text, icon, eventKey, disabled = false}) => {
 <OverlayTrigger
     show={showAllTabs}
     placement={'right'}
-    delay={{hide: 8000}}
+    delay={{hide: 800}}
     overlay={
       <Popover id={`tooltip-${eventKey}`}>
         <Popover.Content>
@@ -61,7 +64,7 @@ export default function PlaygroundBar() {
           onMouseLeave={() => setShowingAllTabs(false)}
           >
           <TabItem 
-          show={showAllTabs}
+          // show={true}
           text={'Dodaj pola'} 
           icon={faPlusSquare} 
           eventKey={'poles-adding'}/>
@@ -100,17 +103,20 @@ export default function PlaygroundBar() {
           </Nav>
         </Col>
       </Row>
-      <Row className={`${classes.Displayer} bg-primary text-secondary`}>
+      <Row className={`${classes.Displayer} bg-primary text-light`}>
         <Col>
         <Tab.Content>
         <Tab.Pane eventKey="poles-adding">
                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam quisquam pariatur placeat consectetur accusantium praesentium corrupti voluptatem architecto eum tenetur sit quo ipsa aliquid provident quia, officia illum cum quas.
               </Tab.Pane>
               <Tab.Pane eventKey="help">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quis, dignissimos. Vitae commodi ut ullam asperiores assumenda repellendus, corrupti nobis aliquam repellat soluta quasi autem. Quis cum illo error est cupiditate?
+               <Help />
               </Tab.Pane>
               <Tab.Pane eventKey="additional">
               <AdditionalOptions />
+              </Tab.Pane>
+              <Tab.Pane eventKey="color-motive">
+              <ColorMotivePanel />
               </Tab.Pane>
             </Tab.Content>
           </Col>
