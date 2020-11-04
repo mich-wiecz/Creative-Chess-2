@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.5.3",
     "dart-sass": "^1.25.0",
+    "formik": "^2.2.1",
     "lodash.debounce": "^4.0.8",
     "node-sass": "4.14.1",
     "react": "^17.0.1",

@@ -14,6 +14,7 @@ import {AdditionalOptions} from '@playground/AdditionalOptions';
 import Help from '@playground/Help';
 import ColorMotivePanel from '@playground/ColorMotivePanel';
 import ModesAndTimeSetter from '@playground/ModesAndTimeSetter';
+import BoardFieldResizer from '@playground/BoardFieldResizer';
 
 
 const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}} size="lg"/>
@@ -119,6 +120,10 @@ export default function PlaygroundBar() {
               <Tab.Pane eventKey="color-motive">
               <ColorMotivePanel />
               </Tab.Pane>
+              <Tab.Pane eventKey="poles-resizing">
+              <BoardFieldResizer />
+              </Tab.Pane>
+             
             </Tab.Content>
           </Col>
         </Row>

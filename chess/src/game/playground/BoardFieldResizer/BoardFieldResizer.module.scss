@@ -1,0 +1,225 @@
+$font-size: 26px;
+
+.Wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .Microscope {
+    position: absolute;
+    top: -5%;
+    left: 35%;
+    cursor: pointer;
+
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    span {
+      display: block;
+      transform: translate(120%, -90%);
+      font-weight: bold;
+      font-size: $font-size;
+
+      strong {
+        font-size: $font-size * 1.2;
+      }
+    }
+
+    &:hover {
+      span {
+        color: lightcyan;
+      }
+    }
+  }
+
+  .AxisPart {
+    flex-basis: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .PotentialBoardField {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      background-color: purple;
+
+      $line-size: 3px;
+      $axis-protrusion: 50px;
+      // $axis-color: lighten(var.$bar-bg-col, 15%);
+      $axis-color: currentColor;
+      $arrow-length: 30px;
+      $arrow-angle: 35deg;
+      $maxMark-width: 10px;
+
+      $input-width: 60px;
+      $input-from-max: 80px;
+
+      span {
+        position: absolute;
+        border: $line-size solid $axis-color;
+
+        @mixin arrow {
+          content: "";
+          display: block;
+          position: absolute;
+          border: $line-size solid $axis-color;
+          border-radius: 10px;
+        }
+
+        &.AxisY {
+          top: -$axis-protrusion;
+          bottom: 0;
+          left: -$line-size * 2;
+
+          @mixin top-arrow {
+            @include arrow();
+            top: -$line-size;
+            height: $arrow-length;
+            left: -$line-size;
+          }
+
+          &::after {
+            @include top-arrow();
+            transform-origin: left top;
+            transform: rotate(-$arrow-angle);
+          }
+
+          &::before {
+            @include top-arrow();
+            transform-origin: right top;
+            transform: rotate($arrow-angle);
+          }
+        }
+
+        &.AxisX {
+          left: -$line-size * 2;
+          right: -$axis-protrusion;
+          bottom: -$line-size * 2;
+
+          @mixin right-arrow {
+            @include arrow();
+            bottom: -$line-size;
+            width: $arrow-length;
+            right: -$line-size;
+          }
+
+          &::after {
+            @include right-arrow();
+            transform-origin: right top;
+            transform: rotate(-$arrow-angle);
+          }
+
+          &::before {
+            @include right-arrow();
+            transform-origin: right bottom;
+            transform: rotate($arrow-angle);
+          }
+        }
+
+        .MaxValue {
+          position: absolute;
+          font-size: $font-size;
+
+          .Input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding-left: 10px;
+            width: $input-width;
+          }
+        }
+
+        &.MaxY {
+          top: -$line-size;
+          left: -$line-size * 2 - $maxMark-width;
+          width: $maxMark-width;
+
+          .MaxValue {
+            top: 0;
+            transform-origin: left center;
+            transform: translate(calc(-100% - 15px), -60%);
+
+            .Input {
+              transform: translateY($input-from-max);
+            }
+          }
+        }
+
+        &.MaxX {
+          bottom: -$line-size * 2 - $maxMark-width;
+          right: -$line-size;
+          height: $maxMark-width;
+
+          .MaxValue {
+            top: 15px;
+            left: 0;
+            transform: translateX(-30%);
+
+            .Input {
+              transform: translateX(-$input-from-max * 1.1);
+            }
+          }
+        }
+      }
+
+      .AxisBoardField {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border: $line-size / 2.5 dashed $axis-color;
+        border-left: none;
+        border-bottom: none;
+      }
+
+      .ResizableBoardField {
+        position: relative;
+        z-index: 1;
+        cursor: move;
+      }
+    }
+  }
+}
+
+.InterfacePart {
+  height: 300px;
+  .Options {
+    margin-bottom: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    transform: translateY(-15%);
+
+    .PawnSwitch {
+      margin-top: 4%;
+      margin-left: 20%;
+    }
+
+    .OptionGroup {
+      display: flex;
+      align-items: center;
+
+      .UnitSelector {
+        margin-left: 20px;
+        width: 70px;
+      }
+    }
+  }
+}
+
+.BtnGroup {
+  position: absolute;
+  bottom: -20%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    width: 30%;
+  }
+}

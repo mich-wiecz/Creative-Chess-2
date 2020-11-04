@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image';
-import  Favicon from './assets/favicon-32x32.png'; 
-
+import  Favicon from 'assets/favicon-32x32.png'; 
+import classes from './Navbar.module.scss';
 const NavLink = ({children, ...props}) => <Nav.Link className="text-light" {...props}>{children}
 </Nav.Link>
 
@@ -21,34 +21,27 @@ export default function MainNavbar() {
       <Image src={Favicon} alt="favicon - website logo" className="bg-light"/>
           </Navbar.Brand>
         <Nav
-        fill
+        // fill
         // justify
         variant="pills"
-        className="ml-5 justify-content-center text-light"
+        className="ml-5 justify-self-end flex-grow-1"
         activeKey={activeKey}
         onSelect={(selectedKey) => setActiveKey(selectedKey)}
-      >
-        <Nav.Item>
+      >   
           <NavLink  href="/game">O aplikacji</NavLink>
-        </Nav.Item>
-        <Nav.Item>
           <NavLink eventKey="options">Opcje</NavLink>
-        </Nav.Item>
-        <Nav.Item>
-          <NavLink >  
+          <NavLink>  
               PL/EN
             </NavLink>
-        </Nav.Item>
-        <Nav.Item>
+      </Nav>
+      <Nav className={`${classes.UserNav} justify-self-end`}
+      >
+      <NavLink eventKey="/signup">
+            Rejestracja
+          </NavLink>
           <NavLink eventKey="/login" >
-            Zaloguj się
+            Logowanie
           </NavLink>
-        </Nav.Item>
-        <Nav.Item>
-          <NavLink eventKey="/signup">
-            Zarejestruj się
-          </NavLink>
-        </Nav.Item>
       </Nav>
        </Navbar>
     )
