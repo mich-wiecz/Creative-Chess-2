@@ -8,8 +8,6 @@ import Tab from 'react-bootstrap/Tab';
 import MyToast from '@global-components/MyToast';
 
 
-
-
 const defaultMotives = [
     {first: 'white', second: 'black'}, 
     {first: 'transparent', second: 'orange'},
@@ -68,7 +66,7 @@ export default function ColorMotivePanel () {
         <>
 <Tabs 
 defaultActiveKey="collection" id="color-motives-sections" 
-className=" w-50 bg-light nav-fill"  
+className="playground-tabs"  
 > 
 <Tab eventKey="collection" title="Kolekcja">
 <MotivesCollection

@@ -7,11 +7,20 @@ $theme-colors: (
     // "danger": teal
 );
 
-// $body-bg: #000;
-// $body-color: #e6f;
+body {
+    background-image:
+    url("./assets/clouds-background.jpg");
+  background-repeat: no-repeat;
+}
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.playground-tabs {
+    @extend .bg-light;
+    @extend .w-50;
+    @extend .nav-fill;
 }
 
 /* import bootstrap to set changes */

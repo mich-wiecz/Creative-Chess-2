@@ -12,7 +12,8 @@ import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faQuest
 
 import {AdditionalOptions} from '@playground/AdditionalOptions';
 import Help from '@playground/Help';
-import ColorMotivePanel from '@playground/ColorMotivePanel'
+import ColorMotivePanel from '@playground/ColorMotivePanel';
+import ModesAndTimeSetter from '@playground/ModesAndTimeSetter';
 
 
 const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}} size="lg"/>
@@ -106,8 +107,8 @@ export default function PlaygroundBar() {
       <Row className={`${classes.Displayer} bg-primary text-light`}>
         <Col>
         <Tab.Content>
-        <Tab.Pane eventKey="poles-adding">
-               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam quisquam pariatur placeat consectetur accusantium praesentium corrupti voluptatem architecto eum tenetur sit quo ipsa aliquid provident quia, officia illum cum quas.
+        <Tab.Pane eventKey="modes">
+          <ModesAndTimeSetter/>
               </Tab.Pane>
               <Tab.Pane eventKey="help">
                <Help />
