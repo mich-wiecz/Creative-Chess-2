@@ -1,0 +1,50 @@
+.Wrapper {
+    position: absolute;
+    top: 5%;
+    bottom: 5%;
+    left: 5%;
+    right: 5%;
+
+
+    .Caption {
+        position: absolute;
+        top: 0;
+        left: 5%;
+        z-index: -3;
+    }
+
+    .Background {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+
+        img {
+            width: 60vmin;
+            height: 60vmin;
+            box-shadow: 13px 15px 5px black;
+        }
+    }
+
+    .TextPanel {
+        position: absolute;
+        padding: 20px;
+        top: 70%;
+        right: 0;
+        width: 50%;
+        border: 3px solid black;
+        background-color: #FEAC2C;
+        box-shadow: 13px 15px 5px black;
+
+        p {
+            margin-bottom: 30px;
+            text-align: center;
+            
+            strong {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+}
