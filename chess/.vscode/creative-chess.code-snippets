@@ -54,5 +54,12 @@
 				"<$1 />",
 				"$2"
 			]
+		},
+		"Insert the most useful className attribute declaration": {
+			"scope": "javascript,typescript",
+			"prefix": "ss",
+			"body": [
+				" className={`$1`}$2"
+			]
 		}
 }
