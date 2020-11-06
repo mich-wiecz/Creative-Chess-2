@@ -32,7 +32,7 @@ function App() {
       ].map(obj => {
           return( 
           <IsolatedRoute  path={obj.path}>
-          <Suspense fallback={WaitingModal}>
+          <Suspense fallback={<WaitingModal />}>
              {obj.component}
           </Suspense>
             </IsolatedRoute>)

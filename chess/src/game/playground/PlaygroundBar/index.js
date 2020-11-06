@@ -5,10 +5,12 @@ import Nav from 'react-bootstrap/Nav';
 import Col from 'react-bootstrap/Col';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import {ResizableBox} from 'react-resizable';
+
 import classes from './PlaygroundBar.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faQuestionCircle, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faMousePointer, faStar } from '@fortawesome/free-solid-svg-icons';
 
 import {AdditionalOptions} from '@playground/AdditionalOptions';
 import Help from '@playground/Help';
@@ -21,41 +23,37 @@ const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}}
 
 
 
-const TabItem = ({showAllTabs, text, icon, eventKey, disabled = false}) => {
-
-  return (
-<OverlayTrigger
-    show={showAllTabs}
-    placement={'right'}
-    delay={{hide: 800}}
-    overlay={
-      <Popover id={`tooltip-${eventKey}`}>
-        <Popover.Content>
-    <span>
-    {text}
-  </span>
-      </Popover.Content>
-      </Popover>
-    }
-  >
-  <Nav.Item className="py-2">
-  <Nav.Link eventKey={eventKey} disabled={disabled}>
-<TabIcon icon={icon}/>
-</Nav.Link>
-  </Nav.Item>
-</OverlayTrigger>
-  )
-}
-
-
 export default function PlaygroundBar() {
 
 
     const [showAllTabs, setShowingAllTabs] = useState(false);
+    const [activeKey, setActiveKey] = useState('');
 
+    function TabItem({ text, icon, eventKey, disabled = false }) {
+
+      return (
+        <OverlayTrigger
+          show={showAllTabs}
+          placement={'right'}
+          overlay={<Popover id={`tooltip-${eventKey}`}>
+            <Popover.Content>
+              <span>
+                {text}
+              </span>
+            </Popover.Content>
+          </Popover>}
+        >
+          <Nav.Item className="py-2">
+            <Nav.Link eventKey={eventKey} disabled={disabled}>
+              <TabIcon icon={icon} />
+            </Nav.Link>
+          </Nav.Item>
+        </OverlayTrigger>
+      );
+    }
 
     return (
-      <Tab.Container style={{backgroundColor: 'red'}} id="playground-tabs" defaultActiveKey="help">
+      <Tab.Container style={{backgroundColor: 'red'}} id="playground-tabs">
       <Row>
         <Col 
         xs={1} 
@@ -66,52 +64,58 @@ export default function PlaygroundBar() {
           onMouseLeave={() => setShowingAllTabs(false)}
           >
           <TabItem 
-          // show={true}
           text={'Dodaj pola'} 
           icon={faPlusSquare} 
           eventKey={'poles-adding'}/>
           <TabItem 
-           show={showAllTabs}
+           
           text={'Zmień rozmiar pól'} 
           icon={faArrowsAlt} 
           eventKey={'poles-resizing'}/>
           <TabItem 
-           show={showAllTabs}
+           
           text={'Dodaj figury'} 
           icon={faChessKnight} 
           eventKey={'figures-adding'}
           disabled
           />
           <TabItem 
-           show={showAllTabs}
+           
           text={'Zmień tryb i czas'} 
           icon={faGamepad} 
           eventKey={'modes'}/>
           <TabItem 
-           show={showAllTabs}
-          text={'Motyw szachownicy'} 
+           
+          text={'Motyw kolorystyczny'} 
           icon={faPalette} 
           eventKey={'color-motive'}/>
           <TabItem 
-           show={showAllTabs}
+           
           text={'Dodatkowe'} 
           icon={faStar} 
           eventKey={'additional'}/>
           <TabItem 
-           show={showAllTabs}
-          text={'Pomoc'} 
-          icon={faQuestionCircle} 
-          eventKey={'help'}/>
+           
+          text={'Interakcje z szachownicą'} 
+          icon={faMousePointer} 
+          eventKey={'interaction-table'}/>
           </Nav>
         </Col>
       </Row>
+      <ResizableBox
+      axis="y"
+      width={200}
+      height={200}
+      minConstraints={[200, 100]}
+      maxConstraints={[200, 500]}
+      >
       <Row className={`${classes.Displayer} bg-primary text-light`}>
         <Col>
         <Tab.Content>
         <Tab.Pane eventKey="modes">
           <ModesAndTimeSetter/>
               </Tab.Pane>
-              <Tab.Pane eventKey="help">
+              <Tab.Pane eventKey="interaction-table">
                <Help />
               </Tab.Pane>
               <Tab.Pane eventKey="additional">
@@ -127,6 +131,7 @@ export default function PlaygroundBar() {
             </Tab.Content>
           </Col>
         </Row>
+        </ResizableBox>
     </Tab.Container>
     )
 }

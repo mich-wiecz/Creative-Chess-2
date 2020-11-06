@@ -7,6 +7,20 @@ $theme-colors: (
     // "danger": teal
 );
 
+$color-maroon: rgb(114, 13, 13);
+
+.bg-maroon {
+    background-color: $color-maroon !important;
+}
+
+.text-maroon {
+    color: $color-maroon;  
+}
+
+.border-maroon {
+    border: solid 2px $color-maroon !important;
+}
+
 body {
     background-image:
     url("./assets/clouds-background.jpg");

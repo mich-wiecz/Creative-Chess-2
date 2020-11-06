@@ -12,11 +12,13 @@ const ErrorInfo = ({
     noGoBackInErrorBoundary
 }) => {
 
+  // const [showModal, setShowModal] = useState(true);
+
     const history = useHistory();
 
 
   const goBack = () => {
-    history.goBack();
+    history.push('/');
   };
 
   const reloadPage = () => {
@@ -29,6 +31,7 @@ const ErrorInfo = ({
     backdrop="static"
     keyboard={false}
     centered
+    animation={false}
   >
     <Modal.Header className="bg-primary">
   <Modal.Title className="text-danger">
@@ -49,7 +52,10 @@ const ErrorInfo = ({
       </Button>
       {
           !(entireAppLevel || noGoBackInErrorBoundary) &&
-          <Button onClick={goBack}>
+          <Button onClick={() => {
+            goBack();
+            reloadPage()
+            }}>
           Wróć do poprzedniej podstrony
         </Button>
       }
