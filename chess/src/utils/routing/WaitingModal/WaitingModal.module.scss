@@ -1,0 +1,53 @@
+.AnimatedDot {
+    opacity: 0;
+    animation: firstDot normal linear 3s infinite;
+        &:nth-of-type(2) {
+            animation-name: secondDot;
+        }
+        &:nth-of-type(3) {
+            animation-name: thirdDot;
+        }
+
+}
+
+@keyframes firstDot {
+
+    0% {
+        opacity: 0;
+    }
+        
+    33% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        
+    }
+}
+
+@keyframes secondDot {
+
+    33% {
+        opacity: 0;
+    }
+        
+    66% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes thirdDot {
+
+    66% {
+        opacity: 0;
+    }
+        
+    100% {
+        opacity: 1;
+    }
+
+}

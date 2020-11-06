@@ -1,0 +1,25 @@
+@import 'global.scss';
+$length: 40px;
+
+
+.UserNav {
+    position: relative;
+    background: $color-maroon;
+
+    &:after  {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -$length;
+        display: inline-block;
+        width: 0;
+        height: 100%;
+        border-style: solid;
+        border-width: 0 $length 40px 0;
+        border-color: transparent $color-maroon transparent transparent;
+        overflow: hidden;
+    }
+
+
+
+}
