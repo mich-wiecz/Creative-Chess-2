@@ -5,7 +5,6 @@ import MotivesCreator from './MotivesCreator';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
-import MyToast from '@global-components/MyToast';
 
 
 const defaultMotives = [
@@ -20,7 +19,6 @@ export default function ColorMotivePanel () {
 
     const [userMotives, setUserMotives] = useState([{first: 'black', second: 'white'}]);
     const [activeMotive, setActiveMotive] = useState(false)
-    const [showToast, setShowingToast] = useState(false);
 
    
     const localStoragePath = useRef('color-motives');
@@ -28,9 +26,9 @@ export default function ColorMotivePanel () {
 
 
 
-    useEffect(() => {
-        if (activeMotive) setShowingToast(true);
-    }, [activeMotive])
+    // useEffect(() => {
+    //     if (activeMotive) setShowingToast(true);
+    // }, [activeMotive])
 
 
     useEffect(() => {
@@ -84,17 +82,6 @@ activeMotive={activeMotive}
 </Tab>
 </Tabs>
 
-
-  <MyToast
-         show={showToast} 
-         onClose={() => setShowingToast(false)}
-         delay={3000}
-         autohide
-        >
-    Zmieniono motyw szachownicy!
-        </MyToast>
-
-     
 </>
     )
 }

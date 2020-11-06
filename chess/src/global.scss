@@ -21,6 +21,10 @@ $color-maroon: rgb(114, 13, 13);
     border: solid 2px $color-maroon !important;
 }
 
+.overflow-scroll {
+    overflow: scroll;
+}
+
 body {
     background-image:
     url("./assets/clouds-background.jpg");

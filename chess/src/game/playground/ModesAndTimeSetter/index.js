@@ -5,7 +5,6 @@ import Carousel from 'react-bootstrap/Carousel';
 import Button from 'react-bootstrap/Button';
 import BlackBackground from 'assets/black-bg.jpg';
 import Image from 'react-bootstrap/Image';
-import MyToast from '@global-components/MyToast';
 import FormControl from 'react-bootstrap/FormControl';
 import PawnSwitch from '@global-components/PawnSwitch';
 import Container from 'react-bootstrap/Container';
@@ -114,12 +113,6 @@ export default function ModesAndTimeSetter() {
         </Tab>
       </Tabs>
    
-
-    <MyToast 
-    dependencies={activeMode}
-    >
-      Zmieniono tryb gry na: {activeMode}
-    </MyToast>
 
 </>
     

@@ -5,14 +5,16 @@ import 'react-bootstrap/dist/react-bootstrap.min.js';
 import './global.scss';
 import App from './App';
 import ErrorBoundary from "utils/errors/ErrorBoundary";
-
+import {ToastProvider} from 'contexts/ToastProvider';
 
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
     <ErrorBoundary entireAppLevel>
+      <ToastProvider>
       <App />
+      </ToastProvider>
     </ErrorBoundary>
     </Router>
   </React.StrictMode>,

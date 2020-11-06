@@ -6,11 +6,11 @@ import Col from 'react-bootstrap/Col';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import {ResizableBox} from 'react-resizable';
-
+import 'react-resizable/css/styles.css'
 import classes from './PlaygroundBar.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faMousePointer, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faMousePointer, faStar, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 
 import {AdditionalOptions} from '@playground/AdditionalOptions';
 import Help from '@playground/Help';
@@ -53,13 +53,14 @@ export default function PlaygroundBar() {
     }
 
     return (
-      <Tab.Container style={{backgroundColor: 'red'}} id="playground-tabs">
-      <Row>
+      <Tab.Container  id="playground-tabs">
+      <Row >
         <Col 
+        className="mt-5 ml-2  rounded"
         xs={1} 
         >
           <Nav variant="pills" 
-          className={`flex-column ${classes.Standard}  ${showAllTabs && classes.Show}`}
+          className={`flex-column text-center ${classes.Standard}  ${showAllTabs && classes.Show}`}
           onMouseEnter={() => setShowingAllTabs(true)}
           onMouseLeave={() => setShowingAllTabs(false)}
           >
@@ -103,15 +104,27 @@ export default function PlaygroundBar() {
         </Col>
       </Row>
       <ResizableBox
+          className={`react-resizable bg-primary text-light ${classes.Displayer}  p-4  overflow-auto rounded border-maroon`}
+          style={{width: 1000}}
+      handle={ (h) => 
+      <div
+        className={`react-resizable-handle react-resizable-handle-${h}`}
+        style={{
+          // transformOrigin: 'bottom',
+          // transform: 'scale(3)',
+          width: 60,
+          height: 60
+        }}
+        />
+      }
+      resizeHandles={[ 'se']}
       axis="y"
-      width={200}
-      height={200}
-      minConstraints={[200, 100]}
-      maxConstraints={[200, 500]}
+      minConstraints={[860, 200]}
+      maxConstraints={[860, 800]}
+      width={860}
+      height={400}
       >
-      <Row className={`${classes.Displayer} bg-primary text-light`}>
-        <Col>
-        <Tab.Content>
+        <Tab.Content >
         <Tab.Pane eventKey="modes">
           <ModesAndTimeSetter/>
               </Tab.Pane>
@@ -129,8 +142,6 @@ export default function PlaygroundBar() {
               </Tab.Pane>
              
             </Tab.Content>
-          </Col>
-        </Row>
         </ResizableBox>
     </Tab.Container>
     )

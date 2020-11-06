@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image';
@@ -7,7 +7,17 @@ import classes from './Navbar.module.scss';
 import {NavLink as RouterNavLink} from "react-router-dom"
 
 
-const NavLink = ({exact = false, eventKey, userNav, children, ...props}) => <Nav.Link 
+import {useToasts} from 'contexts/ToastProvider';
+
+
+
+const NavLink = (
+  {
+    exact = false, 
+    eventKey, 
+    userNav, 
+    children, 
+    ...props}) => <Nav.Link 
 className="text-light" {...props}>
   {
     eventKey 
@@ -28,15 +38,26 @@ className="text-light" {...props}>
 
 export default function MainNavbar() {
 
-    const [activeKey, setActiveKey] = useState('/')
+  const [showToast, createToast] = useToasts();
+  
 
+    const [activeKey, setActiveKey] = useState('/');
+
+
+   const firstToast = createToast('first', {title: "Udało się"});
+   const secondToast = createToast('second', {title: "Jednak nie"});
+  
     return (
         <Navbar 
+        
         bg="primary" 
         className="text-light"
         text="light"
         >
-          <Navbar.Brand className="text-light">
+          <Navbar.Brand onClick={() => {
+          showToast(firstToast);
+          showToast(secondToast);
+          } } className="text-light">
       <Image src={Favicon} alt="favicon - website logo" className="bg-light"/>
           </Navbar.Brand>
         <Nav

@@ -1,9 +1,6 @@
-
-
 .Displayer {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 40vh;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-45%);
 }
