@@ -2,6 +2,7 @@ import React, {lazy, Suspense, useContext} from 'react';
 import MainNavbar from './ui/Navbar/Navbar'
 import PlaygroundBar from './game/playground/PlaygroundBar';
 import Options from 'game/Options';
+import Footer from 'ui/Footer';
 import { Route} from 'react-router-dom';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import PageNotFound from "utils/routing/PageNotFound";
@@ -19,8 +20,9 @@ function App() {
 
   return (
     <>
-  <Options />
+  {/* <Options /> */}
      <MainNavbar/>
+     <Footer />
       <Route path="/404">
      <PageNotFound />
       </Route>
