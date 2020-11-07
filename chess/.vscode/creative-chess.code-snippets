@@ -61,5 +61,14 @@
 			"body": [
 				" className={`$1`}$2"
 			]
-		}
+		},
+		"Import icons": {
+			"scope": "javascript,typescript",
+			"prefix": "imico",
+			"body": [
+			"import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';",
+			"import { $1 } from '@fortawesome/free-solid-svg-icons';$0"
+			]
+		}  
+		
 }

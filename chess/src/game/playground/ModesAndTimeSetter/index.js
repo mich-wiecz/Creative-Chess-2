@@ -75,7 +75,7 @@ export default function ModesAndTimeSetter() {
       variant = undefined;
     }
     return (
-      <Carousel.Item interval={8000}>
+      <Carousel.Item key={mode.modeId} interval={8000}>
         <SlideBackground/>
         <Carousel.Caption>
          <h3>{mode.title}</h3>

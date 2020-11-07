@@ -1,12 +1,13 @@
-import React, {lazy, Suspense, useContext} from 'react';
+import React, {useState, lazy, Suspense} from 'react';
 import MainNavbar from './ui/Navbar/Navbar'
-import PlaygroundBar from './game/playground/PlaygroundBar';
+import Playground from './game/playground';
 import Options from 'game/Options';
+import GameBar from 'game/GameBar';
 import Footer from 'ui/Footer';
+
 import { Route} from 'react-router-dom';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import PageNotFound from "utils/routing/PageNotFound";
-
 
 
 const Signup = lazy(() => import('pages/Signup'));
@@ -17,11 +18,18 @@ const About = lazy(() => import('pages/About'));
 
 function App() {
 
+  const [isGameOn, setIsGameOn] = useState(true);
+
 
   return (
     <>
+
   {/* <Options /> */}
      <MainNavbar/>
+     {
+       isGameOn && 
+       <GameBar />
+     }
      <Footer />
       <Route path="/404">
      <PageNotFound />
@@ -29,9 +37,8 @@ function App() {
 
       <MySwitch>
         <IsolatedRoute exact path="/">
-        <PlaygroundBar/>
+        <Playground isGameOn={isGameOn}/>
         </IsolatedRoute>
-
     {
       [
         {path: "/about", component: <About/>},
@@ -40,6 +47,7 @@ function App() {
       ].map(obj => {
           return( 
           <IsolatedRoute  
+          key={obj.path}
           path={obj.path}>
           <Suspense fallback={<WaitingModal />}>
              {obj.component}

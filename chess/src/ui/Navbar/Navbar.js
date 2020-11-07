@@ -9,19 +9,16 @@ import {NavLink as RouterNavLink} from "react-router-dom"
 
 import {useToasts} from 'contexts/ToastProvider';
 
-
-
 const NavLink = (
   {
     exact = false, 
     eventKey, 
     userNav, 
     children, 
-    ...props}) => <Nav.Link 
+    ...props}) => 
+ <Nav.Link 
+ as={"div"}
 className="text-light" {...props}>
-  {
-    eventKey 
-    ?
     <RouterNavLink 
     exact={exact}
     to={eventKey}
@@ -30,10 +27,6 @@ className="text-light" {...props}>
     >
     {children}
     </RouterNavLink>
-    :
-    children
-  }
-
 </Nav.Link>
 
 export default function MainNavbar() {
@@ -49,7 +42,7 @@ export default function MainNavbar() {
   
     return (
         <Navbar 
-        
+        style={{zIndex: 2000}}
         bg="primary" 
         className="text-light"
         text="light"
@@ -61,8 +54,6 @@ export default function MainNavbar() {
       <Image src={Favicon} alt="favicon - website logo" className="bg-light"/>
           </Navbar.Brand>
         <Nav
-        // fill
-        // justify
         variant="pills"
         className="ml-5 justify-self-end flex-grow-1"
         activeKey={activeKey}
@@ -70,10 +61,7 @@ export default function MainNavbar() {
       >   
           <NavLink  eventKey="/about">O aplikacji</NavLink>
           <NavLink exact eventKey="/">Gra</NavLink>
-          <NavLink >Opcje</NavLink>
-          <NavLink>  
-              PL/EN
-          </NavLink>
+          <NavLink eventKey="/options">Opcje</NavLink>
       </Nav>
       <Nav 
       onSelect={key => setActiveKey(key)}

@@ -58,9 +58,8 @@ export default function MotivesCollection({
        return motivesArray.map(motive => {
         const id = motive.first + motive.second;
         return (
-            <Col className="d-flex justify-content-center">
+            <Col key={id} className="d-flex justify-content-center">
             <ColorMotive 
-            key={id}
             id={id}
             isUserMotive={isUserMotive === 'user-motive' ? true  : false }
             isActive={activeMotive === id}

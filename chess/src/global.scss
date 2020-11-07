@@ -1,20 +1,24 @@
 
 // @import "~bootstrap/scss/";
+$color-maroon: rgb(114, 13, 13);
+$color-myblue: rgb(6, 6, 104);
 
 $theme-colors: (
     "primary":#200849,
+    "maroon": $color-maroon,
+    "myblue": $color-myblue
     // "info": tomato,
     // "danger": teal
 );
 
-$color-maroon: rgb(114, 13, 13);
+
 
 .bg-maroon {
     background-color: $color-maroon !important;
 }
 
 .bg-myblue {
-    background-color: rgb(6, 6, 104) !important;
+    background-color: $color-myblue !important;
 }
 
 .text-maroon {
@@ -29,7 +33,12 @@ $color-maroon: rgb(114, 13, 13);
     overflow: scroll;
 }
 
+.letter-spacing-default {
+letter-spacing: 12px;
+}
+
 body {
+    overflow-x: hidden;
     background-image:
     url("./assets/clouds-background.jpg");
   background-repeat: no-repeat;
@@ -37,6 +46,10 @@ body {
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.navbar-toggler {
+    color: white !important;
 }
 
 .playground-tabs {

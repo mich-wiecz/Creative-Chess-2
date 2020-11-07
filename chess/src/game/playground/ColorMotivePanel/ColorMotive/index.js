@@ -4,6 +4,7 @@ import classes from "./ColorMotive.module.scss";
 
 
 export default function ColorMotive ({
+    isUserMotive,
     className,
     id,
     isActive = false,
