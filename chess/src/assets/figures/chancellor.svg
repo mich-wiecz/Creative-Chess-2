@@ -1,0 +1,31 @@
+
+<svg id="figure" width="100" height="100" viewBox="0 0 100 100" preserveAspectRatio="none"  xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+<g id="tower-top">
+<path d="M 30 30, L 20 22, H 80, L 70 30, H 30"/>
+<rect  x="19.7" y="8" width="14" height="14"/>
+<rect  x="43" y="8" width="14" height="14"/>
+<rect  x="66.3" y="8" width="14" height="14"/>
+</g>
+
+<g id="knight-head">
+<path d="M32.5 64, Q5 0 80 8 L90 48, Q70 45 60 30 Q 75 60 67.5 64 Z" />
+<polygon points="75,15 90,5 83,20 75,15"  />
+</g>
+</defs>
+
+
+
+<g id="chancellor">
+
+<use href="#tower-top" y="61" transform="rotate(180 50 80)" />
+<rect x="30" y="58" width="40" height="20" />
+<rect x="45" y="48" width="10" height="10"/>
+<use href="#knight-head" y="5" x="20" transform="scale(0.7)" />
+
+
+</g>
+
+</svg>
+
