@@ -8,7 +8,6 @@ Modal:  function  ({
     children,
     closeButton = true,
     title,
-    options,
     centered = true,
 ...props
 }) {

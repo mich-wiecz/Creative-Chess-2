@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row';
 import MotivesAdder from '../MotivesAdder';
 import Button from 'react-bootstrap/Button';
-import UserOptions from '@global-components/UserOptionsModal';
+import UserOptions from '@global-components/UserOptions';
 import wait from '@global-functions/wait';
 
 export default function MotivesCollection({

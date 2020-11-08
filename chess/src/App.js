@@ -21,7 +21,7 @@ const About = lazy(() => import('pages/About'));
 function App() {
   const [isGameOn, setIsGameOn] = useState(true);
   const [showPawnPromotion, setShowPawnPromotion]  = useState(false);
-  const [showEndGameModal, setShowEndGameModal]  = useState(true);
+  const [showEndGameModal, setShowEndGameModal]  = useState(false);
 
 
   return (
@@ -70,8 +70,6 @@ function App() {
       })
     }
       </MySwitch>
-    
-      
     </>
  
   );
