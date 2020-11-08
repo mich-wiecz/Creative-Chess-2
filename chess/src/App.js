@@ -4,6 +4,7 @@ import Playground from './game/playground';
 import Options from 'game/Options';
 import GameBar from 'game/GameBar';
 import Footer from 'ui/Footer';
+import PawnPromotion from 'game/PawnPromotion';
 
 import { Route} from 'react-router-dom';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
@@ -17,13 +18,18 @@ const About = lazy(() => import('pages/About'));
 
 
 function App() {
-
   const [isGameOn, setIsGameOn] = useState(true);
+  const [showPawnPromotion, setShowPawnPromotion]  = useState(false);
 
 
   return (
     <>
-
+  <PawnPromotion 
+  show={showPawnPromotion}
+  onClose={() => setShowPawnPromotion(false)}
+  teamFiguresArray={['Pawn', 'rook', 'King', 'Bishop', 'Queen', 'Knight']}
+  teamColor="black"
+  />
   {/* <Options /> */}
      <MainNavbar/>
      {
