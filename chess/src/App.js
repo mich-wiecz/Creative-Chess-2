@@ -5,6 +5,7 @@ import Options from 'game/Options';
 import GameBar from 'game/GameBar';
 import Footer from 'ui/Footer';
 import PawnPromotion from 'game/PawnPromotion';
+import EndGameModal from 'game/EndGameModal';
 
 import { Route} from 'react-router-dom';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
@@ -20,10 +21,17 @@ const About = lazy(() => import('pages/About'));
 function App() {
   const [isGameOn, setIsGameOn] = useState(true);
   const [showPawnPromotion, setShowPawnPromotion]  = useState(false);
+  const [showEndGameModal, setShowEndGameModal]  = useState(true);
 
 
   return (
     <>
+    <EndGameModal 
+      show={showEndGameModal}
+      onClose={() => setShowEndGameModal(false)}
+      winner="white"
+      reason="time"
+    />
   <PawnPromotion 
   show={showPawnPromotion}
   onClose={() => setShowPawnPromotion(false)}
