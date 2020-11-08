@@ -6,11 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import GameInfo from './GameInfo';
+import TimerSVG from './Timer';
 
 export default function InfoPanel() {
 
 
     return (
+      <>
         <MainBar >
           <Navbar expand="xs" className="w-100 justify-content-center px-0" style={{position: 'relative'}}>
           <Navbar.Toggle 
@@ -43,5 +45,23 @@ export default function InfoPanel() {
                     </Button>   
                     </Navbar>
         </MainBar>
+        <TimerSVG 
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: '50%',
+          transform: 'translateX(-50%)'
+
+        }}
+        className={`mx-auto`}
+        time={{
+          player1: 0,
+          player2: 0
+        }}
+        turnFor="black"
+        isGameOver={false}
+        isGameOn={false}
+        />
+        </>
     )
 }
