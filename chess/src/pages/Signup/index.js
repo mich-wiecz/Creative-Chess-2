@@ -6,8 +6,8 @@ import FirstFormPage from './FirstFormPage';
 import SecondFormPage from './SecondFormPage';
 import useFormikConfiguration from './formik-configuration';
 import SpinnerButton from '@global-components/SpinnerButton';
-import FieldsGroup from './FieldsGroup';
-import FieldsList from './FieldsList';
+import FieldsGroup from '../../utils/formik/FieldsGroup';
+import FieldsList from '../../utils/formik/FieldsList';
 
 
 

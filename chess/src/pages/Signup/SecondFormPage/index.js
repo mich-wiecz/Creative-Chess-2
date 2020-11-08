@@ -3,7 +3,8 @@ import Button from 'react-bootstrap/Button';
 import SuccessModal from '../SuccessModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import {useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom';
+import RequestErrorMessage from 'utils/formik/RequestErrorMessage';
 
 export default function FirstFormPage({
   renderFields, 
@@ -47,9 +48,7 @@ export default function FirstFormPage({
             {
           wasError 
           ?
-          <p className="text-danger px-2">
-            Błąd podczas wysyłania formularza! Spróbuj wysłać ponowie.. albo wróć za jakiś czas.
-          </p>
+       <RequestErrorMessage />
           :
           <SuccessModal 
           show={true}

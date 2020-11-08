@@ -47,7 +47,10 @@ export default function FirstFormPage({
             className="d-flex justify-content-around"
             >
          {validationButton}
-        <Button onClick={goToSecondPage} disabled={!couldBeSended}>
+        <Button type="button" onClick={(e) => {
+          e.preventDefault();
+          goToSecondPage()
+          }} disabled={!couldBeSended}>
           <FontAwesomeIcon icon={faArrowRight} size="lg"/>
         </Button>
         </section>
