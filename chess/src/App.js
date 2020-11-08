@@ -40,10 +40,6 @@ function App() {
   />
   {/* <Options /> */}
      <MainNavbar/>
-     {
-       isGameOn && 
-       <GameBar />
-     }
      <Footer />
       <Route path="/404">
      <PageNotFound />
@@ -51,6 +47,10 @@ function App() {
 
       <MySwitch>
         <IsolatedRoute exact path="/">
+        {
+       isGameOn && 
+       <GameBar />
+     }
         <Playground isGameOn={isGameOn}/>
         </IsolatedRoute>
     {

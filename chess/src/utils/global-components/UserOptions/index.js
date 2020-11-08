@@ -16,10 +16,10 @@ Modal:  function  ({
         centered={centered}
       {...props}
       >
-        <Modal.Header closeButton={closeButton}>
+        <Modal.Header className="bg-myblue text-light" closeButton={closeButton}>
     <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body >
             <ListGroup>
        {children}
        </ListGroup>
@@ -28,7 +28,7 @@ Modal:  function  ({
     )
 },
 Option: function  ({children}) {
-  return  <ListGroup.Item className="text-center">
+  return  <ListGroup.Item className="bg-maroon text-light text-center">
    {children}
     </ListGroup.Item>
 }
