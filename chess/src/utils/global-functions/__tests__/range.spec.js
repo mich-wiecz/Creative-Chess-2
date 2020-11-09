@@ -1,4 +1,4 @@
-const range = require('../range')
+import range from '../range';
 describe('range function', () => {
 
     // base arguments

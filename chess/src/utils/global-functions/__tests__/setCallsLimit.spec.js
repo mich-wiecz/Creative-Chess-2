@@ -1,4 +1,4 @@
-const setCallsLimit = require('../setCallsLimit');
+import setCallsLimit from '../setCallsLimit';
 describe('setCallsLimit function', () => {
     
     const exampleFunction = () => 2;

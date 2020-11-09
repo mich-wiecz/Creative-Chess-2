@@ -1,4 +1,4 @@
-const follow = require('../follow');
+import follow from '../follow';
 
 describe('follow function', () => {
 

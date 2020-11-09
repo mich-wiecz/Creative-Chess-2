@@ -1,4 +1,4 @@
-const drawLots = require('../drawLots');
+import drawLots from '../drawLots';
 
 describe('drawLots function', () => {
   Math.random = () => 0.99

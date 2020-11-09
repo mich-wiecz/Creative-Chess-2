@@ -11,7 +11,7 @@
  * About Number.EPSILON: {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/EPSILON}
  * @returns {Function} return the function that will take the followed number before change and its change and it will return the spy number after proper, proportional change.
  */
-export  function follow(spy, shouldNeverBeZero = 'never zero') {
+export default function follow(spy, shouldNeverBeZero = 'never zero') {
     /**
  * @function 
  * @param {number} followed  value of followed before change

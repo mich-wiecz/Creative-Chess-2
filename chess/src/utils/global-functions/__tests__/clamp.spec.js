@@ -1,4 +1,4 @@
-const clamp = require('../clamp');
+import clamp from '../clamp';
 describe('clamp function', () => {
     const minimum = 1, maximum = 10;
 

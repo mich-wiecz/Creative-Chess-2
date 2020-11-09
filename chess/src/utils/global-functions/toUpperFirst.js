@@ -8,6 +8,6 @@
     toUpperFirst('meow') // Meow
     toUpperFirst('MEoW') // MEoW
  */
-module.exports = function toUpperFirst (string) {
+export default function toUpperFirst (string) {
     return string[0].toUpperCase() + string.slice(1);
 }

@@ -13,7 +13,7 @@
  * drawLots(1, 15, 4)
  * //  could return 1, 5, 9, 13 
  */
-export  function drawLots (min, max, step = 1) {
+export default function drawLots (min, max, step = 1) {
     if (min < 0 || step <= 0 || max <= 0) throw new Error('provided values cannot be less or equal to 0 except minimum that could be 0');
     if(max <= min) throw new Error('maximum should be always greater than minimum')
     const difference = max - min;

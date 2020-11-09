@@ -1,4 +1,4 @@
-const isIterable = require('../isIterable')
+import isIterable from '../isIterable'
 describe('isIterable function', () => {
 
     it('returns true if I pass an array with elements', () => {

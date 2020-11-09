@@ -15,7 +15,7 @@
  * stingyFunction() // undefined
  * stingyFunction() // undefined
  */
-export function setCallsLimit (func, n) {
+export default function setCallsLimit (func, n) {
     if (typeof func != 'function') {
         throw new TypeError(`First argument should be a function but received: ${func}`);
       }

@@ -12,7 +12,7 @@
  * clamp(5, 4, 0) // 0 beware
  * clamp(2, 4, 0) // 4
  */
-export function clamp (value, min, max) {
+export default function clamp (value, min, max) {
     if (value < min) {
         return Number(min);
       }

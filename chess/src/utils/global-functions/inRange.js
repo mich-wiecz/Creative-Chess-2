@@ -9,7 +9,7 @@
  * @param {Number} max
  * @returns {Boolean} true if within <min, max>
  */
-export function inRange (value, min, max) {
+export default function inRange (value, min, max) {
     if (max < min) throw new Error('max have to be greater or equal to minimum');
     return value >= min && value <= max;
 }

@@ -1,4 +1,4 @@
-const inRange = require('../inRange');
+import inRange from '../inRange';
 
 describe('inRange function', () => {
 

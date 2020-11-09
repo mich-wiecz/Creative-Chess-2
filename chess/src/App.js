@@ -11,6 +11,8 @@ import { Route} from 'react-router-dom';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import PageNotFound from "utils/routing/PageNotFound";
 
+import readTemplate from 'chess/board/functions/readTemplate';
+import setCallsLimit from '@global-functions/setCallsLimit';
 
 const Signup = lazy(() => import('pages/Signup'));
 const Login = lazy(() => import('pages/Login'));
@@ -22,6 +24,21 @@ function App() {
   const [isGameOn, setIsGameOn] = useState(true);
   const [showPawnPromotion, setShowPawnPromotion]  = useState(false);
   const [showEndGameModal, setShowEndGameModal]  = useState(false);
+
+
+  // console.log(layer({a: 2}, (bottomObject) => {
+  //  return bottomObject
+  //   .merge({b: 5})
+  //   .getIntersected({b: 10})
+  //   .getNonIntersected({b: 7, c: 1})
+  //   .prepare((obj, resultObject) => {
+  //     return [obj, {k: 8, t: 5}]
+  //   })
+  //   .getNonIntersected({k: 1, t: "ss"})
+  // }))
+
+  const fx = setCallsLimit((() => 2), 2);
+  console.log(fx(), fx(), fx())
 
 
   return (

@@ -13,7 +13,7 @@
  * range(4, 4, -1.5)
  * // [4, 2.5, 1, -0.5]
  */
-export default function range (start, length, step = 1) {
+export default  function range (start, length, step = 1) {
     let index = -1,
     result = [];
     start = Number(start); 

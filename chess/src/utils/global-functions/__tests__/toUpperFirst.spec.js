@@ -1,4 +1,4 @@
-const toUpperFirst = require('../toUpperFirst');
+import toUpperFirst from '../toUpperFirst';
 
 describe('toUpperFirst function', () => {
     const stringVariations = ['cat', 'Superman', 'bATman', 'k_;AtF', "ADAM"]
