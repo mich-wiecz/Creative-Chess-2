@@ -199,21 +199,104 @@ function addNextGameDataToHistory (newGameData) {
     dataStore.history.defaultGame.gameHistory = newHistoryState;
 }
 
-function getKingPosition (gameData, actualTeam) {
+function getKingData (gameData, actualTeam) {
     const kingIdsArray = gameData.tags.name.King;
     for(let kingId of kingIdsArray) {
-        const {team: teamOfKing, position} = gameData.figures[kingId].figure;
-        if (teamOfKing === actualTeam) return position;
+        const {team: teamOfKing, position, id} = gameData.figures[kingId].figure;
+        if (teamOfKing === actualTeam) return [position, id];
     }
 }
 
 
-function checkIsKingInDanger (gameData, actualTeam, possibleMovesMapping) {
+function checkIsKingInDanger (kingPosition, possibleMovesMapping) {
    
-    const kingPosition = getKingPosition(gameData, actualTeam);
+    
     const {captures: kingCaptures} = possibleMovesMapping[kingPosition];
     if (kingCaptures.length > 0) return true;
     return false;
+}
+
+function getEnemyTeam (team, teams) {
+    for(let teamName of teams) {
+        if (teamName !== team) return teamName;
+    }
+    
+}
+
+
+
+function isCheckmate (kingId, figures, possibleMovesMapping) {
+
+   
+
+    const {position: kingPosition, team: kingTeam, moves: kingMoves} = figures[kingId].figure;
+    const {captures} = possibleMovesMapping[kingPosition];
+    const capturesLength = captures.length
+    if (capturesLength === 0) return false;
+    if (capturesLength > 0) {
+
+        const areManyEnemies = capturesLength > 1;
+
+        const [enemyId, enemyMovesSequenceIndex] = captures[0].split('##');
+        const {position: enemyPosition, moves: enemyMoves} = figures[enemyId].figure;
+        if (!areManyEnemies && possibleMovesMapping[enemyPosition].captures.length > 0) return false;
+
+        let coords;
+        if (areManyEnemies) {
+            let sharedCoords;
+            for(let mappingFigureId of captures) {
+                const [enemyId, enemyMovesSequenceIndex] = mappingFigureId.split('##');
+            const { moves: enemyMoves} = figures[enemyId].figure;
+        
+                    if (!sharedCoords) {
+                        sharedCoords = enemyMoves.captures[enemyMovesSequenceIndex];
+                    } else {
+                        sharedCoords.splice(0, 0, ...enemyMoves.captures[enemyMovesSequenceIndex]);
+                        sharedCoords = Array.from(new Set(sharedCoords));
+                        if (sharedCoords.length === 0) return true;
+                    }
+            }
+            coords = sharedCoords;
+        } else {
+            coords = enemyMoves.walks[enemyMovesSequenceIndex]
+        }
+     
+       for(let coord of  coords) {
+           const {walks} = possibleMovesMapping[coord];
+            if (walks.length > 0) {
+                for(let mappingFigureId of walks) {
+                    const [figId] = mappingFigureId.split('##');
+                    const {team} = figures[figId].figure;
+                    if (team === kingTeam) return false;
+                }   
+                
+            }
+       }
+
+    }
+
+
+
+   for(let moveType of ['walks', 'captures']) {
+       const movesSequences = kingMoves[moveType];
+    for(let movesSequence of movesSequences) {
+        for(let coord of movesSequences[movesSequence]) {
+            const {captures} = possibleMovesMapping[coord]
+            if(captures.length === 0) return false;
+            for(let figureMappingId of captures) {
+                const [figureId] = figureMappingId.split('##');
+                const {team} = figures[figureId].figure;
+                if (team === kingTeam) return false;
+            }
+            
+        }
+        
+    }
+        
+   }
+   
+    return true;
+
 }
 
 
@@ -248,17 +331,25 @@ export default function makeMove(figureId, nextCoord, additional) {
 
 
         if (
+            !gameDataDraft.winner &&
             additional.hasOwnProperty('watchForTheKing') &&
             additional.watchForTheKing === true
         ) {
 
-            if (checkIsKingInDanger(gameDataDraft, team, possibleMovesMapping)) {
+            const [fellowKingPosition] = getKingData(gameDataDraft, team);
+            const enemyTeam = getEnemyTeam(team, gameDataDraft.teams);
+            const [, enemyKingId] = getKingData(gameDataDraft, enemyTeam)
+         
+            if (checkIsKingInDanger(fellowKingPosition, possibleMovesMapping)) {
                 kingInDanger = true;
                 actualTeam = team;
                 return;
             } else {
                 kingInDanger = false;
                 statistics[team].wasPreviousMoveEndangeringKing = false;
+                if(isCheckmate(enemyKingId, figures, possibleMovesMapping)) {
+                    gameDataDraft.winner = team;
+                }
             }
         }
         
