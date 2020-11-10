@@ -13,6 +13,7 @@
     "bootstrap": "^4.5.3",
     "dart-sass": "^1.25.0",
     "formik": "^2.2.1",
+    "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "nanoid": "^3.1.16",

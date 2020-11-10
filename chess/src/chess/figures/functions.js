@@ -16,22 +16,18 @@ export function splitCoord (coord) {
 }
 
 export function extractTeam (figString) {
-    return figString.split(' ')[0];
+    return figString.split('##')[0];
 }
 
-export function extractFigName (figString) {
-    return figString.split(' ')[1];
+export function extractName (figString) {
+    return figString.split('##')[1];
 }
 
-export function extractFigIndex (figString) {
-    return figString.split(' ')[2];
+export function extractIndex (figString) {
+    return figString.split('##')[2];
 }
 
-export function isStringFigure (figString) {
-    if (typeof figString !== 'string') return false;
-    const splitted = figString.split(' ');
-    if (figString.length !== 2) return false;
-
-    const [team, name, index] = splitted;
-    return hasOwnProperty(name) && typeof index === 'string';
+export function isStringFigure (string) {
+  if(string.length > 14) return true;
+  return false;
 }

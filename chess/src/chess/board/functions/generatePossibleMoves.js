@@ -1,3 +1,159 @@
+import { templates, dataStore } from '../../store.js';
+import {makeCoord, splitCoord, calculateCoordDifference} from '@chess/coord-functions';
+import {isStringFigure, extractTeam} from 'chess/figures/functions';
+import cloneDeep from 'lodash.clonedeep';
+
+
+export function getStepType (coord, boardMap, figTeam) {
+    if(!boardMap.hasOwnProperty(coord)) return;
+    const field = boardMap[coord]
+    if ( field === 'blanc') return 'walk';
+    if(isStringFigure(field)) {
+      if (extractTeam(field) === figTeam) return 'capture'
+      return 'block';
+    }
+    return 'block';
+}
+
+export function couldMakeNextStep (recentStepType, amount) {
+  if ( !recentStepType ||
+  recentStepType === 'block' || 
+  recentStepType === 'capture' ||
+  amount < 1) return false;
+  return true;
+}
+
+export function getExcludedStepType (stepsArray) {
+  if (stepsArray.hasOwnProperty('type')) {
+      if (stepsArray.type === 'walk') return 'capture';
+      return 'walk';
+  }
+  return null;
+}
+
+
+export function getMovements(step) {
+    const colMove = step.hasOwnProperty('col') ? step.col : 0;
+    const rowMove = step.hasOwnProperty('row') ? step.row : 0;
+    return [colMove, rowMove]
+}
+
+
+
+export function getPossibleMoves  (
+    startPosition,
+    figure,
+    movesSchema, 
+    startSequenceIndex, 
+    boardMap, 
+    possibleMovesMapping
+    ) {
+
+    const allMoves = {
+        walks: [],
+        captures: [],
+        blocks: []
+    }
+    
+    movesSchema.forEach(stepsObject => {
+ 
+        let {steps, amount} = stepsObject;
+        const excludedStepType = getExcludedStepType(stepsObject);
+
+        const {id: figureId, team} = figure;
+
+              steps.forEach(step => {
+  
+                
+                const [figCol, figRow] = splitCoord(startPosition),
+                   [colMove, rowMove] = getMovements(step);
+    
+                    let recentStepType;
+    
+                    const sequenceMoves = {
+                        walks: [],
+                        captures: [],
+                        blocks: []
+                    }
+    
+    
+                  do {
+                    const newCoord = makeCoord(figCol + colMove, figRow + rowMove);
+                    recentStepType = getStepType(newCoord, boardMap, team);
+                    if (!recentStepType || recentStepType === excludedStepType) continue;
+                    const pluralStepType = recentStepType  + 's';
+                        sequenceMoves[pluralStepType].push(newCoord);
+                        possibleMovesMapping[newCoord][pluralStepType].push(figureId + '##' + startSequenceIndex);
+                    amount--;
+                  } while(couldMakeNextStep(recentStepType, amount))
+
+                  
+                  for(let moveType in allMoves) {
+                      allMoves[moveType].push(sequenceMoves[moveType])
+                  }
+
+                  startSequenceIndex++;
+                  
+              })
+      
+            
+          
+    })
+
+    return allMoves;
+
+}
+
+
+
+export default function generatePossibleMoves (figuresObject, boardMap, possibleMovesMapping) {
+  for  (let figIndex in figuresObject) {
+
+      let movesSchema; 
+      const {figures: indFigures} = dataStore.defaultGame;
+     const {name, position, startPosition} = indFigures[figIndex].figure;
+     const {model} = indFigures[figIndex];
+      if(model.hasOwnProperty('movesSchema')) {
+          movesSchema = model.movesSchema;
+      } else {
+          movesSchema = dataStore.modelFigures.figures[name].figure.movesSchema;
+      }
+
+      if(typeof movesSchema === 'function') {
+          movesSchema = movesSchema({
+              position,
+              startPosition
+          })
+      }
+
+      movesSchema = cloneDeep(movesSchema);
+
+
+        const allPossibleMoves = getPossibleMoves(
+            position,
+            indFigures[figIndex].figure,
+            movesSchema, 
+            0, 
+            boardMap,
+            possibleMovesMapping
+            );
+    
+
+
+      indFigures[figIndex].figure = {
+          ...indFigures[figIndex].figure,
+          movesPossibilities: {
+              moves: allPossibleMoves,
+              memoizedMovesSchema: movesSchema
+          }
+      }
+
+  } 
+
+  dataStore.defaultGame.possibleMovesMapping = possibleMovesMapping;
+}
+
+
 /* 
 
 no - walk and move as it was

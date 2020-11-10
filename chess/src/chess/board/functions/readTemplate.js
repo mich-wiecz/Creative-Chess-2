@@ -2,18 +2,33 @@ import {createIndividualFigure} from '@figures/figures-creations/create-function
 import {makeCoord, splitCoord, calculateCoordDifference} from '@chess/coord-functions';
 import { templates, dataStore } from '../../store.js';
 import createBoardTemplate from 'chess/board/functions/createBoardTemplate';
-
+import generatePossibleMoves from './generatePossibleMoves';
+import makeMove from './makeMove';
 
 
 
 export default function readTemplateMap (templateName) {
 
+
+    const possibleMovesMapping = {};
+
+    function additionallyAddCoordToMovesMapping (coord) {
+        possibleMovesMapping[coord] = {
+            walks: [],
+            captures: [],
+            blocks: []
+        }
+    }
+
     if(!templates.hasOwnProperty(templateName)) throw new Error(`No template of name: ${templateName}`)
     const {map: templateMapArray, buildConfig, teams} = templates[templateName].template;
 
 
-    function defaultBoardAssignment (boardMap, coord, value) {
+    function defaultBoardAssignment (boardMap, coord, value ) {
+        additionallyAddCoordToMovesMapping(coord);
+
         boardMap[coord] = value;
+        
     }
 
 
@@ -251,13 +266,46 @@ export default function readTemplateMap (templateName) {
             teamsObj = teams;
         }
 
-    return {
-        extremes,
-        map: resultBoardMap,
-        teams: teamsObj
-    }
+        generatePossibleMoves(dataStore.defaultGame.figures, resultBoardMap, possibleMovesMapping);
+
+        // let id;
+        // for(let figId in dataStore.defaultGame.figures) {
+        //     id = figId;
+        //     break;
+        // }
+        
+
+        // makeMove(id)
+        const teamsNames = Object.keys(teams);
+        const statistics = teamsNames.reduce((result, teamName) => {
+            result[teamName] = {
+                time: undefined,
+                wasPreviousMoveEndangeringKing: false
+            }
+            return result;
+        }, {})
+
+       dataStore.defaultGame = {
+           ...dataStore.defaultGame,
+           winner: null,
+           statistics,
+           teams: teamsObj,
+           boardExtremes: extremes,
+           boardMap: resultBoardMap,
+       }
+
+       dataStore.history.defaultGame.gameHistory = {
+           ...dataStore.history.defaultGame.gameHistory,
+           history: {...dataStore.defaultGame},
+           limit: 10,
+           position: 0
+       }
+
 }
 
-console.log(templates)
-console.log(readTemplateMap('classic'))
+// console.log(templates)
+readTemplateMap('classic')
 console.log(dataStore.defaultGame)
+
+
+

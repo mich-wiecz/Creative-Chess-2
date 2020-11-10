@@ -123,7 +123,6 @@ createBoardTemplate((FiguresManager, build) => {
     meta
 })
 
-console.log(dataStore, templates)
 
 // So this function will actually just take a callback and pass a manager to this callback
 // And should receive a object with template

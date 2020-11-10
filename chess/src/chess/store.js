@@ -7,16 +7,25 @@ export const dataStore = {
             }
         },
         figures: {
-            WeirdName: {
-                figure: {
+            // WeirdName: {
+            //     figure: {
 
-                }
-            }
+            //     }
+            // }
         }
     },
     defaultGame: {
-        possibilitiesMapping: {},
-        teams: [],
+        winner: 'team1',
+        teams: {},
+        statistics: {
+            white: {
+                time: 90,
+                wasPreviousMoveEndangeringKing: false
+            }
+        },
+        boardExtremes: {},
+        boardMap: {},
+        possibleMovesMapping: {},
         tags: {
             status: {
                 active: [],
@@ -29,14 +38,49 @@ export const dataStore = {
                 name: {}
         },
         figures: {
-            example: {
-                figure: {
+            // id: {
+            //     figure: {
+                        // movesPossibilities: {
+                        //     moves: {
+                        //         walks: [],
+                        //         captures: [],
+                                    // blocks: [],
+                        //     },
+                        //     
+                        //     memoizedMovesSchema: []
+                        // },
 
-                },
-                model: {
-                    wasOverridden: false
-                }
-            }
+            //     },
+            //     model: {
+            //         wasOverridden: false
+            //     }
+            // }
+        }
+    },
+    history: {
+        defaultGame: {
+            playgroundHistory: {},
+            gameHistory: {
+                limit: 10,
+                position: 0,
+                history: [
+                    {
+                    possibleMovesMapping: {},
+                    tags: {
+                        status: {
+                            active: [],
+                            captured: []
+                        },
+                        category: {},
+                        team: {
+                            noTeam: []
+                        },
+                        name: {}
+                    },
+                    figures: {}
+                    }
+                ]
+            },
         }
     }
 }

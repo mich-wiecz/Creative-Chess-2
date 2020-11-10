@@ -50,9 +50,9 @@ export const classicFiguresMoves = {
   }],
   [names.pawn]: ({position, startPosition}) => {
       if (position === startPosition) {
-        return [setPawnMoves(2)]
+        return setPawnMoves(2)
       }
-      return [setPawnMoves(1)]
+      return setPawnMoves(1)
   }
 };
 

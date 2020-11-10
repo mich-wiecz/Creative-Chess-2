@@ -31,7 +31,6 @@ export class FiguresDataManager {
     }
 
    static createBlackAndWhiteTeams(foundedModelFigures) {
-    console.log(dataStore.modelFigures)
 
         return this.createTeams([{name: 'black'}, {name: 'white'}], foundedModelFigures)
     }

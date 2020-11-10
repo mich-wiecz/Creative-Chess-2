@@ -12,7 +12,6 @@ import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import PageNotFound from "utils/routing/PageNotFound";
 
 import readTemplate from 'chess/board/functions/readTemplate';
-import setCallsLimit from '@global-functions/setCallsLimit';
 
 const Signup = lazy(() => import('pages/Signup'));
 const Login = lazy(() => import('pages/Login'));
@@ -37,8 +36,7 @@ function App() {
   //   .getNonIntersected({k: 1, t: "ss"})
   // }))
 
-  const fx = setCallsLimit((() => 2), 2);
-  console.log(fx(), fx(), fx())
+
 
 
   return (

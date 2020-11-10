@@ -44,15 +44,8 @@ export function createIndividualFigure (coord, figName, teamObj, modification) {
             color: teamObj.color || teamObj.name,
             position: coord,
             status: 'active',
-            possibilities: {
-                moves: {
-                    moves: [],
-                    captures: []
-                },
-                blocks: [],
-                memoizedMovesSchema: []
-            }
-        }
+        },
+        model: {}
     };
 
     if (modification) {
