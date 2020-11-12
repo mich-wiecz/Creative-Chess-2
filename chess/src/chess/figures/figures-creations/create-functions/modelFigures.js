@@ -1,13 +1,12 @@
 import { names } from '../../names';
 import { classicFiguresValues } from '../../values';
 import { classicFiguresMoves } from '../../movesSchemas';
-import { dataStore } from '../../../store';
 
 import toUpperFirst from '@global-functions/toUpperFirst';
 
 
- function upsertTags (figuresDataPath, figureData, identification) {
-    const {tags} = figuresDataPath;
+ function upsertTags (state, figureData, identification) {
+    const {tags} = state.modelFigures;
     for(let TagName in tags) {
     let figTagValue = 
     figureData.hasOwnProperty(TagName) 
@@ -67,7 +66,7 @@ const defaultModelFigure = {
  *  * basic figure data copy on occasion of wanting to come back to initial data
  * @description it will create raw figure data object, then you need to add this to board by addToBoard function
  */
-export function createModelFigure (figData) {
+export function createModelFigure (state, figData) {
 
     const {name} = figData;
     figData = {
@@ -75,9 +74,9 @@ export function createModelFigure (figData) {
     imageName: name,
     ...figData
     }
-    dataStore.modelFigures.figures[name] = {
+    state.modelFigures.figures[name] = {
         figure: figData
     }
 
-    upsertTags(dataStore.modelFigures, figData, name);
+    upsertTags(state, figData, name);
 }

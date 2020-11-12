@@ -5,7 +5,7 @@ import { Team } from './teams';
 export class FiguresDataManager {
 
 
-   static individualFigures = new IndividualFiguresFinder(dataStore.defaultGame, 
+   static individualFigures = new IndividualFiguresFinder(dataStore.game, 
         ( indFigureData) => {
         const {figure, model: overriddenModel} = indFigureData;
         let modelFigure = dataStore.modelFigures.figures[figure.name].figure;

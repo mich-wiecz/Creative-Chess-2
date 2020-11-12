@@ -1,4 +1,20 @@
-import { hasOwnProperty } from './names';
+
+
+
+export function updateFigureData (figure, property, newValue, tags) {
+    if (!figure.hasOwnProperty(property)) throw new Error(`Property: ${property} does not exist on provided figure`);
+    const oldValue = figure[property];
+    figure[property] = newValue;
+
+    if (!tags.hasOwnProperty(property) || oldValue === newValue) return;
+
+    const {id} = figure;
+    const tag = tags[property];
+    tag[oldValue] =  tag[oldValue].filter(figId => figId !== id);
+    tag[newValue] = [...tag[newValue], id];
+
+}
+
 
 export function isCoord(coord) {
     if (typeof coord !== 'string') return false;
@@ -23,7 +39,7 @@ export function extractName (figString) {
     return figString.split('##')[1];
 }
 
-export function extractIndex (figString) {
+export function extractId (figString) {
     return figString.split('##')[2];
 }
 

@@ -194,7 +194,7 @@ import dataStore from './dataStore';
 
 
 const data = {
-defaultGame: {
+game: {
 possibilitiesMapping: {},
 teams: [''],
 individualFigures: {
@@ -308,7 +308,7 @@ modelFigures: {
 
 // console.log(manager.individualFigures.printTags())
 // // console.log(manager.modelFigures.findByKeys(['Pawn', 'Queen']));
-// console.log(white.createPawn({value: 9})('0|0'), dataStore.defaultGame.figures)
+// console.log(white.createPawn({value: 9})('0|0'), dataStore.game.figures)
 
 
 

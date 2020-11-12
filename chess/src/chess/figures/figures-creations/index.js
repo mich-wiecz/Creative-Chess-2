@@ -33,4 +33,4 @@ Object.values(capablancaNames).forEach(name => {
 // const found = manager.modelFigures.findByNames(['Pawn', "King"]);
 // const {white, black} = manager.createBlackAndWhiteTeams(found);
 
-// console.log(white.createKing(), dataStore.defaultGame.figures)
+// console.log(white.createKing(), dataStore.game.figures)

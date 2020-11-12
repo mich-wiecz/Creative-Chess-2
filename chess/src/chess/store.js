@@ -1,4 +1,10 @@
-export const dataStore = {
+ const initialState = {
+    templates: {},
+    board: {
+        rotation: 0,
+        rigidFieldSize: null,
+        colorMotive: {first: 'gray', second: 'green'}
+    },
     modelFigures: {
         tags: {
             category: {
@@ -14,14 +20,22 @@ export const dataStore = {
             // }
         }
     },
-    defaultGame: {
+    playgroundInitialization: {
+        extraSpaces: {right: 2, left: 2}
+    },
+    playground: {
+      abstractBoard: null,
+      playgroundBoardMap: {},
+      boardExtremes: {}   
+    },
+    game: {
         winner: 'team1',
         teams: {},
         statistics: {
-            white: {
-                time: 90,
-                wasPreviousMoveEndangeringKing: false
-            }
+            // white: {
+            //     time: 90,
+            //     wasPreviousMoveEndangeringKing: false
+            // }
         },
         boardExtremes: {},
         boardMap: {},
@@ -40,7 +54,6 @@ export const dataStore = {
         figures: {
             // id: {
             //     figure: {
-                        // movesPossibilities: {
                         //     moves: {
                         //         walks: [],
                         //         captures: [],
@@ -48,7 +61,6 @@ export const dataStore = {
                         //     },
                         //     
                         //     memoizedMovesSchema: []
-                        // },
 
             //     },
             //     model: {
@@ -58,31 +70,11 @@ export const dataStore = {
         }
     },
     history: {
-        defaultGame: {
-            playgroundHistory: {},
-            gameHistory: {
-                limit: 10,
-                position: 0,
-                history: [
-                    {
-                    possibleMovesMapping: {},
-                    tags: {
-                        status: {
-                            active: [],
-                            captured: []
-                        },
-                        category: {},
-                        team: {
-                            noTeam: []
-                        },
-                        name: {}
-                    },
-                    figures: {}
-                    }
-                ]
-            },
-        }
+        game: {},
+        playground: {}
     }
 }
 
-export const templates = {};
+
+export const dataStore = {...initialState};
+

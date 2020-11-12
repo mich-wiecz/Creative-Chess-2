@@ -1,16 +1,16 @@
-import { dataStore } from '@chess/store';
+
 import {nanoid} from 'nanoid';
 import toUpperFirst from '@global-functions/toUpperFirst';
 
- function upsertTags (figuresDataPath, figureData, id) {
+ function upsertTags (state, figureData, id) {
     const {name} = figureData;
-    const modelsTags = Object.keys(dataStore.modelFigures.tags);
+    const modelsTags = Object.keys(state.modelFigures.tags);
     const tagsFromModel = modelsTags.reduce((tags, tag) => {
-        tags[tag] = dataStore.modelFigures.figures[name].figure[tag];
+        tags[tag] = state.modelFigures.figures[name].figure[tag];
         return tags;
     }, {})
 
-    const {tags} = figuresDataPath;
+    const {tags} = state.game;
 
  
     for(let tagName in tags) {
@@ -31,8 +31,8 @@ import toUpperFirst from '@global-functions/toUpperFirst';
  
  }
 
-export function createIndividualFigure (coord, figName, teamObj, modification) {
-    const {figures: indFigures} = dataStore.defaultGame;
+export function createIndividualFigure (state, coord, figName, teamObj, modification) {
+    const {figures: indFigures} = state.game;
     const id = nanoid();
 
     const figureData =  {
@@ -55,7 +55,7 @@ export function createIndividualFigure (coord, figName, teamObj, modification) {
 
      indFigures[id] = figureData;
 
-    upsertTags(dataStore.defaultGame, figureData.figure, id)
+    upsertTags(state, figureData.figure, id)
 
     return `${teamObj.name}##${figName}##${id}`
 }
