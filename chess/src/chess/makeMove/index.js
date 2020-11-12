@@ -1,24 +1,20 @@
-import { createNextState as produce } from '@reduxjs/toolkit'
-import { dataStore } from '@chess/store.js';
 import { extractIndex } from 'chess/figures/functions.js';
 import { correctOtherFigsPossibleMoves } from './correctOtherFigsPossibleMoves';
 import { isMoveCapture } from './isMoveCapture';
 import { killCapturedFigure } from './killCapturedFigure';
 import { updateFigure } from './updateFigure';
-import { updateTime } from './updateTime';
-import { addNextGameDataToHistory } from './addNextGameDataToHistory';
+import { addNextGameDataToHistory } from '../timeTravel/addToGameHistory';
 import { checkKings } from './checkKings';
+import { updateStatistics } from './updateStatistics';
+import { endOfficialGame } from '../endOfficialGame';
 
 
+export default function makeMove(newState, {figureId, nextCoord, additional: {time}}) {
 
-
-export default function makeMove(figureId, nextCoord, additional) {
-
-    const nextState = produce(dataStore, newState => {
 
         const {game} = newState;
         const {
-            winner,
+            teams,
             figures, 
             possibleMovesMapping, 
             boardMap, 
@@ -40,27 +36,17 @@ export default function makeMove(figureId, nextCoord, additional) {
         correctOtherFigsPossibleMoves(newState, position);
 
 
-        if (
-            !winner &&
-            additional.hasOwnProperty('watchForTheKing') &&
-            additional.watchForTheKing === true
-        ) {
-
+        if (game.protectKings) {
 
             const [isKingInDanger, isCheckmate] = checkKings(newState, team);
 
 
-            if (isCheckmate) {
-                game.winner = team;
-            }
+            if (isCheckmate) endOfficialGame(game, team);
 
             if (isKingInDanger) {
                 statistics[team].wasPreviousMoveEndangeringKing = true;
                if (!isCheckmate) return;
             }
-
-
-          
         }
         
   
@@ -72,19 +58,8 @@ export default function makeMove(figureId, nextCoord, additional) {
 
 
         updateFigure(newState, figureId, nextCoord);
-
-
-
-            if (additional.hasOwnProperty('time')) updateTime(statistics, additional.time);
+        updateStatistics(statistics, team, teams, time);
+        addNextGameDataToHistory(newState);   
             
-                addNextGameDataToHistory(newState);
-                statistics[team].wasPreviousMoveEndangeringKing = false;
-            
-    })
-
-
-  
-
-    dataStore = nextState;
     
 }

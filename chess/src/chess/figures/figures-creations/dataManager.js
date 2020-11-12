@@ -1,11 +1,12 @@
 import { IndividualFiguresFinder, ModelFiguresFinder } from './finders';
-import { dataStore } from '../../store';
+import { dataStore } from '../../initialState';
 import { Team } from './teams';
+import store from 'redux/store';
 
 export class FiguresDataManager {
 
 
-   static individualFigures = new IndividualFiguresFinder(dataStore.game, 
+   static individualFigures = new IndividualFiguresFinder(store.getState().game, 
         ( indFigureData) => {
         const {figure, model: overriddenModel} = indFigureData;
         let modelFigure = dataStore.modelFigures.figures[figure.name].figure;
@@ -19,7 +20,7 @@ export class FiguresDataManager {
             model: modelData
         }
     } )
-   static modelFigures = new ModelFiguresFinder(dataStore.modelFigures)
+   static modelFigures = new ModelFiguresFinder(store.getState().modelFigures)
 
   static  createTeams(teamsArr, foundedModelFigures) {
         if (!Array.isArray(teamsArr)) throw new Error(`Function createTeams should take array of teams objects as first argument`);

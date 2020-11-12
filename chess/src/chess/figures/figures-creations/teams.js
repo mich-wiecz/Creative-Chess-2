@@ -1,6 +1,6 @@
 // const {createIndividualFigure} = require('./create-functions/individualFigures');
 import { dataStore } from 
-'../../store';
+'../../initialState';
 import isColor from 'utils/global-functions/isColor';
 
 

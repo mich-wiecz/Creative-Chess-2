@@ -3,8 +3,8 @@ import { playgroundAdjustField } from './playgroundAdjustField';
 
 
 
-export default function readTemplateMap (templateName) {
-    prepareStateBeforeGame(templateName);
+export  function readTemplate (state, templateName) {
+    prepareStateBeforeGame(state, templateName);
 }
 
 

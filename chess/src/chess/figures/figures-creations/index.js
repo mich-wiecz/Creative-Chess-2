@@ -3,7 +3,7 @@ import { classicFiguresValues, capablancaFiguresValues } from '../values';
 import { classicFiguresMoves, capablancaFiguresMoves } from '../movesSchemas';
 import { createModelFigure } from './create-functions/modelFigures';
 import { FiguresDataManager } from './dataManager';
-import { dataStore } from '../../store';
+import { dataStore } from '../../initialState';
 
 
 Object.values(classicNames).forEach(name => {

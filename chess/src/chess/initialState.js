@@ -1,8 +1,9 @@
- const initialState = {
+ export const initialState = {
+    mode: 'playground',
     templates: {},
     board: {
         rotation: 0,
-        rigidFieldSize: null,
+        frozenFieldSize: null,
         colorMotive: {first: 'gray', second: 'green'}
     },
     modelFigures: {
@@ -17,7 +18,7 @@
             //     figure: {
 
             //     }
-            // }
+            // }gg
         }
     },
     playgroundInitialization: {
@@ -29,14 +30,20 @@
       boardExtremes: {}   
     },
     game: {
-        winner: 'team1',
-        teams: {},
         statistics: {
+            turn: 0,
+            turnFor: null,
+            movesDone: 0,
             // white: {
             //     time: 90,
             //     wasPreviousMoveEndangeringKing: false
             // }
         },
+        isTimeGame: false,
+        timeStarted: false,
+        protectKings: true,
+        winner: null,
+        teams: {},
         boardExtremes: {},
         boardMap: {},
         possibleMovesMapping: {},
@@ -70,8 +77,18 @@
         }
     },
     history: {
-        game: {},
-        playground: {}
+        game: {
+            limit: 10,
+            position: 0,
+            initial: {},
+            history: []
+        },
+        playground: {
+            limit: 10,
+            position: 0,
+            initial: {},
+            history: []
+        }
     }
 }
 

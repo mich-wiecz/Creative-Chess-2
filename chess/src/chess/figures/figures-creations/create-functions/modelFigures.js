@@ -80,3 +80,14 @@ export function createModelFigure (state, figData) {
 
     upsertTags(state, figData, name);
 }
+
+
+
+
+export  function createModelFigures (state, modelFigures) {
+    for(let name in modelFigures) {
+       createModelFigure(state, modelFigures[name]);
+    }
+    
+   
+ }

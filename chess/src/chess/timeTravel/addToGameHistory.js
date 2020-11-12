@@ -3,17 +3,24 @@ export function addNextGameDataToHistory(newState) {
 
     const { history, limit, position } = game;
 
-    const length = history.length;
+
+    let length = history.length;
 
     if (position !== length - 1) {
         history.splice(position + 1);
+        history.position = length - 1;
+        length = history.length;
     }
 
-    if (length >= limit) {
-        const tooMuchCount = length - limit - 1;
+
+    const tooMuchCount = Math.abs(length - limit - 1);
+    if (tooMuchCount > 0) {
         history.splice(0, tooMuchCount);
     }
 
-    history.push({ ...newState.game });
+    history.push(newState.game);
     history.position++;
+
+
+ 
 }

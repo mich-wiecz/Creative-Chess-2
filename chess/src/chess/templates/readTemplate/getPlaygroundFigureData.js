@@ -1,4 +1,4 @@
-import { dataStore } from '../../store.js';
+import { dataStore } from '../../initialState.js';
 import { isStringFigure } from 'chess/figures/functions.js';
 
 export function getPlaygroundFigureData(item) {

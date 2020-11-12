@@ -72,22 +72,28 @@ export class FiguresFinder  {
         
         function getFounded  () {
 
-            function isValidTagArr  (TagArr)  {
+            function isValidTagArr  (tagArr)  {
             
-                return  Array.isArray(TagArr) &&
-                    TagArr.length === 2 &&
-                 self._path.tags.hasOwnProperty([TagArr[0]]) 
+                return  Array.isArray(tagArr) &&
+                    tagArr.length === 2 &&
+                 self._path.tags.hasOwnProperty([tagArr[0]]) 
                 
             }
             let founded = [];
-            for(let TagArr of searchArr) {
+            for(let tagArr of searchArr) {
                
-                if (!isValidTagArr(TagArr)) 
+                if (!isValidTagArr(tagArr)) 
                 throw new Error(errorMess);
-                        const [TagName, wanted] = TagArr;
-                                const tag = self._path.tags[TagName]
+                        const [tagName, wanted] = tagArr;
+                                const tag = self._path.tags[tagName]
                                 if(typeof wanted === 'function') { 
-                                    founded = founded.concat(Object.keys(tag).filter(TagName => wanted(TagName)))
+                                    let innerFounded = [];
+                                    Object.keys(tag).forEach(tagName => {
+                                        if (wanted(tagName)) {
+                                            innerFounded = innerFounded.concat(tag[tagName]);
+                                        }
+                                    })
+                                    founded = innerFounded;
                                 } else {
                                     founded = founded.concat(tag[wanted])
                                 }
