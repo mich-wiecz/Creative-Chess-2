@@ -1,0 +1,74 @@
+@import 'global.scss';
+$padding-size: 25px;
+$chess-coords-size: $padding-size * 1.4;
+$min-size: 8 * 40px + $padding-size + $chess-coords-size;
+
+@mixin setBoardSize($length) {
+  width: $length;
+  height: $length;
+}
+
+// .Wrapper {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+.Container {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.BoardGrid {
+  box-sizing: content-box;
+  padding: $padding-size $padding-size $chess-coords-size
+    $chess-coords-size;
+  display: inline-grid;
+  background-color: transparentize($newPrimary, 0.2);
+  cursor: crosshair;
+}
+
+.ChessCoords {
+  position: absolute;
+  span {
+    display: block;
+  }
+
+  display: flex;
+  align-items: center;
+
+  color: #c2ab2c;
+
+  &.Vertical {
+    top: $padding-size;
+    bottom: $padding-size;
+    left: 0;
+    width: $chess-coords-size;
+
+    span {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    flex-direction: column;
+  }
+
+  &.Horizontal {
+    bottom: 0;
+    left: $chess-coords-size;
+    right: $padding-size;
+    height: $chess-coords-size;
+
+    span {
+      text-align: center;
+      width: 100%;
+    }
+  }
+}
+
+// .WithoutBackground {
+//   background-color: transparent !important;
+// }
