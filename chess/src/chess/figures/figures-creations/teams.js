@@ -2,6 +2,7 @@
 import { dataStore } from 
 '../../initialState';
 import isColor from 'utils/global-functions/isColor';
+import { nanoid } from 'nanoid';
 
 
 function validateTeamData (teamData) {
@@ -36,7 +37,8 @@ export class Team {
         const {figures} = dataStore.modelFigures;
         if(!figures.hasOwnProperty(figureName)) throw new Error(`Invalid figure name. Not found in model figures. Received: ${figureName}`);
 
-        const basic = [figureName, this._teamData]
+        const figureData = {...this._teamData, id: nanoid()}
+        const basic = [figureName, figureData]
         return (modification ? basic.push(modification) : basic)
     }
 

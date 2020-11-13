@@ -1,10 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {initialState} from '@chess/initialState';
-import {readTemplate, createTemplate} from '@chess/templates';
-import {createModelFigures} from '@figures/figures-creations/create-functions/modelFigures';
-import makeMove from '@chess/makeMove';
-import {endOfficialGame} from '@chess/endOfficialGame';
-import {travelInTime, resetToDefault, resetToInitial} from '@chess/timeTravel'
+import initialState from 'chess/initialState';
+import {readTemplate, createTemplate, addTemplate} from 'chess/templates';
+import {createModelFigures} from 'chess/figures/figures-creations/create-functions/modelFigures';
+import makeMove from 'chess/makeMove';
+import {endOfficialGame} from 'chess/endOfficialGame';
+import {travelInTime, resetToInitial} from '@chess/timeTravel';
+import {setTime, startTime} from 'chess/time'
+
 
 
 const gameSlice = createSlice({
@@ -15,16 +17,21 @@ const gameSlice = createSlice({
             state.board.frozenFieldSize = action.newFieldSize;
         },  
         rotationChanged(state, action) {
-            state.board.rotation = action.newRotation
+            state.board.rotation = action.payload
         },
         boardMotiveChanged(state, action) {
-            state.board.colorMotive = action.newMotive;
+            state.board.colorMotive = action.payload;
         },
         modelFiguresAdded(state, action) {
-            createModelFigures(state, action.modelFigures);
+            createModelFigures(state, action.payload);
         },
-        templateAdded(state, action) {
-            createTemplate(state, action.tempCreationData);
+        templateAdded: {
+             reducer(state, action) {
+                addTemplate(state.templates, action.payload);
+             },
+            prepare(buildCb, about) {
+               return createTemplate(buildCb, about)
+            }
         },
         gameActivated(state) {
             state.mode = 'game';
@@ -34,25 +41,17 @@ const gameSlice = createSlice({
         },
         templateChanged(state, action) {
             if( !state.templates) return;
-            readTemplate(state, action.templateName);
+            readTemplate(state, action.payload);
 
         },
         moveMade(state, action) {
-            makeMove(state, action.moveData);
+            makeMove(state, action.payload);
         },
         timeAdded(state, action) {
-            const {teamsStatistics} = state.game,
-            {time: timeObject} = action;
-          for(let team in timeObject) {
-            teamsStatistics[team].time = timeObject[team]; 
-          }
-          state.game.isTimeGame = true;
-          const {initial} = state.history.game;
-          initial.isTimeGame = true;
-          initial.teamData = teamsStatistics;
+         setTime(state, action.payload)
         },
         timeStarted(state) {
-            state.game.timeStarted = true;
+           startTime(state)
         },
         moveUndone(state) {
             travelInTime(state, pos => pos - 1)
@@ -63,20 +62,38 @@ const gameSlice = createSlice({
         gameResetedToInitial(state) {
            resetToInitial(state);
         },
-        officialGameEnded(state, action) {
-            endOfficialGame(state.game, action.winner)
+        gameResetedToDefault() {
+          return initialState;
         },
-        gameResetedToDefault(state) {
-          resetToDefault(state);
-        }
+        officialGameEnded(state, action) {
+            endOfficialGame(state.game, action.payload)
+        },
     }
 });
+
+
+export const selectBoardFeatures = state => state.board;
+export const selectTime = state => state.game.time;
+export const selectModelFigures = state => state.modelFigures.figures;
+export const selectIndividualFigures = state => state.game.figures;
+export const selectStatistics = state => state.game.statistics;
+export const selectGameHistory = state =>  state.history.game;
+export const selectTemplates = state => state.templates;
+export const selectMode = state => state.mode;
+export const selectActiveGameTemplate = state => state.activeGameTemplate;
+export const selectBoardMap = state => state.game.boardMap;
+export const selectBoardExtremes = state => state.game.boardExtremes;
+export const selectWinner = state => state.game.winner;
+export const selectTeams = state => state.game.teams;
+
+
+
 
 
 // There are gew categories: history, time, board-appearance and game mechanics and I could split it to different reducers
 
 
 
-export const {modelFiguresAdded, templateAdded, gamePrepared} = gameSlice.actions;
+export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone, boardMotiveChanged, officialGameEnded} = gameSlice.actions;
 
 export default gameSlice.reducer;

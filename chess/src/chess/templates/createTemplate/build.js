@@ -1,12 +1,15 @@
 export function build (templateArray, teams, buildConfig ) {
-    const teamsFigures = {};
+    const teamsArray = [];
     for(let team in teams) {
-        teamsFigures[team] = teams[team].figuresSet;
+        teamsArray.push({
+            ...teams[team]._teamData,
+            figuresSet: {...teams[team].figuresSet}
+        })
     }
     
     return {
         map: templateArray,
         buildConfig,
-        teams: teamsFigures
+        teams: teamsArray
     }
 }

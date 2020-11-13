@@ -1,7 +1,7 @@
-import { getKingData } from './getKingData';
-import { checkIsKingInDanger } from './checkIsKingInDanger';
-import { getEnemyTeam } from './getEnemyTeam';
-import {isCheckmate} from '@chess/isCheckmate';
+import { getKingData } from '../makeMove/getKingData';
+import { checkIsKingInDanger } from './isKingInDanger';
+import { getEnemyTeam } from '../makeMove/getEnemyTeam';
+import {isCheckmate} from './isCheckmate';
 
 export function checkKings(newState, team) {
     let isKingInDanger, isCheckmateFact;

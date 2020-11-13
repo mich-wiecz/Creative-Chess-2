@@ -76,6 +76,20 @@
 			"body": [
 			"import Chess from '@chess';$1",
 			]
-		}    
+		},
+		"Import from game slice": {
+			"scope": "javascript,typescript",
+			"prefix": "imgame",
+			"body": [
+			"import {$1} from 'redux/gameSlice';$0",
+			]
+		},  
+		"Import hooks from react-redux": {
+			"scope": "javascript,typescript",
+			"prefix": "imx",
+			"body": [
+			"import {useSelector, useDispatch} from 'react-redux';$0",
+			]
+		},  
 		
 }

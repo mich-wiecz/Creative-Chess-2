@@ -1,6 +1,6 @@
 
 import {nanoid} from 'nanoid';
-import toUpperFirst from '@global-functions/toUpperFirst';
+import toUpperFirst from 'Game/PawnPromotion/node_modules/@global-functions/toUpperFirst';
 
  function upsertTags (state, figureData, id) {
     const {name} = figureData;
@@ -31,9 +31,8 @@ import toUpperFirst from '@global-functions/toUpperFirst';
  
  }
 
-export function createIndividualFigure (state, coord, figName, teamObj, modification) {
+export function createIndividualFigure (state, coord, figName, {id, ...teamObj}, modification) {
     const {figures: indFigures} = state.game;
-    const id = nanoid();
 
     const figureData =  {
         figure: {

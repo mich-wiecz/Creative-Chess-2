@@ -5,14 +5,9 @@ import { rangeTemplateObjectLoop } from './rangeTemplateObjectLoop';
 import { plainTemplateObjectLoop } from './plainTemplateObjectLoop';
 import { handleNestedRangeTemplateObject } from './handleNestedRangeTemplateObject';
 
-export function getDataFromTemplate(state, templateName, config) {
+export function getGameDataFromTemplate(state, template, config) {
 
-    const { templates } = state;
 
-    if (!templates.hasOwnProperty(templateName))
-        throw new Error(`No template of name: ${templateName}`);
-
-    const { template } = templates[templateName];
     const { teams } = template;
     const {
         extremes,
@@ -45,7 +40,7 @@ export function getDataFromTemplate(state, templateName, config) {
 
     return {
         possibleMovesMapping,
-        teams: teams ? teams : {},
+        teams: teams ? teams : [],
         boardExtremes: extremes,
         boardMap: resultBoardMap,
     };

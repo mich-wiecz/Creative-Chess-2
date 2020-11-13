@@ -1,4 +1,4 @@
-import { createIndividualFigure } from '@figures/figures-creations/create-functions/individualFigures';
+import { createIndividualFigure } from 'chess/figures/figures-creations/create-functions/individualFigures';
 import { hasFigureData } from './hasFigureData';
 
 export function defaultAdjustField(state, coord, fieldValue) {

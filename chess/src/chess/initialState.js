@@ -1,10 +1,22 @@
- export const initialState = {
+
+import { classicNames, capablancaNames } from '@figures/names';
+import { classicFiguresValues, capablancaFiguresValues } from '@figures/values';
+import { classicFiguresMoves, capablancaFiguresMoves } from '@figures/movesSchemas';
+import {createModelFigure} from 'chess/figures/figures-creations/create-functions/modelFigures';
+import { addTemplate} from 'chess/templates';
+import * as defaultGameTemplates from 'chess/templates/defaultTemplates';
+import {} from 'chess/templates/defaultTemplates'
+
+
+
+  const initialState = {
     mode: 'playground',
+    activeGameTemplate: 'classic',
     templates: {},
-    board: {
+    boardFeatures: {
         rotation: 0,
         frozenFieldSize: null,
-        colorMotive: {first: 'gray', second: 'green'}
+        boardMotive: {first: 'gray', second: 'green'}
     },
     modelFigures: {
         tags: {
@@ -32,18 +44,22 @@
     game: {
         statistics: {
             turn: 0,
-            turnFor: null,
+            moveFor: null,
             movesDone: 0,
             // white: {
-            //     time: 90,
             //     wasPreviousMoveEndangeringKing: false
             // }
+          
         },
-        isTimeGame: false,
-        timeStarted: false,
+        time: {
+            isTimeGame: false,
+            timeStarted: false,
+              // white:  90,
+        },
         protectKings: true,
         winner: null,
-        teams: {},
+        reasonForWinning: null,
+        teams: [],
         boardExtremes: {},
         boardMap: {},
         possibleMovesMapping: {},
@@ -93,5 +109,36 @@
 }
 
 
-export const dataStore = {...initialState};
+(function fillInitialState () {
+       
+        Object.values(classicNames).forEach(name => {
+            const figData = {
+                category: 'classic',
+                name,
+                value: classicFiguresValues[name],
+                movesSchema: classicFiguresMoves[name],
+            }
+            createModelFigure(initialState, figData);
+        });
+        
+        Object.values(capablancaNames).forEach(name => {
+            const figData ={
+                category: 'capablanca',
+                name,
+                value: capablancaFiguresValues[name],
+                movesSchema: capablancaFiguresMoves[name],
+            }
+            createModelFigure(initialState, figData);
+        });
 
+
+
+            for(let templateData in defaultGameTemplates) {
+                addTemplate(initialState.templates, templateData);
+            }
+    })()
+            
+
+
+
+export default initialState;

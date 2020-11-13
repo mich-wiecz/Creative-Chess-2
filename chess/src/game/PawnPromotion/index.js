@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as Figures from 'assets/figures';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -11,11 +11,16 @@ export default function PawnPromotion({
 teamFiguresArray,
 teamColor,
 show,
-onClose
+onClose,
+defaultFigure
 }) {
 
 
-  const [chosenFigure, setChosenFigure] = useState('Queen');
+  const [chosenFigure, setChosenFigure] = useState('');
+
+    useEffect(() => {
+      setChosenFigure(defaultFigure)
+    }, [defaultFigure])
 
 
     return (
@@ -63,7 +68,7 @@ onClose
         </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={onClose}>
+          <Button variant="primary" onClick={() => onClose(chosenFigure)}>
             Zatwierdź
           </Button>
         </Modal.Footer>

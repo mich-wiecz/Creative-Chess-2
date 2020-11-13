@@ -1,8 +1,8 @@
-import range from '@global-functions/range';
+import range from 'Game/Board/ChessCoords/node_modules/@global-functions/range';
 
 
 
-function getRandomPositions( setsObject) {
+function getRandomPositions( figuresSets) {
     let availableFields, startFields;
     availableFields = startFields =  range(0, 7);
     let kingPosition = null,
@@ -20,12 +20,12 @@ function getRandomPositions( setsObject) {
 
         availableFields = availableFields.filter((field) => field !== resultField);
 
-        for(let setName in setsObject) {
+        for(let setName in figuresSets) {
         if(!result.hasOwnProperty(setName)) {
             result[setName] = []
         };
 
-        result[setName].push(setsObject[setName][figureName]);
+        result[setName].push(figuresSets[setName][figureName]);
     }
         
 
@@ -105,8 +105,8 @@ const buildConfiguration = {
 
 
 
-    export const classicGame = {
-        buildCallback: (FiguresManager, build) => {
+    export const random960GameTemplate = (
+         (FiguresManager, build) => {
 
             const classicFigures = FiguresManager.modelFigures.findByTags([['category', 'classic']]);
             const teams = FiguresManager.createBlackAndWhiteTeams(classicFigures);
@@ -145,10 +145,12 @@ const buildConfiguration = {
                 }
             ], teams, buildConfiguration);
         },
+       { 
         title: '960',
         configuration: gameConfiguration,
         meta
-    };
+        }
+    );
 
 
 

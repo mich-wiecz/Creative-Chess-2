@@ -4,22 +4,24 @@ import { isMoveCapture } from './isMoveCapture';
 import { killCapturedFigure } from './killCapturedFigure';
 import { updateFigure } from './updateFigure';
 import { addNextGameDataToHistory } from '../timeTravel/addToGameHistory';
-import { checkKings } from './checkKings';
+import { checkKings } from '../kingsChecking/checkKings';
 import { updateStatistics } from './updateStatistics';
 import { endOfficialGame } from '../endOfficialGame';
+import { transformFigure } from './transformFigure';
 
 
-export default function makeMove(newState, {figureId, nextCoord, additional: {time}}) {
+
+export default function makeMove(newState, {figureId, nextCoord, additional: {time: updatedTimes, transform: transformArray}}) {
 
 
-        const {game} = newState;
+    let wasPreviousMoveEndangeringKing;
+
+        const {game, modelFigures} = newState;
         const {
-            teams,
             figures, 
             possibleMovesMapping, 
             boardMap, 
             tags, 
-            statistics,
         } = game; 
 
 
@@ -41,15 +43,21 @@ export default function makeMove(newState, {figureId, nextCoord, additional: {ti
             const [isKingInDanger, isCheckmate] = checkKings(newState, team);
 
 
-            if (isCheckmate) endOfficialGame(game, team);
+            if (isCheckmate)  endOfficialGame(game, team);
 
             if (isKingInDanger) {
-                statistics[team].wasPreviousMoveEndangeringKing = true;
-               if (!isCheckmate) return;
+                wasPreviousMoveEndangeringKing = true;
+               if (!isCheckmate) {
+                   const {position, history} = newState.history.game
+                   newState.game = history[position];
+               }
             }
+
+            
         }
+        updateStatistics(game, team, wasPreviousMoveEndangeringKing, updatedTimes);
         
-  
+        if (!wasPreviousMoveEndangeringKing) {
 
         if (capturedFigIndex) {
             const {figure: capturedFig} = figures[capturedFigIndex]
@@ -57,9 +65,12 @@ export default function makeMove(newState, {figureId, nextCoord, additional: {ti
         }
 
 
+
+        if (Array.isArray(transformArray)) {
+           transformFigure(transformArray, modelFigures, figure);
+        }
         updateFigure(newState, figureId, nextCoord);
-        updateStatistics(statistics, team, teams, time);
         addNextGameDataToHistory(newState);   
             
-    
+        }
 }

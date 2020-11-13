@@ -20,8 +20,8 @@ const buildConfiguration = {
 
 
 
-export const classicGame = {
-    buildCallback: (FiguresManager, build) => {
+export const capablancaGameTemplate = (
+    (FiguresManager, build) => {
 
         const allCapablancaFigures =  FiguresManager.modelFigures.findByTags([['category', (category) => {
             if (category === 'classic' || category === 'capablanca') return true;
@@ -66,7 +66,9 @@ export const classicGame = {
               }
           ], teams, buildConfiguration)
     }, 
+   { 
     title: 'capablanca',
     configuration: gameConfiguration,
     meta
-};
+}
+);

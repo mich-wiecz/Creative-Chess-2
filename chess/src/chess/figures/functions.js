@@ -2,14 +2,14 @@
 
 
 export function updateFigureData (figure, property, newValue, tags) {
-    if (!figure.hasOwnProperty(property)) throw new Error(`Property: ${property} does not exist on provided figure`);
+    // if (!figure.hasOwnProperty(property)) throw new Error(`Property: ${property} does not exist on provided figure`);
     const oldValue = figure[property];
+    if(oldValue === newValue) return;
     figure[property] = newValue;
-
-    if (!tags.hasOwnProperty(property) || oldValue === newValue) return;
 
     const {id} = figure;
     const tag = tags[property];
+    if(!tag) return;
     tag[oldValue] =  tag[oldValue].filter(figId => figId !== id);
     tag[newValue] = [...tag[newValue], id];
 
@@ -46,4 +46,14 @@ export function extractId (figString) {
 export function isStringFigure (string) {
   if(string.length > 14) return true;
   return false;
+}
+
+
+export function getModelProperty (indFigures, modFigures, figId, property) {
+    const {figure: indFigure, model} = indFigures[figId];
+    if (model.hasOwnProperty(property)) {
+        return model[property];
+    } 
+    return modFigures[indFigure.name][property];
+
 }

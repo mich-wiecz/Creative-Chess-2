@@ -1,4 +1,4 @@
-
+import {createTemplate} from '../index';
 
 
 const meta = {
@@ -22,8 +22,8 @@ const buildConfiguration = {
 
 
 
-export const classicGame = {
-    buildCallback: (FiguresManager, build) => {
+export const classicGameTemplate = createTemplate(
+ (FiguresManager, build) => {
 
         const classicFigures =  FiguresManager.modelFigures.findByTags([['category', 'classic']]);
         const teams = FiguresManager.createBlackAndWhiteTeams(classicFigures);
@@ -66,7 +66,9 @@ export const classicGame = {
               }
           ], teams, buildConfiguration)
     }, 
+    {
     title: 'classic',
     configuration: gameConfiguration,
     meta
-};
+    }
+);

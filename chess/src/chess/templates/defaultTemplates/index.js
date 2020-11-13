@@ -1,3 +1,3 @@
-export {classic} from './classic';
-export {capablanca} from './capablanca';
-export {random960} from './random960';
+export {classicGameTemplate} from './classic';
+export {capablancaGameTemplate} from './capablanca';
+export {random960GameTemplate} from './random960';

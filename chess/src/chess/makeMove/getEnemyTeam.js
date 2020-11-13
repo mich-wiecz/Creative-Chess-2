@@ -1,7 +1,7 @@
 export function getEnemyTeam(team, teams) {
-    for (let teamName of teams) {
-        if (teamName !== team)
-            return teamName;
-    }
+    const {name} = teams.find(({name}) => {
+        return name === team;
+    })
+    return name;
 
 }

@@ -14,7 +14,8 @@ import PlaygroundNav from './PlaygroundNav';
 
 
 export default function Playground({
-  isGameOn
+  isGameOn,
+  children
 }) {
 
 
@@ -36,7 +37,7 @@ export default function Playground({
       handleShowAllTabs={setShowAllTabs}
       handleSetActiveKey={setActiveKey}
      />
-     
+      <main>
       <Displayer
       show={!!activeKey}
   >
@@ -61,6 +62,8 @@ export default function Playground({
           </Tab.Pane>
           </Tab.Content>
     </Displayer>
+    {children}
+    </main>
     </Tab.Container>
     </>
     )

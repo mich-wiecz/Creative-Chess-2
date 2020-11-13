@@ -1,12 +1,11 @@
 import React from 'react';
-import TimeTravelButtons from '@global-components/TimeTravelButtons';
-import MainBar from '@global-components/MainBar';
+import TimeTravelButtons from 'Playground/PlaygroundBar/node_modules/@global-components/TimeTravelButtons';
+import MainBar from 'Playground/PlaygroundBar/node_modules/@global-components/MainBar';
 import Navbar from 'react-bootstrap/Navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import GameInfo from './GameInfo';
-import TimerSVG from './Timer';
 
 export default function InfoPanel() {
 
@@ -45,23 +44,7 @@ export default function InfoPanel() {
                     </Button>   
                     </Navbar>
         </MainBar>
-        <TimerSVG 
-        style={{
-          position: 'absolute',
-          top: '20%',
-          left: '50%',
-          transform: 'translateX(-50%)'
 
-        }}
-        className={`mx-auto`}
-        time={{
-          player1: 0,
-          player2: 0
-        }}
-        turnFor="black"
-        isGameOver={false}
-        isGameOn={false}
-        />
         </>
     )
 }

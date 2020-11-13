@@ -2,7 +2,7 @@ import { names } from '../../names';
 import { classicFiguresValues } from '../../values';
 import { classicFiguresMoves } from '../../movesSchemas';
 
-import toUpperFirst from '@global-functions/toUpperFirst';
+import toUpperFirst from 'Game/PawnPromotion/node_modules/@global-functions/toUpperFirst';
 
 
  function upsertTags (state, figureData, identification) {

@@ -1,5 +1,5 @@
 import generatePossibleMoves from '@chess/generatePossibleMoves';
-import { updateFigureData } from '@chess/figures/functions';
+import { updateFigureData } from 'chess/figures/functions';
 import { removeAllFigMovesFromMapping } from './removeAllFigMovesFromMapping';
 
 export function updateFigure(

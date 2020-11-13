@@ -1,32 +1,40 @@
 import generatePossibleMoves from './generatePossibleMoves';
-import { createNextState as produce } from '@reduxjs/toolkit';
-import { getDataFromTemplate } from './getDataFromTemplate';
+import {  getGameDataFromTemplate } from './getGameDataFromTemplate';
 
 
-export function prepareStateBeforeGame(newState, templateName, config = {}) {
+export function prepareStateBeforeGame(newState, templateName, templateReadConfig = {}) {
 
-    const {configuration: tempConfig} = newState.templates[templateName]
-    const rotation = tempConfig.hasOwnProperty('rotation') ? tempConfig.rotation : 0;
-    newState.board.rotation = rotation;         
+    const {templates, board, history} = newState;
+    if (!templates.hasOwnProperty(templateName))
+    throw new Error(`No template of name: ${templateName}`);
+
+    const templateData = templates[templateName];
+    const {configuration: tempConfig, template} = templateData;
         
+    Object.assign(newState, getGameDataFromTemplate(newState, template, templateReadConfig));
+    newState.activeGameTemplate = templateName;
 
-        Object.assign(newState, getDataFromTemplate(newState, templateName, config));
-        generatePossibleMoves(newState);
+        const rotation = tempConfig.hasOwnProperty('rotation') ? tempConfig.rotation : 0;
+        board.rotation = rotation;    
 
         const { game } = newState;
 
-        const teamsNames = Object.keys(game.teams);
+        const teamsNames = game.teams.map(({name}) => {
+            return name;
+        });
         const statistics = teamsNames.reduce((result, teamName) => {
             result[teamName] = {
-                time: undefined,
+                time: null,
                 wasPreviousMoveEndangeringKing: false
             };
             return result;
         }, {});
 
 
-        game.statistics = statistics;
-        newState.history.game.history.push(game);
-        newState.history.game.initial = game;
+        game.statistics = {...game.statistics, ...statistics};
+        history.game.history.push(game);
+        history.game.initial = game;
 
+
+        generatePossibleMoves(newState);
 }

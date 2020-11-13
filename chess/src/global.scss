@@ -2,6 +2,7 @@
 // @import "~bootstrap/scss/";
 $color-maroon: rgb(114, 13, 13);
 $color-myblue: rgb(6, 6, 104);
+$newPrimary: #200849;
 
 :export {
     myBlue: $color-myblue;
@@ -10,7 +11,7 @@ $color-myblue: rgb(6, 6, 104);
 }
 
 $theme-colors: (
-    "primary":#200849,
+    "primary": $newPrimary,
     "maroon": $color-maroon,
     "myblue": $color-myblue
     // "info": tomato,
