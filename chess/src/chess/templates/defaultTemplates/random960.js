@@ -86,7 +86,7 @@ function getRandomPositions( figuresSets) {
 
     
 const meta = {
-    longTitle: 'random / 960 / Fisher chess',
+    longTitle: 'Szachy 960 (losowe)',
     description: ''
 }
 

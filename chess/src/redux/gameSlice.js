@@ -5,7 +5,7 @@ import {createModelFigures} from 'chess/figures/figures-creations/create-functio
 import makeMove from 'chess/makeMove';
 import {endOfficialGame} from 'chess/endOfficialGame';
 import {travelInTime, resetToInitial} from '@chess/timeTravel';
-import {setTime, startTime} from 'chess/time'
+import {setTime, startTime, removeTime} from 'chess/time'
 
 
 
@@ -49,6 +49,9 @@ const gameSlice = createSlice({
         },
         timeAdded(state, action) {
          setTime(state, action.payload)
+        },
+        timeRemoved(state) {
+            removeTime(state);
         },
         timeStarted(state) {
            startTime(state)
@@ -94,6 +97,6 @@ export const selectTeams = state => state.game.teams;
 
 
 
-export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone, boardMotiveChanged, officialGameEnded} = gameSlice.actions;
+export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone, boardMotiveChanged, officialGameEnded, timeAdded, timeStarted, templateChanged, timeRemoved} = gameSlice.actions;
 
 export default gameSlice.reducer;

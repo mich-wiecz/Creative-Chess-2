@@ -2,7 +2,7 @@ import React from 'react'
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
-import PawnSwitch from '@global-components/PawnSwitch';
+import PawnSwitch from 'Playground/TemplatesAndTimeSetter/node_modules/@global-components/PawnSwitch';
 
   const InputSection = ({label, htmlFor, children}) => (
     <section className="mt-4 w-50">

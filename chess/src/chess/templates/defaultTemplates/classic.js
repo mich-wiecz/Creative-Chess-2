@@ -1,8 +1,9 @@
 import {createTemplate} from '../index';
 
 
+
 const meta = {
-    longTitle: 'classic chess game',
+    longTitle: 'Szachy klasyczne',
     description: ''
 }
 

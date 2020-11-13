@@ -1,6 +1,6 @@
 
 const meta = {
-    longTitle: 'Capablanca chess (wider board and two additional figures)',
+    longTitle: 'Capablanki (dwie dodatkowe figury)',
     description: ''
 }
 
