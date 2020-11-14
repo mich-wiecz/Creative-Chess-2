@@ -12,10 +12,18 @@ export default function TimeTravelButtons({
 }) {
     return (
         <ButtonGroup style={{width: '140px'}} {...props}>
-        <Button variant="light"  onClick={onUndo}>
+        <Button 
+        variant="light"  
+        disabled={!onUndo}
+        onClick={onUndo}
+        >
           <FontAwesomeIcon icon={faStepBackward}/>
         </Button>
-        <Button variant="light" onRedo={onRedo}>
+        <Button 
+        variant="light" 
+        disabled={!onRedo}
+        onRedo={onRedo}
+        >
           <FontAwesomeIcon icon={faStepForward}/>
         </Button>
         </ButtonGroup>

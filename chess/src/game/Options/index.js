@@ -11,10 +11,11 @@ import CursorGif from 'assets/cursor.gif';
 import DragRightGif from 'assets/drag-right.gif';
 import {useToasts} from 'contexts/ToastProvider';
 import Button from 'react-bootstrap/Button';
+import {useSelector, useDispatch} from 'react-redux';
+import {boardFeatureChanged, selectBoardFeatures} from 'redux/gameSlice';
 
-    const toastTitle = "Opcja zmieniona"
-
-    const toasts = {
+    const toastTitle = "Opcja zmieniona",
+     toasts = {
      animation: 0,
      possibleMoves: 1,
      music: 2,
@@ -25,11 +26,15 @@ import Button from 'react-bootstrap/Button';
 
 export default function Options() {
 
+    const dispatch = useDispatch(),
+    {
+        interactionStyle, 
+        animationsOn, 
+        showPossibleMoves, 
+        musicOn
+    } = useSelector(selectBoardFeatures);
 
-    const [interactionStyle, setInteractionStyle] = useState('clicking');
-    const [animationsOn, setAnimationsOn] = useState(false);
-    const [showPossibleMovesOn, setShowPossibleMovesOn] = useState(true);
-    const [musicOn, setMusicOn] = useState(false);
+
 
     const [showToast, createToast] = useToasts();
 
@@ -47,7 +52,7 @@ export default function Options() {
 
     const handleInteractionStyle = (style) => {
         if (interactionStyle === style) return;
-        setInteractionStyle(style);
+        dispatch(boardFeatureChanged({feature: 'interactionStyle', value: style}))
     }
 
     function   OptionWrapper ({
@@ -169,23 +174,24 @@ export default function Options() {
                     textOff="wyłączone"
                     />
                     )
-                setAnimationsOn(prev => !prev)
+                    dispatch(boardFeatureChanged({feature: 'animationsOn', value: !animationsOn}))
             } }
            />
            <Option 
             title="Pokazywanie możliwych posunięć"
             aria-label="Przełączanie pokazywania możliwych posunięć"
-            isOn={showPossibleMovesOn}
+            isOn={showPossibleMoves}
             onToggle={() =>  {
                 showToast(toasts.possibleMoves, 
                     <ToastInfo 
-                    variable={showPossibleMovesOn}
+                    variable={showPossibleMoves}
                     prelude="Pokazywanie potencjalnych ruchów figur jest"
                     textOn="włączone"
                     textOff="wyłączone"
                     />
                     )
-                setShowPossibleMovesOn(prev => !prev)}}
+                    dispatch(boardFeatureChanged({feature: 'showPossibleMoves', value: !showPossibleMoves}))
+                }}
            />
            <Option 
             title="Muzyka"
@@ -200,7 +206,7 @@ export default function Options() {
                     textOff="wyłączona"
                     />
                     )
-                setMusicOn(prev => !prev)
+                    dispatch(boardFeatureChanged({feature: 'musicOn', value: !musicOn}))
             }}
            />
             <OptionWrapper

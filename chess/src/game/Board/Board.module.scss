@@ -18,15 +18,42 @@ $min-size: 8 * 40px + $padding-size + $chess-coords-size;
   position: relative;
   display: inline-flex;
   justify-content: center;
+
+
+  .Timer {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+  }
+
+
+
 }
 
 .BoardGrid {
+  position: relative;
   box-sizing: content-box;
   padding: $padding-size $padding-size $chess-coords-size
     $chess-coords-size;
   display: inline-grid;
   background-color: transparentize($newPrimary, 0.2);
   cursor: crosshair;
+
+
+
+  .TimeStarter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(44, 30, 30, 0.541);
+  
+  }
 }
 
 .ChessCoords {

@@ -1,13 +1,14 @@
 import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import {selectStatistics} from 'redux/gameSlice';
+import {useSelector} from 'react-redux';
 
 
 
-export default function GameInfo({
-turn,
-madeMoves,
-moveFor,
-}) {
+export default function GameInfo() {
+
+
+  const {turn, madeMoves, moveFor} = useSelector(selectStatistics);
 
 
   function Information ({title, value}) {

@@ -6,6 +6,7 @@ import {useSelector, useDispatch} from 'react-redux';
 // import variables from 'global.scss';
 
 export default function Timer({ 
+    newWinner,
     updateTime,
     updateTimerFlag,
     markTimerAsUpdated,
@@ -15,14 +16,12 @@ export default function Timer({
     const dispatch = useDispatch();
     const {isTimeGame, timeStarted, ...timeForTeams} = useSelector(selectTime);
     const {moveFor} = useSelector(selectStatistics);
-    const winner = useSelector(selectWinner);
     // const mode = useSelector(selectMode);
     const teams = useSelector(selectTeams);
 
 
 
     const [animationClass, setAnimationClass] = useState('');
-    const [newWinner, setNewWinner] = useState(null);
     const [firstTeamTime, setFirstTeamTime] = useState(0);
     const [secondTeamTime, setSecondTeamTime] = useState(0);
     const [firstTeamData, setFirstTeamData] = useState(null);
@@ -109,19 +108,6 @@ export default function Timer({
 
 
 
-
-
-    useEffect(() => {
-
-        if(winner === newWinner) {
-            setNewWinner(null)
-        } else {
-            setNewWinner(winner)
-        }
-        
-    }, [winner, setNewWinner, newWinner]);
-
-    // const isGameOn = mode === 'game' && (isTimeGame ? timeStarted : true);
 
 
     useEffect(() => {

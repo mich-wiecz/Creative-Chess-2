@@ -13,11 +13,11 @@ import PlaygroundNav from './PlaygroundNav';
 
 
 
+
 export default function Playground({
   isGameOn,
-  children
+  children: Board
 }) {
-
 
     const [showAllTabs, setShowAllTabs] = useState(false);
     const [activeKey, setActiveKey] = useState(null);
@@ -25,8 +25,7 @@ export default function Playground({
     return (
       <>
       {
-        !isGameOn &&
-        <PlaygroundBar />
+        !isGameOn && <PlaygroundBar />
       }
      
       <Tab.Container id="playground-tabs">
@@ -37,7 +36,9 @@ export default function Playground({
       handleShowAllTabs={setShowAllTabs}
       handleSetActiveKey={setActiveKey}
      />
-      <main>
+      <main 
+      className={`d-flex flex-column justify-content-around align-items-center m-5`}
+      >
       <Displayer
       show={!!activeKey}
   >
@@ -62,7 +63,7 @@ export default function Playground({
           </Tab.Pane>
           </Tab.Content>
     </Displayer>
-    {children}
+    {Board}
     </main>
     </Tab.Container>
     </>

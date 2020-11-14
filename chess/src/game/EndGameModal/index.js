@@ -1,6 +1,8 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { useDispatch} from 'react-redux';
+import {gameResetedToDefault, gameResetedToInitial} from 'redux/gameSlice';
 
 
 
@@ -10,6 +12,10 @@ export default function EndGameModal({
     winner = 'white',
     reason = 'checkmate'
 }) {
+
+
+  const dispatch = useDispatch();
+
     return (
         <Modal 
         show={show} 
@@ -64,13 +70,19 @@ export default function EndGameModal({
         </Modal.Body>
         <Modal.Footer className="d-flex flex-column bg-primary">
           <Button variant="primary" 
-          onClick={onClose}>
+          onClick={ () => {
+            dispatch(gameResetedToInitial());
+            onClose();
+          }}>
             Zagraj jeszcze raz
           </Button>
-          <Button variant="primary" onClick={onClose}>
+          <Button variant="primary" onClick={() => {
+            dispatch(gameResetedToDefault());
+            onClose()
+          }}>
             Skomponuj nową grę
           </Button>
-          <Button>
+          <Button onClick={onClose}>
               Graj dalej
           </Button>
         </Modal.Footer>

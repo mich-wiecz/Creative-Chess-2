@@ -4,23 +4,20 @@ import {readTemplate, createTemplate, addTemplate} from 'chess/templates';
 import {createModelFigures} from 'chess/figures/figures-creations/create-functions/modelFigures';
 import makeMove from 'chess/makeMove';
 import {endOfficialGame} from 'chess/endOfficialGame';
-import {travelInTime, resetToInitial} from '@chess/timeTravel';
+import {travelInTime, resetToInitial} from 'chess/timeTravel';
 import {setTime, startTime, removeTime} from 'chess/time'
-
 
 
 const gameSlice = createSlice({
     name: 'game',
     initialState,
     reducers: {
-        fieldSizeFrozen(state, action) {
-            state.board.frozenFieldSize = action.newFieldSize;
-        },  
-        rotationChanged(state, action) {
-            state.board.rotation = action.payload
+        boardFeatureChanged(state, action) {
+            const {feature, value} = action.payload;
+            state.boardFeatures[feature] = value;
         },
-        boardMotiveChanged(state, action) {
-            state.board.colorMotive = action.payload;
+        musicOnChanged(state, action) {
+            state.boardFeatures.musicOn = action.payload;
         },
         modelFiguresAdded(state, action) {
             createModelFigures(state, action.payload);
@@ -86,7 +83,7 @@ export const selectMode = state => state.mode;
 export const selectActiveGameTemplate = state => state.activeGameTemplate;
 export const selectBoardMap = state => state.game.boardMap;
 export const selectBoardExtremes = state => state.game.boardExtremes;
-export const selectWinner = state => state.game.winner;
+export const selectWinData = state => state.game.winData;
 export const selectTeams = state => state.game.teams;
 
 
@@ -97,6 +94,6 @@ export const selectTeams = state => state.game.teams;
 
 
 
-export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone, boardMotiveChanged, officialGameEnded, timeAdded, timeStarted, templateChanged, timeRemoved} = gameSlice.actions;
+export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone,  officialGameEnded, timeAdded, timeStarted, templateChanged, timeRemoved, gameResetedToDefault, gameResetedToInitial, playgroundActivated, boardFeatureChanged} = gameSlice.actions;
 
 export default gameSlice.reducer;

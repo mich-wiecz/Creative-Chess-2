@@ -1,14 +1,19 @@
 import React from 'react';
-import TimeTravelButtons from 'Playground/PlaygroundBar/node_modules/@global-components/TimeTravelButtons';
-import MainBar from 'Playground/PlaygroundBar/node_modules/@global-components/MainBar';
+import TimeTravelButtons from '@global-components/TimeTravelButtons';
+import MainBar from '@global-components/MainBar';
 import Navbar from 'react-bootstrap/Navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import GameInfo from './GameInfo';
+import {moveUndone, moveRedone, playgroundActivated, selectTime, selectGameHistory} from 'redux/gameSlice';
+import {useSelector, useDispatch} from 'react-redux';
 
-export default function InfoPanel() {
+export default function GameBar() {
 
+  const {isGameTime} = useSelector(selectTime);
+  const {position,history} = useSelector(selectGameHistory);
+   const dispatch = useDispatch()
 
     return (
       <>
@@ -31,15 +36,18 @@ export default function InfoPanel() {
             zIndex: -1,
           }}
           id="game-info">  
-                 <GameInfo 
-                  turn={0}
-                  moveFor="white"
-                  madeMoves={0}
-                  />
+                 <GameInfo/>
             </Navbar.Collapse>  
              
-                  <TimeTravelButtons />
-                 <Button className="flex-grow-1 bg-myblue text-uppercase letter-spacing-default"> 
+                  <TimeTravelButtons 
+                  onUndo={position !== 0 && dispatch(moveUndone)}
+                  onRedo={position >= history.length && dispatch(moveRedone)}
+                  />
+                 <Button 
+                 disabled={!isGameTime}
+                 onClick={dispatch(playgroundActivated())}
+                 className="flex-grow-1 bg-myblue text-uppercase letter-spacing-default"
+                 > 
                    Stop
                     </Button>   
                     </Navbar>
