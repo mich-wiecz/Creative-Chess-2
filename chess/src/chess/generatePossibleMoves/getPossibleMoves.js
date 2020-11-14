@@ -14,11 +14,11 @@ sequenceIndexStart
 ) {
 
 
+    const {tags, game} = state;
 
-
-    const {figures, possibleMovesMapping, boardMap} = state.game,
-    {team, startPosition} = figures[figureId],
-     [figCol, figRow] = splitCoord(startPosition);
+    const {figures, possibleMovesMapping, boardMap, statistics} = game,
+    {team, position, name} = figures[figureId],
+     [figCol, figRow] = splitCoord(position);
     let sequenceIndex = sequenceIndexStart || 0;
 
     const allMoves = {
@@ -36,7 +36,7 @@ sequenceIndexStart
 
               const [colMove, rowMove] = getMovements(step);
 
-            let recentStepType;
+            let recentStepType, stepCount = 1;
 
             const sequenceMoves = {
                 walks: [],
@@ -46,7 +46,8 @@ sequenceIndexStart
 
 
             do {
-                const newCoord = makeCoord(figCol + colMove, figRow + rowMove);
+                const newCoord = makeCoord(figCol + colMove * stepCount, figRow + rowMove * stepCount);
+                stepCount++;
                 recentStepType = getStepType(newCoord, boardMap, team);
                 if (!recentStepType || recentStepType === excludedStepType)
                     continue;
@@ -65,9 +66,8 @@ sequenceIndexStart
 
         });
 
-
-
     });
+
 
     return allMoves;
 

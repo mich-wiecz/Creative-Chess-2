@@ -17,7 +17,8 @@ export default function BoardField({
 
     const specialStyles = {
         walk: {boxShadow: 'inset 0 0 2px 5px gold'},
-        capture: {boxShadow: 'inset 0 0 2px 5px gold'}
+        capture: {boxShadow: 'inset 0 0 2px 5px gold'},
+        castling: {boxShadow: 'inset 0 0 2px 5px azure'}
     }
 
     return (

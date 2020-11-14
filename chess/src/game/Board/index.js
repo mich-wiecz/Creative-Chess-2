@@ -1,15 +1,17 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import BoardField from 'Game/BoardField';
 import Timer from '../Timer';
+import Button from 'react-bootstrap/Button';
+import EndGameModal from 'Game/EndGameModal';
 import PawnPromotion from '../PawnPromotion';
 import ChessCoords from './ChessCoords';
 import {normalizeCoordForGrid, getFieldData} from './functions';
 import {useSelector, useDispatch} from 'react-redux';
-import {moveMade, selectTime, selectTeams, selectStatistics, selectBoardExtremes, selectBoardMap, selectFigures, selectModelFigures} from 'redux/gameSlice';
+import {moveMade, timeStarted, selectTime, selectTeams, selectStatistics, selectBoardExtremes, selectBoardMap, selectFigures, selectModelFigures, selectBoardFeatures, selectWinData} from 'redux/gameSlice';
 import classes from './Board.module.css';
 import { splitCoord } from 'chess/figures/functions';
 
-export default function Board() {
+export default function Board({isGameOn}) {
 
 
     const boardMap = useSelector(selectBoardMap);
@@ -17,24 +19,42 @@ export default function Board() {
     const modelFigures = useSelector(selectModelFigures);
     const indFigures = useSelector(selectFigures);
     const state = useSelector(state => state);
-    const {isTimeGame} = useSelector(selectTime);
+    const {isTimeGame, timeStarted: hasTimeStarted} = useSelector(selectTime);
     const teams = useSelector(selectTeams);
     const {moveFor} = useSelector(selectStatistics);
-    const {boardFeatures: {rotation, frozenFieldSize, boardMotive}, mode} = state;
+    const {rotation, frozenFieldSize, boardMotive} = useSelector(selectBoardFeatures);
+    const {winner, reasonForWinning} = useSelector(selectWinData);
     const dispatch = useDispatch();
-
 
 
     const [readyFigureToMove, setReadyFigureToMove] = useState(null);
     const [nextPosition, setNextPosition] = useState(null);
     const [possibleWalks, setPossibleWalks] = useState(new Set());
     const [possibleCaptures, setPossibleCaptures] = useState(new Set());
+    const [possibleCastlings, setPossibleCastlings] = useState(new Set());
     const [updatedTime, setUpdatedTime] = useState(null);
     const [updateTimerFlag, setUpdateTimerFlag] = useState(false);
     const [showPawnPromotion, setShowPawnPromotion] = useState(false);
     const [newIdentityOfPawn, setNewIdentityOfPawn] = useState(null);
+    const [newWinner, setNewWinner] = useState(null);
+    const [showEndModal, setShowEndModal] = useState(true);
 
 
+
+    useEffect(() => {
+
+        if(winner !== newWinner ) {
+            setNewWinner(winner);
+        } else if (winner === newWinner && winner !== null) {
+            setNewWinner(null);
+        }        
+    }, [winner, setNewWinner, newWinner]);
+
+
+
+    useEffect(() => {
+        if (newWinner) setShowEndModal(true);
+    }, [newWinner])
 
     const markTimerAsUpdated = () => {
         setUpdateTimerFlag(false);
@@ -44,9 +64,10 @@ export default function Board() {
     
    const fillMoveData = (state, figureId) => {
     setReadyFigureToMove(figureId);
-    const {walks, captures} = state.game.figures[figureId].figure.moves;
+    const {walks, captures, castlings} = state.game.figures[figureId].figure.moves;
     setPossibleWalks(new Set(walks.flat()));
     setPossibleCaptures(new Set(captures.flat()))
+    if(castlings) setPossibleCastlings(new Set(castlings.flat()));
 }
 
 
@@ -87,7 +108,7 @@ export default function Board() {
            return 'walk'
         } else if(possibleCaptures.has(coord)) {
            return 'capture'
-        }
+        } else if (possibleCastlings.has(coord)) return 'castling';
 
     }
 
@@ -95,7 +116,8 @@ export default function Board() {
     const handleClickOnField = (position, figureId, pawnStartRow) => {
             if (readyFigureToMove) {
                 if (possibleWalks.has(position) || 
-                possibleCaptures.has(position)
+                possibleCaptures.has(position) ||
+                possibleCastlings.has(position)
                 ) {
                     clearMoveData();
                     setUpdateTimerFlag(true);
@@ -113,6 +135,47 @@ export default function Board() {
                 fillMoveData(state, figureId);
             } 
     }
+
+
+
+
+
+    const setModeStyles = () => {
+        if (isGameOn) 
+            return {
+                pointerEvents: 'auto',
+                cursor: 'crosshair'
+            }
+
+
+        return {
+            pointerEvents: 'none',
+            cursor: 'not-allowed'
+        }
+    }
+
+
+    function renderPawnPromotionModal () {
+
+        const { color, figuresSet} = teams.find(({name}) => {
+            return name === moveFor;
+        });
+
+        return (
+            <PawnPromotion 
+            show={showPawnPromotion}
+            onClose={(chosenFigure) => {
+                setNewIdentityOfPawn(chosenFigure);
+                setShowPawnPromotion(false);
+            }}
+            teamFiguresArray={Object.keys(figuresSet)}
+            teamColor={color}
+            defaultFigure={"Queen"}
+        />
+        )
+    }
+
+
 
 
     function createBoard (boardMap, boardExtremes, figures, modelFigures, boardMotive) {
@@ -140,7 +203,7 @@ export default function Board() {
                 position={coord}
                 {...fieldData}
                 temporaryState={temporaryState}
-                onFieldClick={mode === 'game' && handleClickOnField}
+                onFieldClick={isGameOn && handleClickOnField}
                 />
             )
 
@@ -150,45 +213,29 @@ export default function Board() {
     }
 
 
-    function renderPawnPromotionModal () {
-
-        const { color, figuresSet} = teams.filter(({name}) => {
-            return name === moveFor;
-        })[0];
-
-        return (
-            <PawnPromotion 
-            show={showPawnPromotion}
-            onClose={(chosenFigure) => {
-                setNewIdentityOfPawn(chosenFigure);
-                setShowPawnPromotion(false);
-            }}
-            teamFiguresArray={Object.keys(figuresSet)}
-            teamColor={color}
-            defaultFigure={"Queen"}
-        />
-        )
-    }
-
-
     return (
+        <>
         <div className="Container">
             {
-            isTimeGame &&  <Timer 
+            isTimeGame &&  
+            <Timer 
+            className={classes.Timer}
+            newWinner={newWinner}
             updateTime={setUpdatedTime}
             updateTimerFlag={updateTimerFlag}
             markTimeAsUpdated={markTimerAsUpdated}
             />
             }
-            {showPawnPromotion && renderPawnPromotionModal()}
+          
         <div className={classes.BoardContainer}>
             <ChessCoords.Vertical 
             className={`${classes.ChessCoords} ${classes.Vertical}`}
             />
             <div 
             style={{
-                gridAutoColumns: `${frozenFieldSize ? frozenFieldSize.x : "40px"}`,
-                gridAutoRows: `${frozenFieldSize ? frozenFieldSize.y : "40px"}`,
+                gridAutoColumns: `${frozenFieldSize ? frozenFieldSize.x : "1fr"}`,
+                gridAutoRows: `${frozenFieldSize ? frozenFieldSize.y : "1fr"}`,
+                ...setModeStyles()
             }}
             className={classes.BoardGrid}
             onDragStart={e => {
@@ -202,11 +249,31 @@ export default function Board() {
                 modelFigures, 
                 boardMotive
                 )}
+                {
+                  (isTimeGame && !hasTimeStarted) &&  
+                  <div className={classes.TimeStarter}>
+                    <Button 
+                    variant="maroon"
+                    className="w-75"
+                    onClick={dispatch(timeStarted())}>
+                        Czas Start
+                    </Button>
+                </div>
+                }
+                
             </div>
             <ChessCoords.Horizontal 
             className={`${classes.ChessCoords} ${classes.Vertical}`}
             />
         </div>
         </div>
+        {showPawnPromotion && renderPawnPromotionModal()}
+            <EndGameModal 
+            show={showEndModal}
+            winner={winner}
+            reason={reasonForWinning}
+            onClose={() => setShowEndModal(false)}
+            />
+        </>
     )
 }

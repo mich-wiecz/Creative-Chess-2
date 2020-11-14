@@ -5,6 +5,7 @@ export function travelInTime (state, cb) {
     const wantedPosition = cb(position);
     if (wantedPosition < 0 || wantedPosition > history.length + 1) return;
     state.game = history[wantedPosition];
+    state.history.game.position = wantedPosition;
 }
 
 

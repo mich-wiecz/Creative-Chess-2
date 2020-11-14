@@ -10,9 +10,9 @@ export function findMovesSchemaDataForSequence(memoizedMovesSchema, sequenceInde
         allStepsObjects += stepsObjectsAmount;
 
         if (allStepsObjects >= sequenceIndex) {
-            const stepsIndex = stepsObjectsAmount - (allStepsObjects - sequenceIndex);
+            const stepIndex = stepsObjectsAmount - (allStepsObjects - sequenceIndex);
 
-            const foundedStep = stepsArray[stepsIndex],
+            const foundedStep = stepsArray[stepIndex],
                 foundedStepsObject = memoizedMovesSchema[index];
 
             return [

@@ -4,35 +4,48 @@ import {  getGameDataFromTemplate } from './getGameDataFromTemplate';
 
 export function prepareStateBeforeGame(newState, templateName, templateReadConfig = {}) {
 
-    const {templates, board, history} = newState;
+    const {templates, boardFeatures, history} = newState;
     if (!templates.hasOwnProperty(templateName))
     throw new Error(`No template of name: ${templateName}`);
 
     const templateData = templates[templateName];
     const {configuration: tempConfig, template} = templateData;
+
+    const { game } = newState;
         
-    Object.assign(newState, getGameDataFromTemplate(newState, template, templateReadConfig));
+    Object.assign(game, getGameDataFromTemplate(newState, template, templateReadConfig));
     newState.activeGameTemplate = templateName;
 
-        const rotation = tempConfig.hasOwnProperty('rotation') ? tempConfig.rotation : 0;
-        board.rotation = rotation;    
+    boardFeatures.rotation = 
+    tempConfig.hasOwnProperty('rotation') 
+    ? 
+    tempConfig.rotation 
+    : 
+    boardFeatures.rotation;   
 
-        const { game } = newState;
 
-        const teamsNames = game.teams.map(({name}) => {
-            return name;
-        });
-        const statistics = teamsNames.reduce((result, teamName) => {
-            result[teamName] = {
-                time: null,
-                wasPreviousMoveEndangeringKing: false
-            };
-            return result;
-        }, {});
+    const [statistics, castlingMonitoring] = game.teams.reduce((result, {name}) => {
+        result[0][name] = {
+            time: null,
+            wasPreviousMoveEndangeringKing: false
+        };
+        result[1][name] = {
+            isCastlingPossible: true,
+            rooks: {}
+        }
+        return result;
+    }, [{}, {}]);
+        
+        // const statistics = 
+
+
+
 
 
         game.statistics = {...game.statistics, ...statistics};
+        game.castlingMonitoring = castlingMonitoring;
         history.game.history.push(game);
+        history.game.position++;
         history.game.initial = game;
 
 
