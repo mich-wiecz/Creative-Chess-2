@@ -1,7 +1,6 @@
 import React from 'react';
 import 'react-resizable/css/styles.css';
 import {ResizableBox} from 'react-resizable'
-import classes from './Displayer.module.scss';
 
 
 export default function Displayer({
@@ -10,12 +9,19 @@ export default function Displayer({
     show, 
     ...props
 }) {
-    return (
+
+    const minWidth = 800;
+
+
+   if (show) return (
         <ResizableBox
-        className={`${className} react-resizable bg-primary text-light ${classes.Displayer}  p-4  overflow-auto rounded border-maroon fade ${show && "show"}`}
+        className={`${className} mb-5 react-resizable bg-primary text-light p-4  overflow-auto rounded border-maroon fade ${show && "show"}`}
         style={{
-            width: 1000,
-            position: 'relative',
+            width: minWidth,
+            position: 'absolute',
+            top: '3%',
+            left: '50%',
+            transform: 'translateX(-50%)',
             zIndex: 101,
         }}
         handle={ (h) => 
@@ -29,9 +35,9 @@ export default function Displayer({
         }
         resizeHandles={[ 'se']}
         axis="y"
-        minConstraints={[860, 200]}
-        maxConstraints={[860, 800]}
-        width={860}
+        minConstraints={[minWidth, 200]}
+        maxConstraints={[minWidth, 800]}
+        width={minWidth}
         height={400}
         {...props}
         >
@@ -39,6 +45,7 @@ export default function Displayer({
         </ResizableBox>
         
     )
+    return null;
 }
 
 

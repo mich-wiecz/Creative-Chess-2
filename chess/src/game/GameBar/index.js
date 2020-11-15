@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import GameInfo from './GameInfo';
-import {moveUndone, moveRedone, playgroundActivated, selectTime, selectGameHistory} from 'redux/gameSlice';
+import {moveUndone, moveRedone, playgroundActivated, selectTime, selectGameHistory} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
 
 export default function GameBar() {
@@ -40,12 +40,12 @@ export default function GameBar() {
             </Navbar.Collapse>  
              
                   <TimeTravelButtons 
-                  onUndo={position !== 0 && dispatch(moveUndone)}
-                  onRedo={position >= history.length && dispatch(moveRedone)}
+                  onUndo={position !== 0 && (() => dispatch(moveUndone))}
+                  onRedo={position >= history.length && (() => dispatch(moveRedone))}
                   />
                  <Button 
                  disabled={!isGameTime}
-                 onClick={dispatch(playgroundActivated())}
+                 onClick={() => dispatch(playgroundActivated())}
                  className="flex-grow-1 bg-myblue text-uppercase letter-spacing-default"
                  > 
                    Stop

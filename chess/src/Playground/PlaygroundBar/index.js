@@ -5,7 +5,7 @@ import FireButton from '@global-components/FireButton';
 import MainBar from '@global-components/MainBar';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useDispatch} from 'react-redux';
-import {gameResetedToDefault, gameResetedToInitial, gameActivated} from 'redux/gameSlice';
+import {gameResetedToDefault, gameResetedToInitial, gameActivated} from 'redux/chessSlice';
 
 
 export default function PlaygroundBar() {
@@ -16,7 +16,7 @@ export default function PlaygroundBar() {
     return (
       <Dropdown
       id="resetOptions"
-      menuRole="Głównie opcje resetowania"
+      menurole="Głównie opcje resetowania"
       {...props}
     >
       <DropdownToggle  
@@ -38,12 +38,12 @@ className="bg-primary text-light">
 </DropdownItem>
 <DropdownHeader>Gra</DropdownHeader>
 <DropdownItem 
-onClick={dispatch(gameResetedToDefault())}
+onClick={() => dispatch(gameResetedToDefault())}
 className="bg-primary text-light">
   Resetuj do ustawień domyślnych
   </DropdownItem>
 <DropdownItem 
-onClick={dispatch(gameResetedToInitial())}
+onClick={() => dispatch(gameResetedToInitial())}
 className="bg-primary text-light"
 >
   Zacznij od początku
@@ -59,7 +59,7 @@ className="bg-primary text-light"
         <ButtonGroup className="w-100">
        <PlaygroundMenu />
       <TimeTravelButtons disabled/>
-      <FireButton onClick={dispatch(gameActivated())}>
+      <FireButton onClick={() => dispatch(gameActivated())}>
       Rozpocznij grę 
       </FireButton>
       </ButtonGroup>

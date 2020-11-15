@@ -54,6 +54,6 @@ export function getModelProperty (indFigures, modFigures, figId, property) {
     if (model.hasOwnProperty(property)) {
         return model[property];
     } 
-    return modFigures[indFigure.name][property];
+    return modFigures[indFigure.name].figure[property];
 
 }

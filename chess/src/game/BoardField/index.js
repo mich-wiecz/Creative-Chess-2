@@ -1,18 +1,17 @@
 import React from 'react';
-import Figure from 'Game/Figure';
+import Figure from './Figure';
 
 export default function BoardField({
-    pawnStartRow,
     position,
     color,
     className = '',
     style = {},
     onFieldClick,
-    figureData,
+    figureData: figure,
     temporaryState
 }) {
 
-    const {id, color: figColor, imageName} = figureData;
+
 
 
     const specialStyles = {
@@ -23,19 +22,19 @@ export default function BoardField({
 
     return (
         <div 
-        className={`${className}`}
+        className={`${className} border border-dark d-flex flex-column justify-content-center align-items-center p-0 m-0`}
         style={{
             backgroundColor: color,
             ...specialStyles[temporaryState],
             ...style
         }}
-        onClick={() => onFieldClick(position, id, pawnStartRow)}
+        onClick={() => onFieldClick(position, figure)}
         >
             {
-                figureData &&
+                figure &&
                 <Figure 
-                imageName={imageName}
-                color={figColor}
+                imageName={figure.imageName}
+                color={figure.color}
                 />
             }
         </div>

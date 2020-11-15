@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import Modal from 'react-bootstrap/Modal';
-import PawnSwitch from 'Playground/AdditionalOptions/node_modules/@global-components/PawnSwitch';
+import PawnSwitch from '@global-components/PawnSwitch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons';
 import Row from 'react-bootstrap/Row';
@@ -12,7 +12,7 @@ import DragRightGif from 'assets/drag-right.gif';
 import {useToasts} from 'contexts/ToastProvider';
 import Button from 'react-bootstrap/Button';
 import {useSelector, useDispatch} from 'react-redux';
-import {boardFeatureChanged, selectBoardFeatures} from 'redux/gameSlice';
+import {boardFeatureChanged, selectBoardFeatures} from 'redux/chessSlice';
 
     const toastTitle = "Opcja zmieniona",
      toasts = {

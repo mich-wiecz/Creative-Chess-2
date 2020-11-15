@@ -1,18 +1,14 @@
 @import 'global.scss';
 $padding-size: 25px;
 $chess-coords-size: $padding-size * 1.4;
-$min-size: 8 * 40px + $padding-size + $chess-coords-size;
+// $min-size: 8 * 40px + $padding-size + $chess-coords-size;
 
-@mixin setBoardSize($length) {
-  width: $length;
-  height: $length;
-}
-
-// .Wrapper {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
+// @mixin setBoardSize($length) {
+//   width: $length;
+//   height: $length;
 // }
+
+
 
 .Container {
   position: relative;

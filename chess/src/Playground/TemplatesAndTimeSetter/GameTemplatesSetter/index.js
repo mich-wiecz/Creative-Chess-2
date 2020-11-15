@@ -3,10 +3,10 @@ import Carousel from 'react-bootstrap/Carousel';
 import Button from 'react-bootstrap/Button';
 import BlackBackground from 'assets/black-bg.jpg';
 import Image from 'react-bootstrap/Image';
-import {templateChanged, selectActiveGameTemplate, selectTemplates} from 'redux/gameSlice';
+import {templateChanged, selectActiveGameTemplate, selectTemplates} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
 
-export default function ModesAndTimeSetter() {
+export default function GameTemplatesSetter() {
 
   const dispatch = useDispatch();
   const activeGameTemplate = useSelector(selectActiveGameTemplate);
@@ -40,8 +40,8 @@ export default function ModesAndTimeSetter() {
 
     return (  
 <Carousel className="mx-auto w-50">
-
-{
+<div>Coś jest</div>
+{templates &&
   Object.entries(templates).map(([tempName, {meta: {longTitle}}]) => {
     let text, variant;
     const isActive = tempName === activeGameTemplate

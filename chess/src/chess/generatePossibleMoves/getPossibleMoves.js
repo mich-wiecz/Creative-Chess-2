@@ -1,4 +1,4 @@
-import { makeCoord, splitCoord } from 'chess/templates/readTemplate/node_modules/@chess/coord-functions';
+import { makeCoord, splitCoord } from 'chess/coords';
 import { couldMakeNextStep } from './couldMakeNextStep';
 import { getExcludedStepType } from './getExcludedStepType';
 import { getMovements } from './getMovements';
@@ -14,10 +14,10 @@ sequenceIndexStart
 ) {
 
 
-    const {tags, game} = state;
+    const { game} = state;
 
-    const {figures, possibleMovesMapping, boardMap, statistics} = game,
-    {team, position, name} = figures[figureId],
+    const {figures, possibleMovesMapping, boardMap} = game,
+    {team, position} = figures[figureId].figure,
      [figCol, figRow] = splitCoord(position);
     let sequenceIndex = sequenceIndexStart || 0;
 

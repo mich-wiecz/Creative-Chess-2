@@ -31,14 +31,16 @@ function getFieldColor (coordForGrid, boardMotive) {
 
 
  function getFigureData (figures, modelFigures, field) {
-        let result = {};
         const figId = extractId(field);
-        result.imageName = getModelProperty(figures, modelFigures, figId, 'imageName');
-        const {figure} = figures[figId]
-        result.color = figure.color;
-        result.pawnStartRow = figure.name === 'Pawn' ? splitCoord(figure.startPosition)[1] : null;
-        result.id = figId;
-        return result;
+        const {figure} = figures[figId];
+
+        return {
+            imageName: getModelProperty(figures, modelFigures, figId, 'imageName'),
+            color: figure.color,
+            pawnStartRow: figure.name === 'Pawn' ? splitCoord(figure.startPosition)[1] : null,
+            id: figId,
+            team: figure.team
+        }
     }
 
    export function getFieldData (

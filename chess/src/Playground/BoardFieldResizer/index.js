@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
-import PawnSwitch from 'Playground/TemplatesAndTimeSetter/node_modules/@global-components/PawnSwitch';
+import PawnSwitch from '@global-components/PawnSwitch';
 import unitsCalculator from '@global-functions/unitsCalculator';
 import changeNumericProperties from '@global-functions/changeNumericProperties';
 import classes from './BoardFieldResizer.module.scss';

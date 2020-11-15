@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useRef} from 'react';
 import FormControl from 'react-bootstrap/FormControl';
 import PawnSwitch from '@global-components/PawnSwitch';
 import Container from 'react-bootstrap/Container';
-import {timeAdded, timeRemoved, selectTeams, selectTime} from 'redux/gameSlice';
+import {timeAdded, timeRemoved, selectTeams, selectTime} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import debounce from 'lodash.debounce';
 

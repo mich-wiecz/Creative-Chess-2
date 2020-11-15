@@ -1,21 +1,25 @@
 import cloneDeep from 'lodash.clonedeep';
+import {functionalMovesSchemas, overriddenFunctionalMovesSchemas} from 'chess/initialState'
 
-export function getMovesSchema(state, figure) {
+
+
+export function getMovesSchema(state, figureData) {
     let movesSchema;
-    const { model, name, position, startPosition } = figure;
+    const { model, figure} = figureData;
+    const {name, position, startPosition } = figure;
 
     if (model.hasOwnProperty('movesSchema')) {
         movesSchema = model.movesSchema;
+        if (movesSchema === name) {
+           movesSchema =  overriddenFunctionalMovesSchemas[name]({position, startPosition})
+        }
     } else {
         movesSchema = state.modelFigures.figures[name].figure.movesSchema;
+        if (movesSchema === name) {
+            movesSchema = functionalMovesSchemas[name]({position, startPosition})
+        }
     }
 
-    if (typeof movesSchema === 'function') {
-        movesSchema = movesSchema({
-            position,
-            startPosition
-        });
-    }
 
     return cloneDeep(movesSchema);
 }

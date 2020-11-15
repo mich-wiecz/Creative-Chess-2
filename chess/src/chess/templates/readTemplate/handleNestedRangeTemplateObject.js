@@ -2,7 +2,7 @@ import { isPlainTemplateObject } from './isPlainTemplateObject';
 import { rangeTemplateObjectLoop } from './rangeTemplateObjectLoop';
 import { plainTemplateObjectLoop } from './plainTemplateObjectLoop';
 
-export function handleNestedRangeTemplateObject(assignToBoardMap, adjustField, coord, tempObject, resultBoardMap, assignOuterFill) {
+export function handleNestedRangeTemplateObject(possibleMovesMapping, assignToBoardMap, adjustField, coord, tempObject, resultBoardMap, assignOuterFill) {
 
 
     for (let nestedTempObject of tempObject.nest) {
@@ -15,7 +15,7 @@ export function handleNestedRangeTemplateObject(assignToBoardMap, adjustField, c
                 resultBoardMap,
                 (nestedCoord) => {
                     if (coord === nestedCoord) {
-                        assignToBoardMap(resultBoardMap, coord, adjustField(coord, tempObject[coord]));
+                        assignToBoardMap(possibleMovesMapping, resultBoardMap, coord, adjustField(coord, tempObject[coord]));
                         return 'break';
                     }
 
@@ -23,7 +23,9 @@ export function handleNestedRangeTemplateObject(assignToBoardMap, adjustField, c
         } else {
             rangeTemplateObjectLoop(adjustField, nestedTempObject, (nestedCoord, assignNestedFill) => {
                 if (nestedCoord === coord) {
-                    assignToBoardMap(resultBoardMap, coord, assignNestedFill());
+                    assignToBoardMap(possibleMovesMapping, resultBoardMap, 
+                    coord, 
+                    assignNestedFill());
                     breakMainLoop = true;
                     return 'break';
                 }
@@ -34,6 +36,6 @@ export function handleNestedRangeTemplateObject(assignToBoardMap, adjustField, c
     }
 
     if (!resultBoardMap.hasOwnProperty(coord)) {
-        assignToBoardMap(resultBoardMap, coord, assignOuterFill());
+        assignToBoardMap(possibleMovesMapping, resultBoardMap, coord, assignOuterFill());
     }
 }

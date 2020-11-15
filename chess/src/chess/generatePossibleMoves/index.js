@@ -3,10 +3,20 @@ import { getMovesSchema } from './getMovesSchema';
 import { getPossibleMoves } from './getPossibleMoves';
 import {splitCoord, makeCoord} from 'chess/coords';
 import {getStepType} from './getStepType';
-import { extractId } from 'chess/figures/functions';
+import { extractId, isStringFigure } from 'chess/figures/functions';
+
+
+
+
+
+
+
 
 
 export default function generatePossibleMoves (state, figuresIdsArray) {
+
+
+  console.log(state);
 
 
     const {possibleMovesMapping, figures: indFigures, castlingMonitoring, tags, boardMap} = state.game;
@@ -15,7 +25,7 @@ export default function generatePossibleMoves (state, figuresIdsArray) {
 
     figuresIdsArray.forEach(figId => {
 
-         const  movesSchema = getMovesSchema(state, indFigures[figId].figure),
+         const  movesSchema = getMovesSchema(state, indFigures[figId]),
         allPossibleMoves = getPossibleMoves(state, figId, movesSchema);
 
 
@@ -27,20 +37,6 @@ export default function generatePossibleMoves (state, figuresIdsArray) {
 
     })
 
-
-    /* 
-    Check if castling possible
-    I need to find kings
-    And for both kings - fo a for each, take their names
-
-    Also at the top find all rooks
-    And  reduce all rooks to the object with rooks for team - but also only the ones that will qualified
-    Then do this while loop
-    And if free way assign king a castling (mapping) - otherwise if figures block add it to the figuresOnWay
-    Add additional data
-
-    Thats it
-    */
   
 
   state.game.possibleMovesMapping = possibleMovesMapping;
@@ -53,7 +49,10 @@ export default function generatePossibleMoves (state, figuresIdsArray) {
     const rookData = indFigures[rookId].figure;
     const {team: rookTeam, madeMove} = rookData;
     if (!madeMove) {
-      result[rookTeam] = rookData;
+      if (!result.hasOwnProperty(rookTeam)) {
+      result[rookTeam] = [];
+      }
+      result[rookTeam].push(rookData);
     }
     return result;
   }, {});
@@ -90,16 +89,20 @@ export default function generatePossibleMoves (state, figuresIdsArray) {
         endCol: kingCol - rookColMove
       }
       const monit = castlingMonitoring[kingTeam].rooks[rookId];
+  
 
-      let isFreeWay = true, stepCount = 1;
-      do {
-      const newCoord = makeCoord(rookCol + rookColMove * stepCount, rookRow);
+      let isFreeWay = true, stepCount = 1,   newCoord = makeCoord(rookCol + rookColMove * stepCount, rookRow);
+
+      while (newCoord !== kingPosition) {
+     
       stepCount++;
        if (getStepType(newCoord, boardMap, kingTeam) !== 'walk') {
-          monit.figuresOnWay.push(extractId(boardMap(newCoord)))
+        if (isStringFigure(boardMap[newCoord]))  
+        monit.figuresOnWay.push(extractId(boardMap[newCoord]))
            isFreeWay = false;
        }
-  } while (rookPosition !== kingPosition);
+       newCoord = makeCoord(rookCol + rookColMove * stepCount, rookRow);
+  } 
 
 
 

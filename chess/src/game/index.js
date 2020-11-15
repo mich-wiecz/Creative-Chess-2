@@ -1,15 +1,16 @@
 import React, { lazy, Suspense} from 'react';
 import { IsolatedRoute, WaitingModal } from "utils/routing";
 import GameBar from './GameBar';
-import Playground from 'Playground';
+import Playground from '../Playground';
 import Board from 'Game/Board';
-import {selectMode} from 'redux/gameSlice';
+import {selectMode} from 'redux/chessSlice';
 import {useSelector} from 'react-redux';
 
 const Options = lazy('./Options');
 
 
 export default function Game() {
+
 
   const mode = useSelector(selectMode),
    isGameOn = mode === 'game';

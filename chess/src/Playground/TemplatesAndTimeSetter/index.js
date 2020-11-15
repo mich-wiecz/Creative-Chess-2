@@ -2,8 +2,8 @@ import React from 'react';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import TimeSetter from './TimeSetter';
-import TemplatesSetter from './TemplatesSetter';
-export default function ModesAndTimeSetter() {
+import GameTemplatesSetter from './GameTemplatesSetter';
+export default function TemplatesAndTimeSetter() {
 
 
     return (
@@ -14,7 +14,7 @@ export default function ModesAndTimeSetter() {
         className="playground-tabs"  
         > 
         <Tab eventKey="templates-setter" title="Wybierz tryb">
-        <TemplatesSetter />
+        <GameTemplatesSetter />
         </Tab>
         <Tab eventKey="time-setter" title="Ustaw czas" >
           <TimeSetter />

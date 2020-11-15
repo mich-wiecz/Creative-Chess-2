@@ -1,4 +1,4 @@
-import {initialState} from '@chess/initialState';
+import initialState from 'chess/initialState';
 
 
 export function resetToDefault (state) {

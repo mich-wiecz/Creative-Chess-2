@@ -1,4 +1,4 @@
-import { makeCoord } from '@chess/coord-functions';
+import { makeCoord } from 'chess/coords';
 import { getTemplateRangeObjectData } from './getTemplateRangeObjectData';
 import { adjustFillValue } from './figureIndex';
 

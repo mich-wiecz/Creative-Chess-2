@@ -9,7 +9,7 @@ export function getStepType(coord, boardMap, figTeam) {
     if (field === 'blanc')
         return 'walk';
     if (isStringFigure(field)) {
-        if (extractTeam(field) === figTeam)
+        if (extractTeam(field) !== figTeam)
             return 'capture';
         return 'block';
     }

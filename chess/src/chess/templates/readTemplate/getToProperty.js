@@ -1,4 +1,4 @@
-import { makeCoord } from '@chess/coord-functions';
+import { makeCoord } from 'chess/coords';
 
 export function getToProperty(tempObject, splittedFromCoord) {
     const [fromCol, fromRow] = splittedFromCoord;

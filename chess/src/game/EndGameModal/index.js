@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useDispatch} from 'react-redux';
-import {gameResetedToDefault, gameResetedToInitial} from 'redux/gameSlice';
+import {gameResetedToDefault, gameResetedToInitial} from 'redux/chessSlice';
 
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import UserOptions from 'Playground/ColorMotivePanel/MotivesCollection/node_modules/@global-components/UserOptions';
+import UserOptions from '@global-components/UserOptions';
 import Button from 'react-bootstrap/Button';
 
 export default function SuccessModal({
@@ -20,7 +20,7 @@ export default function SuccessModal({
                </Button>
            </UserOptions.Option>
            <UserOptions.Option>
-               <Button onClic={redirectToLogin}>
+               <Button onClick={redirectToLogin}>
                 Zaloguj się
                </Button>
            </UserOptions.Option>

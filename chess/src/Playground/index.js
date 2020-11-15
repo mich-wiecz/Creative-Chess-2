@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import Tab from 'react-bootstrap/Tab';
 import PlaygroundBar from './PlaygroundBar'
-import {AdditionalOptions} from '@playground/AdditionalOptions';
-import InteractionsDescription from '@playground/InteractionsDescription';
-import ColorMotivePanel from '@playground/ColorMotivePanel';
-import ModesAndTimeSetter from '@playground/ModesAndTimeSetter';
-import BoardFieldResizer from '@playground/BoardFieldResizer';
+import AdditionalOptions from './AdditionalOptions';
+import InteractionsDescription from './InteractionsDescription';
+import ColorMotivePanel from './ColorMotivePanel';
+import TemplatesAndTimeSetter from './TemplatesAndTimeSetter';
+import BoardFieldResizer from './BoardFieldResizer';
 import Rules from './Rules';
 import Displayer from './Displayer';
 import PlaygroundNav from './PlaygroundNav';
@@ -29,6 +29,9 @@ export default function Playground({
       }
      
       <Tab.Container id="playground-tabs">
+        <main
+         className="d-flex justify-content-between"
+        >
      <PlaygroundNav 
      isGameOn={isGameOn}
       activeKey={activeKey}
@@ -36,8 +39,12 @@ export default function Playground({
       handleShowAllTabs={setShowAllTabs}
       handleSetActiveKey={setActiveKey}
      />
-      <main 
-      className={`d-flex flex-column justify-content-around align-items-center m-5`}
+      <section 
+      style={{
+        minHeight: '90vh',
+        position: 'relative'
+      }}
+      className={`p-5 mx-auto flex-grow-1 d-flex flex-column justify-content-center align-items-center`}
       >
       <Displayer
       show={!!activeKey}
@@ -47,7 +54,7 @@ export default function Playground({
            <Rules mode="classic"/>
           </Tab.Pane>
           <Tab.Pane eventKey="modes">
-            <ModesAndTimeSetter/>
+            <TemplatesAndTimeSetter/>
           </Tab.Pane>
           <Tab.Pane eventKey="interaction-table">
            <InteractionsDescription />
@@ -63,7 +70,14 @@ export default function Playground({
           </Tab.Pane>
           </Tab.Content>
     </Displayer>
+    <div 
+    style={{
+      marginTop: !!activeKey ? '200px' : 0
+    }}
+    >
     {Board}
+    </div>
+    </section>
     </main>
     </Tab.Container>
     </>

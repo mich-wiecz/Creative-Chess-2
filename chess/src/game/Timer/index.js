@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {splitTime} from '@global-functions/splitTime';
 import './Timer.scss';
-import {selectTime, selectStatistics, selectWinner, selectTeams, officialGameEnded} from 'redux/gameSlice';
+import {selectTime, selectStatistics, selectWinner, selectTeams, officialGameEnded} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
 // import variables from 'global.scss';
 

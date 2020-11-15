@@ -1,7 +1,8 @@
 import React from 'react';
 import range from '@global-functions/range';
 import { useSelector} from 'react-redux';
-import {selectBoardExtremes} from 'redux/gameSlice';
+import {selectBoardExtremes} from 'redux/chessSlice';
+import {transformColToLetter} from 'chess/coords'
 
 
 
@@ -39,7 +40,7 @@ function Horizontal({className}) {
                  <span 
                  key={index}
                  >
-                {index + 1}
+                {transformColToLetter(index + 1)}
                  </span>
                 
                 ))

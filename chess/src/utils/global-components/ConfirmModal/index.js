@@ -1,5 +1,5 @@
 import React from 'react';
-import UserOptions from 'Playground/ColorMotivePanel/MotivesCollection/node_modules/@global-components/UserOptions';
+import UserOptions from 'Playground/@global-components/UserOptions';
 import Button from 'react-bootstrap/Button';
 
 

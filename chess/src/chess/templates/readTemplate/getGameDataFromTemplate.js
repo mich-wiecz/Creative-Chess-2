@@ -19,18 +19,21 @@ export function getGameDataFromTemplate(state, template, config) {
 
 
 
-
     const resultBoardMap = templateMapArray.reduce((boardMap, tempObject) => {
         if (isPlainTemplateObject(tempObject)) {
             plainTemplateObjectLoop(tempObject, (coord) => {
-                assignToBoardMap(boardMap, coord, adjustField(state, coord, tempObject[coord]));
+                assignToBoardMap(
+                    possibleMovesMapping,
+                 boardMap, 
+                 coord, 
+                 adjustField(state, coord, tempObject[coord]));
             });
         } else {
             rangeTemplateObjectLoop(adjustField, tempObject, (coord, assignFill) => {
                 if (hasRangeTempObjectNestedTemplateMapArray(tempObject)) {
-                    handleNestedRangeTemplateObject(assignToBoardMap, adjustField, coord, tempObject, boardMap, assignFill);
+                    handleNestedRangeTemplateObject(possibleMovesMapping, assignToBoardMap, adjustField, coord, tempObject, boardMap, assignFill);
                 } else {
-                    assignToBoardMap(boardMap, coord, assignFill());
+                    assignToBoardMap(possibleMovesMapping, boardMap, coord, assignFill());
                 }
             });
         }

@@ -1,4 +1,5 @@
-
+import {createTemplate} from '../index';
+import range from 'utils/global-functions/range';
 const meta = {
     longTitle: 'Capablanki (dwie dodatkowe figury)',
     description: ''
@@ -20,7 +21,8 @@ const buildConfiguration = {
 
 
 
-export const capablancaGameTemplate = (
+export const capablancaGameTemplate = (state) => createTemplate(
+    state,
     (FiguresManager, build) => {
 
         const allCapablancaFigures =  FiguresManager.modelFigures.findByTags([['category', (category) => {
@@ -32,7 +34,7 @@ export const capablancaGameTemplate = (
       
         const positionFigures = (set) => {
           const {Rook, Bishop, Knight, Queen, King, Archbishop, Chancellor} = set;
-          return [Rook, Knight, Archbishop, Bishop, Queen, King, Knight, Chancellor, Bishop, Rook];
+          return [Rook(), Knight(), Archbishop(), Bishop(), Queen(), King(), Knight(), Chancellor(), Bishop(), Rook()];
         }
       
           return build([
@@ -49,7 +51,7 @@ export const capablancaGameTemplate = (
                       {
                           from: '0|1',
                           colSpan: 10,
-                          fill: [whiteSet.Pawn]
+                          fill: range(0, 8).map(_ => whiteSet.Pawn())
                       },
                       {
                           from: '0|7',
@@ -59,7 +61,7 @@ export const capablancaGameTemplate = (
                       {
                           from: '0|6',
                           colSpan: 10,
-                          fill: [blackSet.Pawn]
+                          fill: range(0, 8).map(_ => blackSet.Pawn())
                       },
       
                   ]

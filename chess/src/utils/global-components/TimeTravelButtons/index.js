@@ -22,7 +22,7 @@ export default function TimeTravelButtons({
         <Button 
         variant="light" 
         disabled={!onRedo}
-        onRedo={onRedo}
+        onClick={onRedo}
         >
           <FontAwesomeIcon icon={faStepForward}/>
         </Button>

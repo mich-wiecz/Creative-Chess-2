@@ -1,4 +1,4 @@
-import { splitCoord } from '@chess/coord-functions';
+import { splitCoord } from 'chess/coords';
 import { getToProperty } from './getToProperty';
 import { getFillProperty } from './getFillProperty';
 

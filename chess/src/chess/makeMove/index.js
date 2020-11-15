@@ -1,4 +1,4 @@
-import { extractIndex } from 'chess/figures/functions.js';
+import { extractId } from 'chess/figures/functions.js';
 import { correctOtherFigsPossibleMoves } from './correctOtherFigsPossibleMoves';
 import { isMoveCapture } from './isMoveCapture';
 import { killCapturedFigure } from './killCapturedFigure';
@@ -42,7 +42,7 @@ export default function makeMove(newState,
 
 
         const nextCoordField = boardMap[nextCoord],
-        capturedFigIndex = isMoveCapture(nextCoordField) ? extractIndex(nextCoordField) : null;
+        capturedFigIndex = isMoveCapture(nextCoordField) ? extractId(nextCoordField) : null;
         boardMap[nextCoord] = boardMap[position];
         boardMap[position] = 'blanc';
 

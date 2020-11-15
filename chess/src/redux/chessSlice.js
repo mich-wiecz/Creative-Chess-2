@@ -9,7 +9,7 @@ import {setTime, startTime, removeTime} from 'chess/time'
 
 
 const gameSlice = createSlice({
-    name: 'game',
+    name: 'chess',
     initialState,
     reducers: {
         boardFeatureChanged(state, action) {
@@ -26,8 +26,8 @@ const gameSlice = createSlice({
              reducer(state, action) {
                 addTemplate(state.templates, action.payload);
              },
-            prepare(buildCb, about) {
-               return createTemplate(buildCb, about)
+            prepare(state, buildCb, about) {
+               return createTemplate(state, buildCb, about)
             }
         },
         gameActivated(state) {
@@ -72,20 +72,20 @@ const gameSlice = createSlice({
 });
 
 
-export const selectBoardFeatures = state => state.board;
-export const selectTime = state => state.game.time;
-export const selectModelFigures = state => state.modelFigures.figures;
-export const selectIndividualFigures = state => state.game.figures;
-export const selectStatistics = state => state.game.statistics;
-export const selectGameHistory = state =>  state.history.game;
-export const selectTemplates = state => state.templates;
-export const selectMode = state => state.mode;
-export const selectActiveGameTemplate = state => state.activeGameTemplate;
-export const selectBoardMap = state => state.game.boardMap;
-export const selectBoardExtremes = state => state.game.boardExtremes;
-export const selectWinData = state => state.game.winData;
-export const selectTeams = state => state.game.teams;
-
+export const selectBoardFeatures = state => state.chess.boardFeatures;
+export const selectTime = state => state.chess.game.time;
+export const selectModelFigures = state => state.chess.modelFigures.figures;
+export const selectIndividualFigures = state => state.chess.game.figures;
+export const selectStatistics = state => state.chess.game.statistics;
+export const selectGameHistory = state =>  state.chess.history.game;
+export const selectTemplates = state => state.chess.templates;
+export const selectMode = state => state.chess.mode;
+export const selectActiveGameTemplate = state => state.chess.activeGameTemplate;
+export const selectBoardMap = state => state.chess.game.boardMap;
+export const selectBoardExtremes = state => state.chess.game.boardExtremes;
+export const selectWinData = state => state.chess.game.winData;
+export const selectTeams = state => state.chess.game.teams;
+export const selectWholeChessState = state => state.chess;
 
 
 
@@ -94,6 +94,6 @@ export const selectTeams = state => state.game.teams;
 
 
 
-export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone,  officialGameEnded, timeAdded, timeStarted, templateChanged, timeRemoved, gameResetedToDefault, gameResetedToInitial, playgroundActivated, boardFeatureChanged} = gameSlice.actions;
+export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone,  officialGameEnded, timeAdded, timeStarted, templateChanged, timeRemoved, gameResetedToDefault, gameResetedToInitial, playgroundActivated, boardFeatureChanged, gameActivated} = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -7,7 +7,9 @@ export default function Figure({
 }) {
     const FigureSvg = Figures[imageName];
     return (
+      
         <FigureSvg 
+        className="w-75 h-75"
         style={{
             fill: color
         }}

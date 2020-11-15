@@ -1,4 +1,5 @@
 import {createTemplate} from '../index';
+import range from 'utils/global-functions/range';
 
 
 
@@ -23,7 +24,8 @@ const buildConfiguration = {
 
 
 
-export const classicGameTemplate = createTemplate(
+export const classicGameTemplate = (state) => createTemplate(
+    state,
  (FiguresManager, build) => {
 
         const classicFigures =  FiguresManager.modelFigures.findByTags([['category', 'classic']]);
@@ -33,7 +35,7 @@ export const classicGameTemplate = createTemplate(
       
         const positionFigures = (set) => {
           const {Rook, Bishop, Knight, Queen, King} = set;
-          return [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook];
+          return [Rook(), Knight(), Bishop(), Queen(), King(), Bishop(), Knight(), Rook()];
         }
       
           return build([
@@ -50,7 +52,7 @@ export const classicGameTemplate = createTemplate(
                       {
                           from: '0|1',
                           colSpan: 8,
-                          fill: [whiteSet.Pawn]
+                          fill: range(0, 8).map(_ => whiteSet.Pawn())
                       },
                       {
                           from: '0|7',
@@ -60,7 +62,7 @@ export const classicGameTemplate = createTemplate(
                       {
                           from: '0|6',
                           colSpan: 8,
-                          fill: [blackSet.Pawn]
+                          fill: range(0, 8).map(_ => blackSet.Pawn())
                       },
       
                   ]

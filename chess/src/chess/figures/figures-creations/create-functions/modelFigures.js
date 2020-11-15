@@ -1,8 +1,9 @@
 import { names } from '../../names';
 import { classicFiguresValues } from '../../values';
 import { classicFiguresMoves } from '../../movesSchemas';
+import {functionalMovesSchemas} from 'chess/initialState';
 
-import toUpperFirst from 'Game/PawnPromotion/node_modules/@global-functions/toUpperFirst';
+import toUpperFirst from '@global-functions/toUpperFirst';
 
 
  function upsertTags (state, figureData, identification) {
@@ -68,11 +69,21 @@ const defaultModelFigure = {
  */
 export function createModelFigure (state, figData) {
 
-    const {name} = figData;
+    const {name, movesSchema, ...rest} = figData;
+
+    let schemaToState;
+    if (typeof movesSchema === 'function') {
+        functionalMovesSchemas[name] = movesSchema;
+        schemaToState = name;
+    } else {
+        schemaToState = movesSchema;
+    }
+
     figData = {
     ...defaultModelFigure,
     imageName: name,
-    ...figData
+    movesSchema: schemaToState,
+    ...rest
     }
     state.modelFigures.figures[name] = {
         figure: figData

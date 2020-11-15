@@ -1,8 +1,8 @@
 // const {createIndividualFigure} = require('./create-functions/individualFigures');
-import { dataStore } from 
-'../../initialState';
+
 import isColor from 'utils/global-functions/isColor';
 import { nanoid } from 'nanoid';
+import {overriddenFunctionalMovesSchemas} from 'chess/initialState'
 
 
 function validateTeamData (teamData) {
@@ -19,11 +19,11 @@ export class Team {
 
     figuresSet = {};
 
-    constructor(teamData, foundedModelFigures) {
+    constructor(modelFigures, teamData, foundedModelFigures) {
+        this.modelFigures = {...modelFigures};
       validateTeamData(teamData);
         this._teamData = teamData;
        this.addFigures(foundedModelFigures);
-        
     }
 
 
@@ -34,19 +34,17 @@ export class Team {
 
     create(figureNameOrArr, modification) {
        const figureName = this._getFigureName(figureNameOrArr);
-        const {figures} = dataStore.modelFigures;
-        if(!figures.hasOwnProperty(figureName)) throw new Error(`Invalid figure name. Not found in model figures. Received: ${figureName}`);
+        if(!this.modelFigures.hasOwnProperty(figureName)) throw new Error(`Invalid figure name. Not found in model figures. Received: ${figureName}`);
 
-        const figureData = {...this._teamData, id: nanoid()}
-        const basic = [figureName, figureData]
-        return (modification ? basic.push(modification) : basic)
-    }
 
-    modify(figureNameOrArr, modification) {
-        const figureName = this._getFigureName(figureNameOrArr);
-        if(!this.figuresSet.hasOwnProperty(figureName)) throw new Error(`Invalid figure name. Not found in team figures set. Firstly you need to add this figure. Received: ${figureName}`);
+        const figureId = nanoid();
 
-       this.figuresSet[figureName] = this.figuresSet[figureName].slice(0, 2).push(modification);
+        if (modification && modification.movesSchema && typeof modification.movesSchema === 'function') {
+            overriddenFunctionalMovesSchemas[figureId] = modification.movesSchema.bind({});
+            modification.movesSchema = figureId;
+        }
+
+        return  [figureName, {...this._teamData, id: figureId}, modification]
     }
 
 
@@ -65,7 +63,7 @@ export class Team {
      
          function getNewFiguresToSet (figuresArr) {
           return  figuresArr.reduce((figObj,  figName) => {
-                figObj[figName] = self.create(figName)
+                figObj[figName] = (modification) =>  self.create(figName, modification)
                 return figObj;
             }, {})
          }
@@ -82,3 +80,5 @@ export class Team {
 
 
 }
+
+

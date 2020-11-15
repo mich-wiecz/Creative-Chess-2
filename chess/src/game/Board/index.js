@@ -7,8 +7,8 @@ import PawnPromotion from '../PawnPromotion';
 import ChessCoords from './ChessCoords';
 import {normalizeCoordForGrid, getFieldData} from './functions';
 import {useSelector, useDispatch} from 'react-redux';
-import {moveMade, timeStarted, selectTime, selectTeams, selectStatistics, selectBoardExtremes, selectBoardMap, selectFigures, selectModelFigures, selectBoardFeatures, selectWinData} from 'redux/gameSlice';
-import classes from './Board.module.css';
+import {moveMade, timeStarted, selectTime, selectTeams, selectStatistics, selectBoardExtremes, selectBoardMap, selectIndividualFigures, selectModelFigures, selectBoardFeatures, selectWinData, selectWholeChessState} from 'redux/chessSlice';
+import classes from './Board.module.scss';
 import { splitCoord } from 'chess/figures/functions';
 
 export default function Board({isGameOn}) {
@@ -17,8 +17,8 @@ export default function Board({isGameOn}) {
     const boardMap = useSelector(selectBoardMap);
     const boardExtremes = useSelector(selectBoardExtremes);
     const modelFigures = useSelector(selectModelFigures);
-    const indFigures = useSelector(selectFigures);
-    const state = useSelector(state => state);
+    const indFigures = useSelector(selectIndividualFigures);
+    const state = useSelector(selectWholeChessState);
     const {isTimeGame, timeStarted: hasTimeStarted} = useSelector(selectTime);
     const teams = useSelector(selectTeams);
     const {moveFor} = useSelector(selectStatistics);
@@ -28,6 +28,7 @@ export default function Board({isGameOn}) {
 
 
     const [readyFigureToMove, setReadyFigureToMove] = useState(null);
+    const [readyFigurePosition, setReadyFigurePosition] = useState(null);
     const [nextPosition, setNextPosition] = useState(null);
     const [possibleWalks, setPossibleWalks] = useState(new Set());
     const [possibleCaptures, setPossibleCaptures] = useState(new Set());
@@ -37,7 +38,7 @@ export default function Board({isGameOn}) {
     const [showPawnPromotion, setShowPawnPromotion] = useState(false);
     const [newIdentityOfPawn, setNewIdentityOfPawn] = useState(null);
     const [newWinner, setNewWinner] = useState(null);
-    const [showEndModal, setShowEndModal] = useState(true);
+    const [showEndModal, setShowEndModal] = useState(false);
 
 
 
@@ -62,8 +63,9 @@ export default function Board({isGameOn}) {
 
 
     
-   const fillMoveData = (state, figureId) => {
+   const fillMoveData = (state, figureId, figurePosition) => {
     setReadyFigureToMove(figureId);
+    setReadyFigurePosition(figurePosition);
     const {walks, captures, castlings} = state.game.figures[figureId].figure.moves;
     setPossibleWalks(new Set(walks.flat()));
     setPossibleCaptures(new Set(captures.flat()))
@@ -76,6 +78,7 @@ export default function Board({isGameOn}) {
     setPossibleWalks(new Set());
     setPossibleCaptures(new Set());
     setReadyFigureToMove(null);
+    setReadyFigurePosition(null);
     setNextPosition(null);
     if(updatedTime) setUpdatedTime(null);
     if(newIdentityOfPawn) setNewIdentityOfPawn(null);
@@ -104,7 +107,7 @@ export default function Board({isGameOn}) {
 
 
    const getTemporaryState = (coord) => {
-        if (possibleWalks.has(coord)) {
+        if (possibleWalks.has(coord) || readyFigurePosition === coord) {
            return 'walk'
         } else if(possibleCaptures.has(coord)) {
            return 'capture'
@@ -113,7 +116,7 @@ export default function Board({isGameOn}) {
     }
 
 
-    const handleClickOnField = (position, figureId, pawnStartRow) => {
+    const handleClickOnField = (position, figureData) => {
             if (readyFigureToMove) {
                 if (possibleWalks.has(position) || 
                 possibleCaptures.has(position) ||
@@ -122,17 +125,17 @@ export default function Board({isGameOn}) {
                     clearMoveData();
                     setUpdateTimerFlag(true);
                     setNextPosition(position);
-                    if(pawnStartRow && 
-                    boardExtremes.top === splitCoord(position)[1]
-                    ) { 
+                    if(figureData && figureData.pawnStartRow) {
+
+                       if (boardExtremes.top === splitCoord(position)[1]) 
                         setShowPawnPromotion(true);
-                    }
+                    } 
                 } else {
                    clearMoveData();
                 }
                 
-            } else if (figureId) {
-                fillMoveData(state, figureId);
+            } else if (figureData && figureData.team === moveFor) {
+                fillMoveData(state, figureData.id, position);
             } 
     }
 
@@ -140,19 +143,6 @@ export default function Board({isGameOn}) {
 
 
 
-    const setModeStyles = () => {
-        if (isGameOn) 
-            return {
-                pointerEvents: 'auto',
-                cursor: 'crosshair'
-            }
-
-
-        return {
-            pointerEvents: 'none',
-            cursor: 'not-allowed'
-        }
-    }
 
 
     function renderPawnPromotionModal () {
@@ -213,6 +203,23 @@ export default function Board({isGameOn}) {
     }
 
 
+
+    const setModeStyles = () => {
+        if (isGameOn) 
+            return {
+                pointerEvents: 'auto',
+                cursor: 'cell'
+            }
+
+
+        return {
+            pointerEvents: 'none',
+            cursor: 'not-allowed'
+        }
+    }
+
+
+
     return (
         <>
         <div className="Container">
@@ -228,13 +235,11 @@ export default function Board({isGameOn}) {
             }
           
         <div className={classes.BoardContainer}>
-            <ChessCoords.Vertical 
-            className={`${classes.ChessCoords} ${classes.Vertical}`}
-            />
+            
             <div 
             style={{
-                gridAutoColumns: `${frozenFieldSize ? frozenFieldSize.x : "1fr"}`,
-                gridAutoRows: `${frozenFieldSize ? frozenFieldSize.y : "1fr"}`,
+                gridAutoColumns: `${frozenFieldSize ? frozenFieldSize.x : "minmax(40px, 6vmin)"}`,
+                gridAutoRows: `${frozenFieldSize ? frozenFieldSize.y : "minmax(40px, 6vmin)"}`,
                 ...setModeStyles()
             }}
             className={classes.BoardGrid}
@@ -242,6 +247,9 @@ export default function Board({isGameOn}) {
                 e.preventDefault();
             }}
             >
+                <ChessCoords.Vertical 
+            className={`${classes.ChessCoords} ${classes.Vertical}`}
+            />
             {createBoard(
                 boardMap, 
                 boardExtremes,
@@ -255,16 +263,15 @@ export default function Board({isGameOn}) {
                     <Button 
                     variant="maroon"
                     className="w-75"
-                    onClick={dispatch(timeStarted())}>
+                    onClick={() => dispatch(timeStarted())}>
                         Czas Start
                     </Button>
                 </div>
                 }
-                
-            </div>
-            <ChessCoords.Horizontal 
-            className={`${classes.ChessCoords} ${classes.Vertical}`}
+                 <ChessCoords.Horizontal 
+            className={`${classes.ChessCoords} ${classes.Horizontal}`}
             />
+            </div>
         </div>
         </div>
         {showPawnPromotion && renderPawnPromotionModal()}

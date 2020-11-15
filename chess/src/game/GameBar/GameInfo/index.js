@@ -1,6 +1,6 @@
 import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
-import {selectStatistics} from 'redux/gameSlice';
+import {selectStatistics} from 'redux/chessSlice';
 import {useSelector} from 'react-redux';
 
 
@@ -8,7 +8,7 @@ import {useSelector} from 'react-redux';
 export default function GameInfo() {
 
 
-  const {turn, madeMoves, moveFor} = useSelector(selectStatistics);
+  const {turn, movesDone, moveFor} = useSelector(selectStatistics);
 
 
   function Information ({title, value}) {
@@ -33,7 +33,7 @@ value={turn}
 />
 <Information 
 title="Wykonane ruchy"
-value={madeMoves}
+value={movesDone}
 />
 <Information 
 title="Ruch dla"

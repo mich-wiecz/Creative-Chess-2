@@ -1,4 +1,4 @@
-import { splitCoord } from '@chess/coord-functions';
+import { splitCoord } from 'chess/coords';
 import { defaultAdjustField } from './defaultAdjustField';
 import { defaultBoardAssignment } from './defaultBoardAssignment';
 
@@ -8,7 +8,13 @@ export function getFunctionData(state, template, config = {}) {
 
     // const {otherFieldAdjustment, templateMap} = config;
     result.templateMapArray = config.hasOwnProperty('map') ? config.map : map;
-    result.adjustField = config.hasOwnProperty('adjustField') ? (...args) => config.adjustField(state, ...args) : (...args) => defaultAdjustField(state);
+
+    result.adjustField = 
+    config.hasOwnProperty('adjustField') 
+    ? 
+    (...args) => config.adjustField(state, ...args) 
+    : 
+    (...args) => defaultAdjustField(state, ...args);
 
 
     result.possibleMovesMapping = {};
