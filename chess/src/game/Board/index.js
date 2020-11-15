@@ -117,34 +117,49 @@ export default function Board({isGameOn}) {
 
 
     const handleClickOnField = (position, figureData) => {
-            if (readyFigureToMove) {
-                if (possibleWalks.has(position) || 
+
+        function handlePawn() {
+            const nextRow = splitCoord(position)[1];
+
+            if ((
+                figureData.pawnDirection === 'forward' &&
+                boardExtremes.top === nextRow
+            ) ||
+                (
+                    figureData.pawnDirection === 'downward' &&
+                    boardExtremes.bottom === nextRow
+                ))
+                setShowPawnPromotion(true);
+        }
+
+
+        function handleReadyFigure() {
+
+            const isProperPosition = possibleWalks.has(position) ||
                 possibleCaptures.has(position) ||
-                possibleCastlings.has(position)
-                ) {
-                    clearMoveData();
+                possibleCastlings.has(position);
+
+            if (isProperPosition) {
+                clearMoveData();
+                if (isTimeGame)
                     setUpdateTimerFlag(true);
-                    setNextPosition(position);
-                    if(figureData && figureData.pawnDirection) {
-
-                        const nextRow = splitCoord(position)[1];
-
-                       if ((
-                           figureData.pawnDirection === 'forward' &&
-                           boardExtremes.top === nextRow
-                       ) ||
-                       (
-                        figureData.pawnDirection === 'downward' &&
-                        boardExtremes.bottom === nextRow
-                        ) ) setShowPawnPromotion(true);
-                    } 
-                } else {
-                   clearMoveData();
-                }
-                
+                setNextPosition(position);
+                if (figureData && figureData.pawnDirection)
+                    handlePawn();
             } else if (figureData && figureData.team === moveFor) {
                 fillMoveData(state, figureData.id, position);
-            } 
+
+            } else {
+                clearMoveData();
+            }
+        }
+
+
+            if (readyFigureToMove) {
+                handleReadyFigure();
+            } else  if (figureData && figureData.team === moveFor) {
+                fillMoveData(state, figureData.id, position);
+            }       
     }
 
 

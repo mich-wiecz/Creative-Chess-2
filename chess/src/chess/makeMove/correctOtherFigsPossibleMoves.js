@@ -12,10 +12,10 @@ function updateMoveType (state, moveType, position) {
 
     if (mappingMoveArray.length > 0) {
         mappingMoveArray.forEach(figMappingId => {
-
-            const [otherFigId, otherFigSequenceIndex] = figMappingId.split('##'),
-                { figure: otherFigure } = figures[otherFigId],
-                 { moves, memoizedMovesSchema } = otherFigure.figure;
+            const [otherFigId, otherFigSequenceIndex] = figMappingId.split('##');
+           
+              const  { figure: otherFigure } = figures[otherFigId];
+               const  { moves, memoizedMovesSchema } = otherFigure;
 
             (function removeStaleCoord() {
                 const typeMoves = moves[moveType];

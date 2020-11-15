@@ -12,6 +12,7 @@ $newPrimary: #200849;
 
 $theme-colors: (
     "primary": $newPrimary,
+    "primary-light": transparentize($newPrimary, 0.2),
     "maroon": $color-maroon,
     "myblue": $color-myblue
     // "info": tomato,

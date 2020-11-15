@@ -3,24 +3,23 @@ import ColorMotive from '../ColorMotive'
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row';
-import MotivesAdder from '../MotivesAdder';
 import Button from 'react-bootstrap/Button';
 import UserOptions from '@global-components/UserOptions';
 import wait from '@global-functions/wait';
 
 export default function MotivesCollection({
+    areTheSameMotive,
     defaultMotives,
     userMotives,
-    addUserMotive,
     deleteUserMotive,
     changeActiveMotive,
     activeMotive,
-
 }) {
 
 
     const [showModal, setShowingModal] = useState(false);
-    const [colorsOfSelectedMotive, setColorsOfSelectedMotive] = useState(null);
+    const [selectedMotive, setSelectedMotive] = useState(null);
+    const [isSelectedMotiveFromUser, setIsSelectedMotiveFromUser] = useState(false);
     const preventSingleClick = useRef(false);
 
 
@@ -34,38 +33,47 @@ export default function MotivesCollection({
         setShowingModal(false)
     }
 
-    const handleClickOnMotive = (id) => {
+    const handleClickOnMotive = (motive) => {
         wait(200)
         .then(() => {
             if(preventSingleClick.current)  return;
-            changeActiveMotive(id)
+            changeActiveMotive(motive)
         })
     }
 
 
-    const handleDoubleClickOnMotive = (colorsObject) => {
+    const handleDoubleClickOnMotive = (motive, isUserMotive) => {
         preventSingleClick.current = true;
         handleShowModal();
-        setColorsOfSelectedMotive(colorsObject);
+        setIsSelectedMotiveFromUser(isUserMotive);
+        setSelectedMotive(motive);
     }
 
-    const handleDeleteMotive = () => {
-        deleteUserMotive(colorsOfSelectedMotive);
+    const handleDeleteMotive = (motive) => {
+        deleteUserMotive(motive);
     }
+
 
 
     function renderMotives (motivesArray, isUserMotive) {
+        isUserMotive = isUserMotive === 'user-motive';
        return motivesArray.map(motive => {
         const id = motive.first + motive.second;
         return (
-            <Col key={id} className="d-flex justify-content-center">
+            <Col 
+            key={id} 
+            className="d-flex justify-content-center mb-4 "
+            style={{
+                flexBasis: '20%'
+            }}
+            >
             <ColorMotive 
             id={id}
-            isUserMotive={isUserMotive === 'user-motive' ? true  : false }
-            isActive={activeMotive === id}
+            isUserMotive={isUserMotive }
+            isActive={areTheSameMotive(activeMotive, motive)}
             colors={motive} 
-            onClick={handleClickOnMotive}
-            onDoubleClick={handleDoubleClickOnMotive}
+            onClick={() => handleClickOnMotive(motive)}
+            onDoubleClick={() => handleDoubleClickOnMotive(motive, isUserMotive)}
             />
             </Col>
         )
@@ -76,7 +84,7 @@ export default function MotivesCollection({
 
     function OptionButton({ children, onClick, ...props }) {
         return (
-            <Button {...props} variant="secondary" onClick={() => {
+            <Button {...props} variant="myblue" onClick={() => {
                 if (onClick) onClick();
                 setShowingModal(false);
             } }>
@@ -87,24 +95,23 @@ export default function MotivesCollection({
 
     return (
         <>
-    <Container>
-        <Row className="mt-4"> 
+    <Container className="text-center">
+        <h6 className=" mt-3">Domyślne motywy</h6>
+        <Row className="mt-4 justify-content-start align-items-start"> 
             {
                 renderMotives(defaultMotives)
             }
         </Row>
-        <div className="border-bottom my-5  text-light"/>
-
-        <Row className="mt-4"> 
+        <div className="border-bottom my-2  text-light"/>
+        <section>
+        <h6 >Motywy użytkownika</h6>
+        <span className="text-muted d-block">( max 10 )</span>
+        <span className="text-muted d-block">( kliknij 2-krotnie w motyw, aby go zmienić )</span>
+        </section>
+        <Row className="mt-4 justify-content-start align-items-start"> 
         {
-        renderMotives(userMotives, 'user-motives')
+        renderMotives(userMotives, 'user-motive')
         }
-        { 
-        addUserMotive && (
-        <Col className="d-flex justify-content-center">
-        <MotivesAdder/>
-        </Col>
-        )}
         </Row>
     </Container>
 
@@ -114,9 +121,14 @@ export default function MotivesCollection({
         onHide={handleCloseModal}
         title="Co chcesz zrobić z tym motywem?"
         >
-            <UserOptions.Option>
-            <OptionButton onClick={handleDeleteMotive}>Usuń go</OptionButton>
-            </UserOptions.Option>
+            
+                {
+                    isSelectedMotiveFromUser && 
+                    <UserOptions.Option>
+                       <OptionButton onClick={() => handleDeleteMotive(selectedMotive)}>Usuń go</OptionButton>
+                    </UserOptions.Option>
+
+                }
             <UserOptions.Option>
             <OptionButton>Nie rób nic</OptionButton>
             </UserOptions.Option>

@@ -81,7 +81,7 @@
 			"scope": "javascript,typescript",
 			"prefix": "imgame",
 			"body": [
-			"import {$1} from 'redux/gameSlice';$0",
+			"import {$1} from 'redux/chessSlice';$0",
 			]
 		},  
 		"Import hooks from react-redux": {

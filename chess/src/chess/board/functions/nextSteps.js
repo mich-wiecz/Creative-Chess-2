@@ -1,25 +1,6 @@
 import {createNextState as produce} from'@reduxjs/toolkit';
 import {dataStore} from '@chess/store';
-/* 
-The list of remaining functions:
 
-- undoMove
-- redoMove
-- undoPlaygroundBoardAction
-- redoPlaygroundBoardAction
-- readTemplateFromBoardMap (check if is checkmate at the beginning)
-- createBoardMap
-- getBoardExtremes
-- manipulateBoardMap (but it will be just layer function that could take a callback and also an option to provide extremes)
-- updatePlaygroundState - I think that maybe playground will be separate thing from game and it will have only boardMap, abstractBoard and extremes and when in playground it will take this data from game at first and then board will take the data from playground only - so also no moves - and this update Playground will take this things and add also to history
-- return from playground: will remove all Playground history and also all Playground, and if a change was done it will readTemplateFromBoardMap and redo everything - here it will also remove all game history and back to game
-- addTime
-
-I think thats it for now 
-It will be quite challenging - definitely
-But also quite easy - the hardest things are done
-
-*/
 
 
 export function undoMove (state) {

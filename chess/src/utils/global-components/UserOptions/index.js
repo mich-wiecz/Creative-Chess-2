@@ -28,7 +28,7 @@ Modal:  function  ({
     )
 },
 Option: function  ({children}) {
-  return  <ListGroup.Item className="bg-maroon text-light text-center">
+  return  <ListGroup.Item className="bg-secondary text-light text-center">
    {children}
     </ListGroup.Item>
 }

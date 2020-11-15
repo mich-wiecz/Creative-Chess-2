@@ -20,7 +20,7 @@ export function updateFigure(
     updateCastlingAfterFigureChange(newState, figure, 'move');
 
 
-    if (Array.isArray(transformArray)) {
+    if (Array.isArray(transformArray) && transformArray[0]) {
         transformFigure(transformArray, newState.modelFigures, figure);
      }
 

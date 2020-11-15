@@ -6,10 +6,11 @@ export function updateStatistics(gameData, team, wasPreviousMoveEndangeringKing,
     statistics[team].wasPreviousMoveEndangeringKing = wasPreviousMoveEndangeringKing;
     if (wasPreviousMoveEndangeringKing) return;
     
-    statistics.turn++;
-    statistics.movesDone++;
+ 
     const enemyTeam = getEnemyTeam(team, teams);
 
+    statistics.turn++;
+    statistics.movesDone++;
     statistics.moveFor = enemyTeam;
     if (updatedTimes)
         updateTime(time, updatedTimes);

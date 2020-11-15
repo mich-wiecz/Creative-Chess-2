@@ -1,14 +1,14 @@
 export function addNextGameDataToHistory(newState) {
-    const { game } = newState.history;
+    const { game: gameHistory } = newState.history;
 
-    const { history, limit, position } = game;
+    const { history, limit, position } = gameHistory;
 
 
     let length = history.length;
 
     if (position !== length - 1) {
         history.splice(position + 1);
-        history.position = length - 1;
+        gameHistory.position = length - 1;
         length = history.length;
     }
 
@@ -19,7 +19,7 @@ export function addNextGameDataToHistory(newState) {
     }
 
     history.push(newState.game);
-    history.position++;
+    gameHistory.position++;
 
 
  

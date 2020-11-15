@@ -10,6 +10,16 @@ export const functionalMovesSchemas = {};
 export const overriddenFunctionalMovesSchemas = {};
 
 
+export const defaultMotives = [
+    {first: 'maroon', second: 'darkgoldenrod'}, 
+    {first: 'transparent', second: 'darkorange'},
+    {first: 'peru', second: 'royalblue'},
+    {first: 'darkgreen', second: 'gray'},
+    {first: 'slategrey', second: 'skyblue'}       
+    ];
+
+
+
   const initialState = {
     mode: 'playground',
     activeGameTemplate: 'classic',
@@ -17,7 +27,7 @@ export const overriddenFunctionalMovesSchemas = {};
     boardFeatures: {
         rotation: 0,
         frozenFieldSize: null,
-        boardMotive: {first: 'gray', second: 'green'},
+        boardMotive: defaultMotives[0],
         interactionStyle: 'clicking',
         animationsOn: false,
         showPossibleMoves: true,

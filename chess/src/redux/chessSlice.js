@@ -13,7 +13,7 @@ const gameSlice = createSlice({
     initialState,
     reducers: {
         boardFeatureChanged(state, action) {
-            const {feature, value} = action.payload;
+            const [feature, value] = action.payload;
             state.boardFeatures[feature] = value;
         },
         musicOnChanged(state, action) {

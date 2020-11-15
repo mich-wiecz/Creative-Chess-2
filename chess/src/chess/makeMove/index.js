@@ -9,6 +9,7 @@ import { updateStatistics } from './updateStatistics';
 import { endOfficialGame } from '../endOfficialGame';
 import { updateCastlingData } from './updateCastlingData';
 import { getCastlingData } from './getCastlingData';
+import {current} from '@reduxjs/toolkit'
 
 
 
@@ -35,7 +36,7 @@ export default function makeMove(newState,
 
  
 
-        const [castlingFlag, {position: rookPosition, id: rookId}, rookNextCoord] = getCastlingData(game, figure, nextCoord);
+        const [castlingFlag, rookFigure, rookNextCoord] = getCastlingData(game, figure, nextCoord);
       
 
         if (castlingFlag === 'break') return;
@@ -47,7 +48,7 @@ export default function makeMove(newState,
         boardMap[position] = 'blanc';
 
         correctOtherFigsPossibleMoves(newState, position, nextCoord);
-        if(castlingFlag) correctOtherFigsPossibleMoves(newState, rookPosition, rookNextCoord);
+        if(castlingFlag) correctOtherFigsPossibleMoves(newState, rookFigure.position, rookNextCoord);
 
 
         if (game.protectKings) {
@@ -78,7 +79,7 @@ export default function makeMove(newState,
         }
      
         updateFigure(newState, figureId, nextCoord, transformArray);
-        if (castlingFlag) updateFigure(newState, rookId, rookNextCoord)
+        if (castlingFlag) updateFigure(newState, rookFigure.id, rookNextCoord);
         addNextGameDataToHistory(newState);   
             
         }

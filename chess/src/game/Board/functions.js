@@ -23,9 +23,9 @@ function getFieldColor (coordForGrid, boardMotive) {
  
          const [col, row] = coordForGrid;
          if(col % 2 === row % 2) {
-             return first
+             return second
          }
-         return second;
+         return first;
  
      }
 

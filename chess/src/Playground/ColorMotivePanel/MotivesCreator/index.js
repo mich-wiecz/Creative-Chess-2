@@ -6,7 +6,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-export default function MotivesCreator() {
+export default function MotivesCreator({
+    addUserMotive
+}) {
 
     const [firstColor, setFirstColor] = useState('#000');
     const [secondColor, setSecondColor] = useState('#fff');
@@ -20,11 +22,17 @@ export default function MotivesCreator() {
 
 
     return (
-        <Container>
+        <Container
+        >
      
-            <Row className="mt-4 d-flex align-items-center">
-          <Col>
-          <Button className="mb-3" variant="secondary">
+            <Row className="mt-4 d-flex ">
+          <Col 
+          className="bg-primary-light d-flex flex-column justify-content-center align-items-center rounded"
+          >
+          <Button  
+          onClick={addUserMotive && (() => addUserMotive({first: firstColor, second: secondColor}))}
+          variant="secondary"
+          >
               Dodaj do kolekcji
           </Button>
         <ColorMotive 

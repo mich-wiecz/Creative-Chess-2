@@ -17,7 +17,7 @@ sequenceIndexStart
     const { game} = state;
 
     const {figures, possibleMovesMapping, boardMap} = game,
-    {team, position} = figures[figureId].figure,
+    {team, position, name} = figures[figureId].figure,
      [figCol, figRow] = splitCoord(position);
     let sequenceIndex = sequenceIndexStart || 0;
 
@@ -27,7 +27,7 @@ sequenceIndexStart
         blocks: []
     };
 
-    movesSchema.forEach(stepsObject => {
+    movesSchema.forEach((stepsObject) => {
 
         let { steps, amount } = stepsObject;
         const excludedStepType = getExcludedStepType(stepsObject);
@@ -48,13 +48,14 @@ sequenceIndexStart
             do {
                 const newCoord = makeCoord(figCol + colMove * stepCount, figRow + rowMove * stepCount);
                 stepCount++;
-                recentStepType = getStepType(newCoord, boardMap, team);
-                if (!recentStepType || recentStepType === excludedStepType)
-                    continue;
-                const pluralStepType = recentStepType + 's';
-                sequenceMoves[pluralStepType].push(newCoord);
-                possibleMovesMapping[newCoord][pluralStepType].push(figureId + '##' + sequenceIndex);
                 amount--;
+                recentStepType = getStepType(newCoord, boardMap, team);
+                if (recentStepType && recentStepType !== excludedStepType) {
+                    const pluralStepType = recentStepType + 's';
+                    sequenceMoves[pluralStepType].push(newCoord);
+                    possibleMovesMapping[newCoord][pluralStepType].push(figureId + '##' + sequenceIndex);
+                }
+               
             } while (couldMakeNextStep(recentStepType, amount));
 
 

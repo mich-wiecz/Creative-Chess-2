@@ -39,8 +39,6 @@ export function createIndividualFigure (
     ) {
     const {figures: indFigures} = state.game;
 
-    console.log(teamObj)
-
     const figureData =  {
         figure: {
             id,
