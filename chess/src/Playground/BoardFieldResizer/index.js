@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
@@ -9,21 +9,32 @@ import classes from './BoardFieldResizer.module.scss';
 import Container from 'react-bootstrap/Container';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicroscope } from '@fortawesome/free-solid-svg-icons';
+import {useSelector, useDispatch} from 'react-redux';
+import {boardFeatureChanged, selectBoardFeatures, } from 'redux/chessSlice';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
 
 
-const boardColorMotive = {first: 'orange', second: 'blue'}
 
 
 export default function BoardFieldResizer() {
+
+
+  const {frozenFieldSize, boardMotive} = useSelector(selectBoardFeatures);
+  const dispatch = useDispatch()
 
 
     const [boardFieldSize, setBoardFieldSize] = useState({
         x: 40,
         y: 40
         });
+
+
+        useEffect(() => {
+         if(!frozenFieldSize) return;
+         setBoardFieldSize(frozenFieldSize)
+        }, [frozenFieldSize])
 
     const multiplyObjectValues = (object, multiplier) => {
         if(multiplier === 1) return {...object};
@@ -35,7 +46,7 @@ export default function BoardFieldResizer() {
 
 
     const SIZE_EXTREMES = {
-        minX: 40,
+    minX: 40,
     minY: 40,
     maxX: 120,
     maxY: 120,
@@ -62,7 +73,7 @@ export default function BoardFieldResizer() {
         }
 
         setActualUnit(newUnit);
-        setSizeExtremes(prev => this.multiplyObjectValues(prev, multiplier));
+        setSizeExtremes(prev => multiplyObjectValues(prev, multiplier));
         setSize(prev => multiplyObjectValues(prev, multiplier));
     }
 
@@ -81,7 +92,8 @@ export default function BoardFieldResizer() {
             }
         )
 
-        setBoardFieldSize({x: newX, y: newY})
+         dispatch(boardFeatureChanged(
+          ['frozenFieldSize', {x: newX, y: newY}]))
     }
 
 
@@ -103,6 +115,7 @@ export default function BoardFieldResizer() {
 
     const handleMouseMove = (e) => {
 
+
         if (e.buttons !== 1) return;
 
         let [deltaX, deltaY] = unitsCalculator.calculate(
@@ -112,6 +125,7 @@ export default function BoardFieldResizer() {
                 resultUnit: actualUnit
             }
         );
+
 
         if (areProportionsKept) {
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
@@ -135,10 +149,10 @@ export default function BoardFieldResizer() {
         const multiplier = 1 / magnification;
         setMagnification(1);
         setSize({
-            x: sizeExtremes.x * multiplier,
-            y: sizeExtremes.y * multiplier
+            x: sizeExtremes.minX * multiplier,
+            y: sizeExtremes.minY * multiplier
         });
-        setSizeExtremes(prev => multiplyObjectValues(prev.sizeExtremes, multiplier))
+        setSizeExtremes(prev => multiplyObjectValues(prev, multiplier))
     }
 
 
@@ -168,7 +182,9 @@ export default function BoardFieldResizer() {
 
   const  handleMagnification = () => {
       setMagnification(prev => {
-          return (prev === 2 ? 1 : prev + 1) 
+        if (prev === 1) return 2;
+        if (prev === 2) return 0.5;
+        if (prev === 0.5) return 1;
       })
     }
 
@@ -182,7 +198,7 @@ export default function BoardFieldResizer() {
                     style={{
                         width: coordObj.x,
                         height: coordObj.y,
-                        borderColor: boardColorMotive.first,
+                        borderColor: boardMotive.first,
                     }} />
             );
         });
@@ -200,13 +216,15 @@ export default function BoardFieldResizer() {
         }
       };
 
+
+
     return (
-        <Container className={classes.Wrapper}>
+        <Container className={`${classes.Wrapper} m-5`}>
             <section
                 aria-label="enlarge actual board fields by multiplication "
                onClick={handleMagnification}
                className={classes.Microscope}
-               style={{ color: boardColorMotive.first }}
+               style={{ color: boardMotive.first }}
             >
             <FontAwesomeIcon icon={faMicroscope} />
                 <span>
@@ -220,12 +238,12 @@ export default function BoardFieldResizer() {
             style={{
                 width: `${sizeExtremes.maxX}${actualUnit}`,
                 height: `${sizeExtremes.maxY}${actualUnit}`,
-                backgroundColor: boardColorMotive.second,
-                color: boardColorMotive.first,
+                backgroundColor: boardMotive.second,
+                color: boardMotive.first,
               }}
             >
                 <div
-                 onDrag={(e) =>
+                 onDragStart={(e) =>
                     e.preventDefault()
                   }
                   onMouseMove={handleMouseMove}
@@ -233,58 +251,79 @@ export default function BoardFieldResizer() {
                   style={{
                     width: `${size.x}${actualUnit}`,
                     flexBasis: `${size.y}${actualUnit}`,
+                    background: boardMotive.first,
+                  
                   }}
-                  color={boardColorMotive.first}
                 />
                 <span className={classes.AxisY} />
                 <span className={classes.AxisX} />
+                  <div 
+                  className={`${classes.MaxY}`}
+                  >
+                      <div className={classes.MaxValue}>
+                      <FormControl 
+                         name="y"
+                         className={classes.Input}
+                         type="number"
+                         value={(size.y * magnification).toFixed(1)}
+                         onChange={handleInputChange}
+                         step={setStep()}
+                      />
+                      </div>
+                      <strong>
+                          {(sizeExtremes.maxX * magnification).toFixed(1)}
+                        </strong>
+                  </div>
+
 
                   <div 
-                  className={`${classes.MaxY} d-inline-block`}
+                  className={`${classes.MaxX}`}
                   >
                       <div className={classes.MaxValue}>
                       <FormControl 
                          name="x"
                          className={classes.Input}
                          type="number"
-                         value={size.x * magnification}
+                         value={(size.x * magnification).toFixed(1)}
                          onChange={handleInputChange}
                          step={setStep()}
                       />
                       </div>
                       <strong>
-                          {sizeExtremes.maxX * magnification}
+                          {(sizeExtremes.maxX * magnification).toFixed(1)}
                         </strong>
                   </div>
-            </div>
-            {
+
+
+{
                 renderAxisBoardFields(
                     { x: "25%", y: "25%" },
                     { x: "50%", y: "50%" },
                     { x: "75%", y: "75%" }
                 )
             }
+            </div>
+     
             </section >
             
-            <section className={classes.InterfacePart}>
-            
-            <ListGroup className={classes.Options}>
-  <ListGroup.Item>
-  <div>
-                <span className={classes.ProportionsOption}>
+            <section className={`text-dark`} style={{minWidth: 240}}>
+            <ListGroup>
+              <ListGroup.Item>
+              <div>
+                <span >
                   {areProportionsKept
                     ? "Proporcje zachowywane"
-                    : "Brak zachowywania proporcji"}
+                    : "Bez zachowywania proporcji"}
                 </span>
                 <PawnSwitch
-                  className={classes.PawnSwitch}
+                  className={`mx-auto mt-2`}
                   isOn={areProportionsKept}
-                  changeOption={toggleProportionsKeeping}
+                  onToggle={toggleProportionsKeeping}
                 />
               </div>
-  </ListGroup.Item>
-  <ListGroup.Item>
-  <div className={classes.OptionGroup}>
+          </ListGroup.Item>
+          <ListGroup.Item>
+          <div >
                 <p>Aktualne jednostki:</p>
                 <FormControl
                   as="select"
@@ -298,11 +337,11 @@ export default function BoardFieldResizer() {
                 </FormControl>
               </div>
   </ListGroup.Item>
-</ListGroup>
+        </ListGroup>
 
             <section className={classes.BtnGroup}>
             <Button onClick={handleSettingMinSize}>Rozmiar minimalny</Button>
-          <Button onClick={handleChangingBoardFieldSize}>
+          <Button onClick={handleChangingBoardFieldSize} variant="maroon">
             Zatwierdź
           </Button>
             </section>

@@ -140,7 +140,6 @@ export default function Board({isGameOn}) {
                 possibleCastlings.has(position);
 
             if (isProperPosition) {
-                clearMoveData();
                 if (isTimeGame)
                     setUpdateTimerFlag(true);
                 setNextPosition(position);
@@ -227,21 +226,41 @@ export default function Board({isGameOn}) {
 
 
 
-    const setModeStyles = () => {
-        if (isGameOn) 
-            return {
+    const setBoardStyles = () => {
+        let modesStyles = {}, sizeStyles = {};
+        if (isGameOn) {
+           modesStyles = {
                 pointerEvents: 'auto',
                 cursor: 'cell'
+           }
+        } else {
+            modesStyles =  {
+                pointerEvents: 'none',
+                cursor: 'not-allowed'
             }
+        }
+
+        if (frozenFieldSize) {
+            sizeStyles = {
+                gridAutoColumns: frozenFieldSize.x ,
+                gridAutoRows:  frozenFieldSize.y 
+            }
+        } else {
+            sizeStyles = {
+                gridAutoColumns: "minmax(40px, 6vmin)",
+                gridAutoRows: "minmax(40px, 6vmin)"
+            }
+        }
 
 
         return {
-            pointerEvents: 'none',
-            cursor: 'not-allowed'
+            ...modesStyles,
+            ...sizeStyles
         }
+
+      
     }
-
-
+    console.log(frozenFieldSize)
 
     return (
         <>
@@ -260,11 +279,7 @@ export default function Board({isGameOn}) {
         <div className={classes.BoardContainer}>
             
             <div 
-            style={{
-                gridAutoColumns: `${frozenFieldSize ? frozenFieldSize.x : "minmax(40px, 6vmin)"}`,
-                gridAutoRows: `${frozenFieldSize ? frozenFieldSize.y : "minmax(40px, 6vmin)"}`,
-                ...setModeStyles()
-            }}
+            style={setBoardStyles()}
             className={classes.BoardGrid}
             onDragStart={e => {
                 e.preventDefault();

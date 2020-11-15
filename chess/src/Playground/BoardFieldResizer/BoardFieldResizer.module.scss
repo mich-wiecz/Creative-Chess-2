@@ -9,7 +9,7 @@ $font-size: 26px;
 
   .Microscope {
     position: absolute;
-    top: -5%;
+    top: 5%;
     left: 35%;
     cursor: pointer;
 
@@ -37,7 +37,7 @@ $font-size: 26px;
   }
 
   .AxisPart {
-    flex-basis: 30%;
+    // flex-basis: 30%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,7 +47,6 @@ $font-size: 26px;
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-end;
-      background-color: purple;
 
       $line-size: 3px;
       $axis-protrusion: 50px;
@@ -57,7 +56,7 @@ $font-size: 26px;
       $arrow-angle: 35deg;
       $maxMark-width: 10px;
 
-      $input-width: 60px;
+      $input-width: 70px;
       $input-from-max: 80px;
 
       span {
@@ -122,28 +121,37 @@ $font-size: 26px;
           }
         }
 
+      }
+
+
+
+
+
+
+
         .MaxValue {
           position: absolute;
           font-size: $font-size;
 
           .Input {
             position: absolute;
-            top: 0;
+            top: 40%;
             left: 0;
             padding-left: 10px;
             width: $input-width;
           }
         }
 
-        &.MaxY {
+        .MaxY {
+          position: absolute;
           top: -$line-size;
-          left: -$line-size * 2 - $maxMark-width;
+          left: -$line-size * 8 - $maxMark-width * 3;
           width: $maxMark-width;
 
           .MaxValue {
             top: 0;
             transform-origin: left center;
-            transform: translate(calc(-100% - 15px), -60%);
+            transform: translate(calc(-100% - 35px), -60%);
 
             .Input {
               transform: translateY($input-from-max);
@@ -151,7 +159,8 @@ $font-size: 26px;
           }
         }
 
-        &.MaxX {
+        .MaxX {
+          position: absolute;
           bottom: -$line-size * 2 - $maxMark-width;
           right: -$line-size;
           height: $maxMark-width;
@@ -166,7 +175,16 @@ $font-size: 26px;
             }
           }
         }
-      }
+
+
+
+
+
+
+
+
+
+
 
       .AxisBoardField {
         position: absolute;
@@ -181,31 +199,7 @@ $font-size: 26px;
         position: relative;
         z-index: 1;
         cursor: move;
-      }
-    }
-  }
-}
-
-.InterfacePart {
-  height: 300px;
-  .Options {
-    margin-bottom: 0;
-    padding-left: 20px;
-    padding-right: 20px;
-    transform: translateY(-15%);
-
-    .PawnSwitch {
-      margin-top: 4%;
-      margin-left: 20%;
-    }
-
-    .OptionGroup {
-      display: flex;
-      align-items: center;
-
-      .UnitSelector {
-        margin-left: 20px;
-        width: 70px;
+        background-color: #fff;
       }
     }
   }
@@ -213,11 +207,11 @@ $font-size: 26px;
 
 .BtnGroup {
   position: absolute;
-  bottom: -20%;
+  bottom: -50%;
   left: 0;
   right: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 
   button {
     width: 30%;

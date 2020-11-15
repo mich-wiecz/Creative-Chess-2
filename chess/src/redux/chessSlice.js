@@ -16,9 +16,6 @@ const gameSlice = createSlice({
             const [feature, value] = action.payload;
             state.boardFeatures[feature] = value;
         },
-        musicOnChanged(state, action) {
-            state.boardFeatures.musicOn = action.payload;
-        },
         modelFiguresAdded(state, action) {
             createModelFigures(state, action.payload);
         },
