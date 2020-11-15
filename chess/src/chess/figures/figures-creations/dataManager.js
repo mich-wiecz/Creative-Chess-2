@@ -30,8 +30,13 @@ export class FiguresDataManager {
     createTeams(teamsArr, foundedModelFigures) {
         if (!Array.isArray(teamsArr)) throw new Error(`Function createTeams should take array of teams objects as first argument`);
 
-        return teamsArr.reduce((result, team) => {
-            result[team.name] = new Team(this.modelFiguresSet, team, foundedModelFigures);
+        return teamsArr.reduce((result, team, index) => {
+            const direction = index === 0 ? 'forward' : 'downward';
+            result[team.name] = new Team(
+                this.modelFiguresSet, 
+                {...team, direction}, 
+                foundedModelFigures
+                );
             return result;
         }, {})
     }

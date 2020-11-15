@@ -16,8 +16,6 @@ import { extractId, isStringFigure } from 'chess/figures/functions';
 export default function generatePossibleMoves (state, figuresIdsArray) {
 
 
-  console.log(state);
-
 
     const {possibleMovesMapping, figures: indFigures, castlingMonitoring, tags, boardMap} = state.game;
     figuresIdsArray = getFiguresIds(indFigures, figuresIdsArray);

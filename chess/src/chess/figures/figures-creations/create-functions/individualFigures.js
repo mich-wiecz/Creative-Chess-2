@@ -30,14 +30,23 @@ import toUpperFirst from '@global-functions/toUpperFirst';
  
  }
 
-export function createIndividualFigure (state, coord, figName, {id, ...teamObj}, modification) {
+export function createIndividualFigure (
+    state, 
+    coord, 
+    figName, 
+    {id, ...teamObj}, 
+    modification
+    ) {
     const {figures: indFigures} = state.game;
+
+    console.log(teamObj)
 
     const figureData =  {
         figure: {
             id,
             name: figName,
             team: teamObj.name,
+            direction: teamObj.direction,
             startPosition: coord,
             color: teamObj.color || teamObj.name,
             position: coord,

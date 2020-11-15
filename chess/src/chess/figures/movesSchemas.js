@@ -24,17 +24,29 @@ const knightMoves = [
 const allStandardMoves = straightMoves.concat(diagonalMoves);
 
 
-const pawnWalkMoves = [{ row: 1 }],
-  pawnCaptureMoves = [
-    { row: 1, col: 1 },
-    { row: 1, col: -1 },
-  ],
-  setPawnMoves = (amountOfWalkMoves) => {
-    return [
-        {type: 'walk', steps: pawnWalkMoves, amount: amountOfWalkMoves},
-        {type: 'capture', steps: pawnCaptureMoves, amount: 1}
-      ]
-  };
+const pawnMoves = {
+  forward: {
+    walks: [{ row: 1 }],
+    captures: [
+      { row: 1, col: 1 },
+      { row: 1, col: -1 },
+    ]
+  },
+  downward: {
+    walks: [{row: -1}],
+    captures: [
+      {row: -1, col: 1},
+      {row: -1, col: -1}
+    ]
+  }
+}
+
+const setPawnMoves = (amountOfWalkMoves, direction) => {
+  return [
+    {type: 'walk', steps: pawnMoves[direction].walks, amount: amountOfWalkMoves},
+    {type: 'capture', steps: pawnMoves[direction].captures, amount: 1}
+  ]  
+  }
 
 export const classicFiguresMoves = {
   [names.queen]: [{ steps: allStandardMoves, amount: Infinity }],
@@ -48,11 +60,11 @@ export const classicFiguresMoves = {
     steps: knightMoves,
     amount: 1,
   }],
-  [names.pawn]: ({position, startPosition}) => {
+  [names.pawn]: ({position, startPosition, direction}) => {
       if (position === startPosition) {
-        return setPawnMoves(2)
+        return setPawnMoves(2, direction)
       }
-      return setPawnMoves(1)
+      return setPawnMoves(1, direction)
   }
 };
 

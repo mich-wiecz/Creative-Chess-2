@@ -34,12 +34,17 @@ function getFieldColor (coordForGrid, boardMotive) {
         const figId = extractId(field);
         const {figure} = figures[figId];
 
+        const pawnData = {};
+        if (figure.name === "Pawn") {
+            pawnData.pawnDirection = figure.direction;
+        }
+
         return {
             imageName: getModelProperty(figures, modelFigures, figId, 'imageName'),
             color: figure.color,
-            pawnStartRow: figure.name === 'Pawn' ? splitCoord(figure.startPosition)[1] : null,
             id: figId,
-            team: figure.team
+            team: figure.team,
+            ...pawnData
         }
     }
 

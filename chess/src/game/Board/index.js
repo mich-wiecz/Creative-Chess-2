@@ -125,10 +125,18 @@ export default function Board({isGameOn}) {
                     clearMoveData();
                     setUpdateTimerFlag(true);
                     setNextPosition(position);
-                    if(figureData && figureData.pawnStartRow) {
+                    if(figureData && figureData.pawnDirection) {
 
-                       if (boardExtremes.top === splitCoord(position)[1]) 
-                        setShowPawnPromotion(true);
+                        const nextRow = splitCoord(position)[1];
+
+                       if ((
+                           figureData.pawnDirection === 'forward' &&
+                           boardExtremes.top === nextRow
+                       ) ||
+                       (
+                        figureData.pawnDirection === 'downward' &&
+                        boardExtremes.bottom === nextRow
+                        ) ) setShowPawnPromotion(true);
                     } 
                 } else {
                    clearMoveData();
