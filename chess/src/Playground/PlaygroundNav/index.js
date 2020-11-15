@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faMousePointer, faStar, faBook } from '@fortawesome/free-solid-svg-icons';
 
 
+
 const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}} size="lg"/>
 
 
@@ -80,6 +81,7 @@ export default function PlaygroundNav({
       text={'Dodaj pola'} 
       icon={faPlusSquare} 
       eventKey={'poles-adding'}
+      disabled
       />
       <TabItem 
       text={'Zmień rozmiar pól'} 
