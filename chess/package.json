@@ -10,9 +10,11 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "dart-sass": "^1.25.0",
     "formik": "^2.2.1",
+    "jwt-decode": "^3.1.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
@@ -53,5 +55,6 @@
   "devDependencies": {
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.6"
-  }
+  },
+  "proxy": "https://europe-west1-creative-chess.cloudfunctions.net/api"
 }

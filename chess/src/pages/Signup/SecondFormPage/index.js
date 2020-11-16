@@ -12,10 +12,25 @@ export default function FirstFormPage({
   submitButton,
   renderListFields,
   wasError,
-  wasSended
+  wasSended,
+  isAuthenticated
 }) {
 
   const history = useHistory();
+
+
+  function renderFinalMessages ()  {
+    if (!wasSended) return null;
+
+    if (wasError) return <RequestErrorMessage />;
+    if (isAuthenticated) return (
+      <SuccessModal 
+      show={true}
+      onHide={() => history.push('/')}
+      redirectToLogin={() => history.push('/login')}
+      />
+    )
+  }
 
     return (
         <div>
@@ -45,20 +60,8 @@ export default function FirstFormPage({
                 label: "Zainteresowania"
               })
             }
+            {renderFinalMessages()}
             </section>
-            {
-               wasSended && (
-                wasError 
-                ?
-             <RequestErrorMessage />
-                :
-                <SuccessModal 
-                show={true}
-                onHide={() => history.push('/')}
-                redirectToLogin={() => history.push('/login')}
-                />
-               )
-        }
             <section 
             aria-label="form-page-navigation"
             className="d-flex justify-content-around"

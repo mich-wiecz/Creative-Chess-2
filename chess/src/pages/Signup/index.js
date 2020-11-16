@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Formik} from 'formik'
@@ -9,14 +9,26 @@ import SpinnerButton from '@global-components/SpinnerButton';
 import FieldsGroup from '../../utils/formik/FieldsGroup';
 import FieldsList from '../../utils/formik/FieldsList';
 
+import {loginOrSignup, selectStatusData} from 'redux/userSlice';
+import {useSelector, useDispatch} from 'react-redux';
+
 
 
 export default function Signup() {
 
+    const dispatch = useDispatch();
+    const {authenticated, loading, wasError} = useSelector(selectStatusData)
+
     const [formPage, setFormPage] = useState('first');
-    const [wasRequestError, setWasRequestError] = useState(false);
+    // const [wasRequestError, setWasRequestError] = useState(false);
     const [wasSended, setWasSended] = useState(false);
     const [validateUntouched, setValidateUntouched] = useState(false);
+
+
+
+    useEffect(() => {
+        if (wasError) setWasSended(false);
+    }, [wasError])
 
     const {initialValues, validationSchema} = useFormikConfiguration()
 
@@ -24,18 +36,8 @@ export default function Signup() {
     const goToSecondPage = () => setFormPage('second');
 
     const handleSubmit = (values, { setSubmitting }) => {
-        setTimeout(() => {
-           const success = true;
-           if (success ) {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-            if (wasRequestError) setWasRequestError(false);
-           } else {
-               setWasRequestError(true);
-               setSubmitting(false);
-           }
-           
-          }, 4000);
+        dispatch(loginOrSignup('signup', values));
+        setSubmitting(false);
     };
 
 
@@ -64,8 +66,9 @@ export default function Signup() {
         validationButton={validationButton}
         submitButton={submitButton}
         renderListFields={renderListFields}
-        wasError={wasRequestError}
+        wasError={wasError}
         wasSended={wasSended}
+        isAuthenticated={authenticated}
         />
     }
 
@@ -113,7 +116,7 @@ export default function Signup() {
 
         const submitButton = (
             <SpinnerButton
-            isSubmitting={isSubmitting}
+            isSubmitting={loading}
             disabled={!couldBeSended} 
             className="w-25 bg-maroon" 
             onClick={() => {

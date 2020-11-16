@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Form from 'react-bootstrap/Form';
 import { Formik} from 'formik'
 import useFormikConfiguration from './formik-configuration';
@@ -9,10 +9,17 @@ import {useHistory, NavLink} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import RequestErrorMessage from 'utils/formik/RequestErrorMessage';
 
+import {loginOrSignup, selectStatusData} from 'redux/userSlice';
+import {useSelector, useDispatch} from 'react-redux';
+
+
+
 export default function Login() {
 
 
-    const [wasRequestError, setWasRequestError] = useState(false);
+    const dispatch = useDispatch();
+    const { loading, wasError} = useSelector(selectStatusData)
+
 
     const history = useHistory('/')
 
@@ -24,18 +31,8 @@ export default function Login() {
     }
 
     const handleSubmit = (values, { setSubmitting }) => {
-        setTimeout(() => {
-           const success = true;
-           if (success ) {
-            setSubmitting(false);
-            if (wasRequestError) setWasRequestError(false); 
-            handleGoingMainPage();
-           } else {
-               setWasRequestError(true);
-               setSubmitting(false);
-           }
-           
-          }, 4000);
+        dispatch(loginOrSignup('login', values));
+        setSubmitting(false);
     };
 
 
@@ -94,7 +91,7 @@ export default function Login() {
         />
             <section>
                 {
-                    wasRequestError &&
+                    wasError &&
                     <RequestErrorMessage />
                 }
            
@@ -103,7 +100,7 @@ export default function Login() {
                     Zrezygnuj
                 </Button>
              <SpinnerButton
-            isSubmitting={isSubmitting}
+            isSubmitting={loading}
             disabled={!couldBeSended} 
             className="w-25 bg-maroon" 
             onClick={handleSubmit}
