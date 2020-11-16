@@ -2,7 +2,7 @@ import { getFiguresIds } from './getFiguresIds';
 import { getMovesSchema } from './getMovesSchema';
 import { getPossibleMoves } from './getPossibleMoves';
 import {splitCoord, makeCoord} from 'chess/coords';
-import {getStepType} from './getStepType';
+import {getStepTypeForAll} from './getStepType';
 import { extractId, isStringFigure } from 'chess/figures/functions';
 
 
@@ -94,7 +94,7 @@ export default function generatePossibleMoves (state, figuresIdsArray) {
       while (newCoord !== kingPosition) {
      
       stepCount++;
-       if (getStepType(newCoord, boardMap, kingTeam) !== 'walk') {
+       if (getStepTypeForAll(newCoord, boardMap, kingTeam) !== 'walk') {
         if (isStringFigure(boardMap[newCoord]))  
         monit.figuresOnWay.push(extractId(boardMap[newCoord]))
            isFreeWay = false;

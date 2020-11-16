@@ -1,5 +1,6 @@
 import { getPossibleMoves } from 'chess/generatePossibleMoves/getPossibleMoves';
 import { findMovesSchemaDataForSequence } from './findMovesSchemaDataForSequence';
+import {current} from '@reduxjs/toolkit'
 
 
 function updateMoveType (state, moveType, position) {
@@ -7,27 +8,39 @@ function updateMoveType (state, moveType, position) {
     const {game} = state,
     {possibleMovesMapping, figures} = game; 
 
-    const mappingMoveArray = possibleMovesMapping[position][moveType];
+    const mappingMoveArray = [...possibleMovesMapping[position][moveType]];
 
 
     if (mappingMoveArray.length > 0) {
-        mappingMoveArray.forEach(figMappingId => {
-            const [otherFigId, otherFigSequenceIndex] = figMappingId.split('##');
-           
-              const  { figure: otherFigure } = figures[otherFigId];
-               const  { moves, memoizedMovesSchema } = otherFigure;
 
-            (function removeStaleCoord() {
+        possibleMovesMapping[position][moveType] = [];
+
+
+        mappingMoveArray.forEach(figMappingId => {
+            const [figId, figSequenceIndex] = figMappingId.split('##');
+           
+              const  { figure } = figures[figId];
+               const  { moves, memoizedMovesSchema } = figure;
+
+
+               if (!moves.hasOwnProperty(moveType)) console.log(current(moves), current(figure), figId, moveType);
+            (function removeStaleCoords() {
                 const typeMoves = moves[moveType];
-                if(moveType === 'walks') {
-                    const coordIndex = typeMoves[otherFigSequenceIndex].findIndex(coord => coord === position);
-                    moves.walks[otherFigSequenceIndex].splice(coordIndex); 
+                if(moveType === 'walks' || moveType === 'potentialCaptures') {
+                    const coordIndex = typeMoves[figSequenceIndex].findIndex(coord => coord === position);
+                    moves.captures[figSequenceIndex] = [];
+                    moves[moveType][figSequenceIndex].splice(coordIndex); 
                 } else {
-                    moves[moveType][otherFigSequenceIndex] = [];
+                   
+                    moves[moveType][figSequenceIndex] = [];
                 }
             })();
 
-            const [foundedStepsObject, foundedStep] = findMovesSchemaDataForSequence(memoizedMovesSchema, otherFigSequenceIndex);
+            const getLog = (type) => {
+              return ( type === 'potentialCaptures' ?  (sth) => console.log(sth) : () => null);
+            } 
+
+            const [foundedStepsObject, foundedStep] = findMovesSchemaDataForSequence(memoizedMovesSchema, figSequenceIndex, moveType, getLog);
 
             const proxyMovesSchema = [
                 {
@@ -38,18 +51,17 @@ function updateMoveType (state, moveType, position) {
 
             const lackingMoves = getPossibleMoves(
                 state,
-                otherFigId,
+                figId,
                 proxyMovesSchema,
-                otherFigSequenceIndex
+                figSequenceIndex
             );
 
             for (let moveType in moves) {
-                moves[moveType][otherFigSequenceIndex].push(...lackingMoves[moveType][0]);
+                moves[moveType][figSequenceIndex].push(...lackingMoves[moveType][0]);
             }
 
         });
 
-        possibleMovesMapping[position][moveType] = [];
     }
 }
 
@@ -59,7 +71,7 @@ export function correctOtherFigsPossibleMoves(newState, position, nextCoord) {
 
     ['captures', 'blocks'].forEach( moveType => updateMoveType(newState, moveType, position));
 
-    ['captures', 'blocks', 'walks'].forEach(moveType => updateMoveType(newState, moveType, nextCoord));
+    ['captures', 'blocks', 'walks', 'potentialCaptures'].forEach(moveType => updateMoveType(newState, moveType, nextCoord));
 
 }
 

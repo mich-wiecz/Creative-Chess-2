@@ -2,7 +2,7 @@ import { makeCoord, splitCoord } from 'chess/coords';
 import { couldMakeNextStep } from './couldMakeNextStep';
 import { getExcludedStepType } from './getExcludedStepType';
 import { getMovements } from './getMovements';
-import { getStepType } from './getStepType';
+import { getProperGetStepType } from './getStepType';
 
 
 
@@ -17,20 +17,22 @@ sequenceIndexStart
     const { game} = state;
 
     const {figures, possibleMovesMapping, boardMap} = game,
-    {team, position, name} = figures[figureId].figure,
+    {team, position} = figures[figureId].figure,
      [figCol, figRow] = splitCoord(position);
     let sequenceIndex = sequenceIndexStart || 0;
 
     const allMoves = {
         walks: [],
         captures: [],
-        blocks: []
+        blocks: [],
+        potentialCaptures: []
     };
 
     movesSchema.forEach((stepsObject) => {
 
         let { steps, amount } = stepsObject;
         const excludedStepType = getExcludedStepType(stepsObject);
+        const getStepType = getProperGetStepType(stepsObject.type);
 
         steps.forEach(step => {
 
@@ -41,7 +43,8 @@ sequenceIndexStart
             const sequenceMoves = {
                 walks: [],
                 captures: [],
-                blocks: []
+                blocks: [],
+                potentialCaptures: []
             };
 
 
@@ -73,3 +76,6 @@ sequenceIndexStart
     return allMoves;
 
 }
+
+
+

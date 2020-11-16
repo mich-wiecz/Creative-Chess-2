@@ -6,7 +6,7 @@ export function killCapturedFigure(capturedFig, state) {
 
     const {tags, possibleMovesMapping} = state.game;
 
-    const {name} = capturedFig;
+    const {name, moves, id} = capturedFig;
     if (name === 'King' || name === "Rook") updateCastlingAfterFigureChange(state, capturedFig, 'capture');
 
     const updateCapturedFigure = (property, newValue) => updateFigureData(
@@ -19,8 +19,7 @@ export function killCapturedFigure(capturedFig, state) {
     updateCapturedFigure('position', null);
     updateCapturedFigure('status', 'captured');
 
-    const { moves } = capturedFig;
-    removeAllFigMovesFromMapping(moves, possibleMovesMapping);
+    removeAllFigMovesFromMapping(id, moves, possibleMovesMapping);
 
     updateCapturedFigure('moves', {});
 }

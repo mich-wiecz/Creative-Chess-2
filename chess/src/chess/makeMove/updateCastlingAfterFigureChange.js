@@ -12,6 +12,7 @@ export function updateCastlingAfterFigureChange(
 
         const {game} = state;
     const { possibleMovesMapping, castlingMonitoring, figures } = game;
+    if (!castlingMonitoring[team].isCastlingPossible) return;
 
 
     if (name === "King") {

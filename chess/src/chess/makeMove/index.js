@@ -9,8 +9,7 @@ import { updateStatistics } from './updateStatistics';
 import { endOfficialGame } from '../endOfficialGame';
 import { updateCastlingData } from './updateCastlingData';
 import { getCastlingData } from './getCastlingData';
-import {current} from '@reduxjs/toolkit'
-
+import {current} from '@reduxjs/toolkit';
 
 
 export default function makeMove(newState, 
@@ -32,7 +31,7 @@ export default function makeMove(newState,
 
 
        const {figure} = figures[figureId];
-       const {position, team} = figure;
+       const {position, team, name} = figure;
 
  
 
@@ -42,8 +41,8 @@ export default function makeMove(newState,
         if (castlingFlag === 'break') return;
 
 
-        const nextCoordField = boardMap[nextCoord],
-        capturedFigIndex = isMoveCapture(nextCoordField) ? extractId(nextCoordField) : null;
+        const nextField = boardMap[nextCoord],
+        capturedFigId = isMoveCapture(nextField) ? extractId(nextField) : null;
         boardMap[nextCoord] = boardMap[position];
         boardMap[position] = 'blanc';
 
@@ -53,15 +52,17 @@ export default function makeMove(newState,
 
         if (game.protectKings) {
 
-            const [isKingInDanger, isCheckmate] = checkKings(newState, team);
+            const [isKingInDanger, isCheckmate] = checkKings(newState, team, name, nextCoord);
 
 
-            if (isCheckmate)  endOfficialGame(game, team);
+            if (isCheckmate) endOfficialGame(game, {winner: team, reason: 'checkmate'});
 
             if (isKingInDanger) {
                 wasPreviousMoveEndangeringKing = true;
                if (!isCheckmate) {
-                   const {position, history} = newState.history.game
+                   
+                   const {position, history} = newState.history.game;
+                   console.log(current(history), position)
                    newState.game = history[position];
                }
             }
@@ -73,8 +74,8 @@ export default function makeMove(newState,
 
         if (!castlingFlag) updateCastlingData(newState, figureId, nextCoord);
 
-        if (capturedFigIndex) {
-            const {figure: capturedFig} = figures[capturedFigIndex]
+        if (capturedFigId) {
+            const {figure: capturedFig} = figures[capturedFigId]
             killCapturedFigure(capturedFig, newState);
         }
      
@@ -82,7 +83,7 @@ export default function makeMove(newState,
         if (castlingFlag) updateFigure(newState, rookFigure.id, rookNextCoord);
         addNextGameDataToHistory(newState);   
             
-        }
+        } 
 }
 
 

@@ -11,7 +11,8 @@ export default function FirstFormPage({
   goToFirstPage, 
   submitButton,
   renderListFields,
-  wasError
+  wasError,
+  wasSended
 }) {
 
   const history = useHistory();
@@ -46,15 +47,17 @@ export default function FirstFormPage({
             }
             </section>
             {
-          wasError 
-          ?
-       <RequestErrorMessage />
-          :
-          <SuccessModal 
-          show={true}
-          onHide={() => history.push('/')}
-          redirectToLogin={() => history.push('/login')}
-          />
+               wasSended && (
+                wasError 
+                ?
+             <RequestErrorMessage />
+                :
+                <SuccessModal 
+                show={true}
+                onHide={() => history.push('/')}
+                redirectToLogin={() => history.push('/login')}
+                />
+               )
         }
             <section 
             aria-label="form-page-navigation"

@@ -48,7 +48,8 @@ export default function Login() {
        style={{
            position: 'absolute',
            top: '10%',
-           left: "20%"
+           left: "20%",
+           zIndex: 5000
            }
        }
        show="true"

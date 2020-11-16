@@ -13,7 +13,7 @@ export function addNextGameDataToHistory(newState) {
     }
 
 
-    const tooMuchCount = Math.abs(length - limit - 1);
+    const tooMuchCount = length - (limit - 1);
     if (tooMuchCount > 0) {
         history.splice(0, tooMuchCount);
     }

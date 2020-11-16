@@ -25,7 +25,7 @@ export function updateFigure(
      }
 
 
-    removeAllFigMovesFromMapping(figMoves, possibleMovesMapping);
+    removeAllFigMovesFromMapping(figureId, figMoves, possibleMovesMapping);
     updateFigureData(figure, 'position', nextCoord, tags);
     generatePossibleMoves(
         newState,

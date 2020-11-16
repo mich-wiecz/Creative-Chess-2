@@ -1,9 +1,10 @@
-export function removeAllFigMovesFromMapping(moves, possibleMovesMapping) {
+export function removeAllFigMovesFromMapping(figId, moves, possibleMovesMapping) {
     for (let moveType in moves) {
-        moves[moveType].forEach(stepSequence => {
-            stepSequence.forEach(seqCoord => {
-                const coordMapping = possibleMovesMapping[seqCoord][moveType];
-                possibleMovesMapping[seqCoord][moveType] = coordMapping.filter(mapCoord => !mapCoord.includes(seqCoord));
+        moves[moveType].forEach((stepSequence, seqIndex) => {
+            stepSequence.forEach((coord) => {
+                const coordMapping = possibleMovesMapping[coord][moveType];
+                const figMappingId = figId + '##' + seqIndex;
+                possibleMovesMapping[coord][moveType] = coordMapping.filter(mapId => mapId !== figMappingId);
             });
         });
     }

@@ -1,15 +1,16 @@
 import { updateTime } from '../time/updateTime';
 import {getEnemyTeam} from './getEnemyTeam'
 
-export function updateStatistics(gameData, team, wasPreviousMoveEndangeringKing, updatedTimes) {
+export function updateStatistics(gameData, team, wasPreviousMoveEndangeringKing = false, updatedTimes) {
     const {statistics, time, teams} = gameData;
-    statistics[team].wasPreviousMoveEndangeringKing = wasPreviousMoveEndangeringKing;
+    statistics[team].wasPreviousMoveEndangeringKing = wasPreviousMoveEndangeringKing ;
     if (wasPreviousMoveEndangeringKing) return;
     
  
-    const enemyTeam = getEnemyTeam(team, teams);
+    const enemyTeam = getEnemyTeam(team, teams),
+    isLastTeam = team === teams[teams.length -1].name;
 
-    statistics.turn++;
+    if (isLastTeam) statistics.turn++;
     statistics.movesDone++;
     statistics.moveFor = enemyTeam;
     if (updatedTimes)

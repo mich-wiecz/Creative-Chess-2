@@ -15,6 +15,7 @@ export default function Signup() {
 
     const [formPage, setFormPage] = useState('first');
     const [wasRequestError, setWasRequestError] = useState(false);
+    const [wasSended, setWasSended] = useState(false);
     const [validateUntouched, setValidateUntouched] = useState(false);
 
     const {initialValues, validationSchema} = useFormikConfiguration()
@@ -54,7 +55,8 @@ export default function Signup() {
             renderFields, 
             validationButton, 
             submitButton,
-            renderListFields
+            renderListFields,
+            wasSended
         }) => 
         <SecondFormPage 
         goToFirstPage={goToFirstPage} 
@@ -63,6 +65,7 @@ export default function Signup() {
         submitButton={submitButton}
         renderListFields={renderListFields}
         wasError={wasRequestError}
+        wasSended={wasSended}
         />
     }
 
@@ -113,7 +116,10 @@ export default function Signup() {
             isSubmitting={isSubmitting}
             disabled={!couldBeSended} 
             className="w-25 bg-maroon" 
-            onClick={handleSubmit}
+            onClick={() => {
+                setWasSended(true);
+                handleSubmit()
+            }}
             >
             <span> 
                OK
@@ -137,6 +143,7 @@ export default function Signup() {
               submitButton,
               couldBeSended,
               renderListFields,
+              wasSended
               }) }
           
             </Form>
