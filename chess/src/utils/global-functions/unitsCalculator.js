@@ -1,5 +1,5 @@
 class UnitsCalculator {
-    unitsInPixel = {
+    unitsInPixels = {
       px: 1,
       mm: 3.779527563816728,
       cm: 37.79527563816728,

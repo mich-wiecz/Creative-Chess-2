@@ -2,8 +2,8 @@ const functions = require('firebase-functions');
 const app = require('express')();
 const FBAuth = require('./util/fbAuth');
 
-// const cors = require('cors');
-// app.use(cors());
+const cors = require('cors');
+app.use(cors());
 
 
 const {
@@ -23,6 +23,6 @@ app.post('/user/image', FBAuth, uploadImage);
 app.post('/user', FBAuth, addUserDetails);
 app.get('/user', FBAuth, getAuthenticatedUser);
 
-exports.api = functions.region('europe-west2').https.onRequest(app);
+exports.api = functions.region('europe-west1').https.onRequest(app);
 
 

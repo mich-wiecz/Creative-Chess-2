@@ -7,11 +7,18 @@ import classes from './Navbar.module.scss';
 import {NavLink as RouterNavLink} from "react-router-dom"
 
 
-const NavLink = ({exact = false, eventKey, userNav, children, ...props}) => <Nav.Link 
-className="text-light" {...props}>
+import {useToasts} from 'contexts/ToastProvider';
+
+const NavLink = (
   {
-    eventKey 
-    ?
+    exact = false, 
+    eventKey, 
+    userNav, 
+    children, 
+    ...props}) => 
+ <Nav.Link 
+ as={"div"}
+className="text-light" {...props}>
     <RouterNavLink 
     exact={exact}
     to={eventKey}
@@ -20,28 +27,33 @@ className="text-light" {...props}>
     >
     {children}
     </RouterNavLink>
-    :
-    children
-  }
-
 </Nav.Link>
 
 export default function MainNavbar() {
 
-    const [activeKey, setActiveKey] = useState('/')
+  const [showToast, createToast] = useToasts();
+  
 
+    const [activeKey, setActiveKey] = useState('/');
+
+
+   const firstToast = createToast('first', {title: "Udało się"});
+   const secondToast = createToast('second', {title: "Jednak nie"});
+  
     return (
         <Navbar 
+        style={{zIndex: 2000}}
         bg="primary" 
         className="text-light"
         text="light"
         >
-          <Navbar.Brand className="text-light">
+          <Navbar.Brand onClick={() => {
+          showToast(firstToast);
+          showToast(secondToast);
+          } } className="text-light">
       <Image src={Favicon} alt="favicon - website logo" className="bg-light"/>
           </Navbar.Brand>
         <Nav
-        // fill
-        // justify
         variant="pills"
         className="ml-5 justify-self-end flex-grow-1"
         activeKey={activeKey}
@@ -49,10 +61,7 @@ export default function MainNavbar() {
       >   
           <NavLink  eventKey="/about">O aplikacji</NavLink>
           <NavLink exact eventKey="/">Gra</NavLink>
-          <NavLink >Opcje</NavLink>
-          <NavLink>  
-              PL/EN
-          </NavLink>
+          <NavLink eventKey="/options">Opcje</NavLink>
       </Nav>
       <Nav 
       onSelect={key => setActiveKey(key)}

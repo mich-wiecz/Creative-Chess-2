@@ -1,16 +1,32 @@
 
 // @import "~bootstrap/scss/";
+$color-maroon: rgb(114, 13, 13);
+$color-myblue: rgb(6, 6, 104);
+$newPrimary: #200849;
+
+:export {
+    myBlue: $color-myblue;
+    maroon: $color-maroon;
+
+}
 
 $theme-colors: (
-    "primary":#200849,
+    "primary": $newPrimary,
+    "primary-light": transparentize($newPrimary, 0.2),
+    "maroon": $color-maroon,
+    "myblue": $color-myblue
     // "info": tomato,
     // "danger": teal
 );
 
-$color-maroon: rgb(114, 13, 13);
+
 
 .bg-maroon {
     background-color: $color-maroon !important;
+}
+
+.bg-myblue {
+    background-color: $color-myblue !important;
 }
 
 .text-maroon {
@@ -21,14 +37,31 @@ $color-maroon: rgb(114, 13, 13);
     border: solid 2px $color-maroon !important;
 }
 
+.fill-myblue-light {
+    fill: lighten($color-myblue, 40%);
+}
+
+.overflow-scroll {
+    overflow: scroll;
+}
+
+.letter-spacing-default {
+letter-spacing: 12px;
+}
+
 body {
+    overflow-x: hidden;
     background-image:
     url("./assets/clouds-background.jpg");
-  background-repeat: no-repeat;
+  background-repeat: repeat;
 }
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.navbar-toggler {
+    color: white !important;
 }
 
 .playground-tabs {
@@ -39,3 +72,5 @@ body {
 
 /* import bootstrap to set changes */
 @import "~bootstrap/scss/bootstrap";
+
+

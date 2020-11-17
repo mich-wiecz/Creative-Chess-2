@@ -10,22 +10,32 @@ import { faChessPawn } from '@fortawesome/free-solid-svg-icons';
 export default function PawnSwitch({
   className = "",
   isOn,
-  onClick,
+  onToggle,
 }) {
   return (
-    <div
-      onClick={onClick}
-      className={`${classes.Container} ${className}) rounded bg-light cursor-pointer border`}
+    <Row
+    className={`${className} ${classes.Container}`}
+      onClick={onToggle}
     >
+
+      <Col className={` rounded bg-light cursor-pointer border d-flex p-0`}  xs={12}>
       <div
         className={`
-            ${isOn ? `${classes.Left} bg-success` : `${classes.Right} bg-danger`} 
-            w-50 h-100 d-flex rounded justify-content-center align-items-center
+        ${classes.Pawn}
+            ${isOn 
+              ? 
+              `${classes.Left} bg-success` 
+              : 
+              `${classes.Right} bg-danger`
+            } 
+            w-50 d-flex align-items-center justify-content-center rounded
             `}
       >
-        <FontAwesomeIcon icon={faChessPawn} size="lg" className="" />
+        <FontAwesomeIcon icon={faChessPawn} size="lg" />
       </div>
-    </div>
+      </Col>
+
+    </Row>
 
   );
 }
