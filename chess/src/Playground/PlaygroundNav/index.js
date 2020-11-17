@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
+import Tabs from 'react-bootstrap/Nav';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,10 +16,8 @@ const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}}
 
 export default function PlaygroundNav({
   isGameOn,
-  activeKey,
   showAllTabs,
-  handleShowAllTabs,
-  handleSetActiveKey,
+  handleShowAllTabs
 }) {
 
 
@@ -40,17 +38,17 @@ export default function PlaygroundNav({
           </Popover.Content>
         </Popover>}
       >
-        <Nav.Item 
-
+        <Tabs.Item 
         className=" py-2 text-center"
-        onClick={() => {
-          handleSetActiveKey(activeKey === eventKey ?  null : eventKey);
-        }}
         >
-          <Nav.Link className=" px-0" eventKey={eventKey} disabled={disabled}>
+          <Tabs.Link 
+          className=" px-0" 
+          eventKey={eventKey} 
+          disabled={disabled}
+          >
             <TabIcon icon={icon} />
-          </Nav.Link>
-        </Nav.Item>
+          </Tabs.Link>
+        </Tabs.Item>
       </OverlayTrigger>
     );
   }
@@ -65,10 +63,10 @@ export default function PlaygroundNav({
     className="mt-5"
     xs={1} 
     >
-      <Nav variant="pills" 
+      <Tabs variant="pills" 
       style={{zIndex: 1400, minWidth: 40}}
       className={`w-100 flex-column rounded bg-maroon`}
-      onMouseEnter={() => handleShowAllTabs(true)}
+      onMouseEnter={() => handleShowAllTabs(!showAllTabs)}
       onMouseLeave={() => handleShowAllTabs(false)}
       >
         <TabItem 
@@ -87,6 +85,7 @@ export default function PlaygroundNav({
       text={'Zmień rozmiar pól'} 
       icon={faArrowsAlt} 
       eventKey={'poles-resizing'}
+      disabled={false}
       />
       <TabItem 
       text={'Dodaj figury'} 
@@ -112,8 +111,11 @@ export default function PlaygroundNav({
        <TabItem 
       text={'Dodatkowe'} 
       icon={faStar} 
-      eventKey={'additional'}/>
-      </Nav>
+      eventKey={'additional'}
+      disabled={false}
+      />
+     
+      </Tabs>
     </Col>
   </Row>
   )

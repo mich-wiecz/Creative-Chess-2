@@ -9,6 +9,14 @@ export default function Rules({mode}) {
 
   const [refreshToken, setRefreshToken] = useState(0);
 
+  const setModeTitle = () => {
+    switch(mode) {
+      case '960': return 'Zasady gry w szachy losowe (960)'
+      case 'capablanca': return 'Zasady gry w capablanki'
+      default: return 'Zasady gry w szachy klasyczne'
+    }
+  }
+
   const IframeComponent = () => (
     <div
     style={{
@@ -21,11 +29,11 @@ export default function Rules({mode}) {
       icon={faRedo}
       color="blue"
       size="2x"
-      className="bg-dark p-1"
+      className="bg-maroon p-1"
       style={{
         position: 'absolute',
         top: 0,
-        right: 0,
+        left: 0,
         cursor: 'pointer'
       }}
       onClick={() => {
@@ -39,7 +47,7 @@ export default function Rules({mode}) {
         height: '100%',
       }}
       src={rulesUrls[mode]} 
-      title="Zasady gry w szachy klasyczne"
+      title={setModeTitle()}
       />
       </div>
   )

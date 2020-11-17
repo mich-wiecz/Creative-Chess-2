@@ -52,7 +52,7 @@ export default function Options() {
 
     const handleInteractionStyle = (style) => {
         if (interactionStyle === style) return;
-        dispatch(boardFeatureChanged({feature: 'interactionStyle', value: style}))
+        dispatch(boardFeatureChanged(['interactionStyle',  style]))
     }
 
     function   OptionWrapper ({
@@ -174,7 +174,7 @@ export default function Options() {
                     textOff="wyłączone"
                     />
                     )
-                    dispatch(boardFeatureChanged({feature: 'animationsOn', value: !animationsOn}))
+                    dispatch(boardFeatureChanged([ 'animationsOn', !animationsOn]))
             } }
            />
            <Option 
@@ -190,7 +190,7 @@ export default function Options() {
                     textOff="wyłączone"
                     />
                     )
-                    dispatch(boardFeatureChanged({feature: 'showPossibleMoves', value: !showPossibleMoves}))
+                    dispatch(boardFeatureChanged(['showPossibleMoves',  !showPossibleMoves]))
                 }}
            />
            <Option 
@@ -206,7 +206,7 @@ export default function Options() {
                     textOff="wyłączona"
                     />
                     )
-                    dispatch(boardFeatureChanged({feature: 'musicOn', value: !musicOn}))
+                    dispatch(boardFeatureChanged(['musicOn', !musicOn]))
             }}
            />
             <OptionWrapper

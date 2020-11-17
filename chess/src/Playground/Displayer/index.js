@@ -1,12 +1,15 @@
 import React from 'react';
 import 'react-resizable/css/styles.css';
 import {ResizableBox} from 'react-resizable'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function Displayer({
     className = '', 
     children, 
     show, 
+    onClose,
     ...props
 }) {
 
@@ -42,6 +45,17 @@ export default function Displayer({
         {...props}
         >
             {children}
+            <FontAwesomeIcon icon={faWindowClose} 
+            size="2x" 
+            color="darkred"
+            style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                cursor: 'pointer'
+            }}
+            onClick={onClose}
+            />
         </ResizableBox>
         
     )
