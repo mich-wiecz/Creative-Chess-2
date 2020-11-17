@@ -23,8 +23,8 @@ const gameSlice = createSlice({
              reducer(state, action) {
                 addTemplate(state.templates, action.payload);
              },
-            prepare(state, buildCb, about) {
-               return createTemplate(state, buildCb, about)
+            prepare(initState, buildCb, about) {
+               return createTemplate(initState, buildCb, about)
             }
         },
         gameActivated(state) {
@@ -70,6 +70,7 @@ const gameSlice = createSlice({
 
 
 export const selectBoardFeatures = state => state.chess.boardFeatures;
+export const selectBoardMotive = state => state.chess.boardFeatures.boardMotive;
 export const selectTime = state => state.chess.game.time;
 export const selectModelFigures = state => state.chess.modelFigures.figures;
 export const selectIndividualFigures = state => state.chess.game.figures;

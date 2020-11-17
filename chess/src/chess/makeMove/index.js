@@ -58,6 +58,7 @@ export default function makeMove(newState,
         if (castlingFlag !== 'break') {
 
 
+            console.log(castlingFlag)
 
         const nextField = boardMap[nextCoord],
         capturedFigId = isMoveCapture(nextField) ? extractId(nextField) : null;

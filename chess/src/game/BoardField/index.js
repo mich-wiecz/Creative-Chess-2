@@ -28,7 +28,7 @@ export default function BoardField({
             ...specialStyles[temporaryState],
             ...style
         }}
-        onClick={() => onFieldClick(position, figure)}
+        onClick={onFieldClick ?  (() => onFieldClick(position, figure)) : undefined}
         >
             {
                 figure &&

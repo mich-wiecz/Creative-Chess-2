@@ -40,7 +40,6 @@ export default function GameTemplatesSetter() {
 
     return (  
 <Carousel className="mx-auto w-50">
-<div>Coś jest</div>
 {templates &&
   Object.entries(templates).map(([tempName, {meta: {longTitle}}]) => {
     let text, variant;

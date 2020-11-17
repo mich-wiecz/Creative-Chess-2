@@ -1,9 +1,9 @@
 import generatePossibleMoves from 'chess/generatePossibleMoves';
 import {  getGameDataFromTemplate } from './getGameDataFromTemplate';
-
+import initialState from 'chess/initialState';
+import {current, isDraft} from 'immer';
 
 export function prepareStateBeforeGame(newState, templateName, templateReadConfig = {}) {
-
 
     const {templates, boardFeatures, history} = newState;
     if (!templates.hasOwnProperty(templateName))
@@ -13,10 +13,53 @@ export function prepareStateBeforeGame(newState, templateName, templateReadConfi
     const {configuration: tempConfig, template} = templateData;
 
     const { game } = newState;
-        
-   newState.game =  Object.assign(game, getGameDataFromTemplate(newState, template, templateReadConfig));
-    newState.activeGameTemplate = templateName;
+    // game.figures = {};
+    // if (initialState) {
+    //     game.tags = {...initialState.game.tags};
+    // }
 
+        newState.game =  {
+            statistics: {
+                turn: 0,
+                moveFor: null,
+                movesDone: 0, 
+            },
+            time: {
+                isTimeGame: false,
+                timeStarted: false
+            },
+            protectKings: true,
+            winData: {
+                winner: null,
+                reasonForWinning: null,
+            },
+            teams: [],
+            boardExtremes: {},
+            boardMap: {},
+            castlingMonitoring: { },
+            possibleMovesMapping: {},
+            tags: {
+                status: {
+                    active: [],
+                    captured: []
+                },
+                    category: {},
+                    team: {
+                    noTeam: []
+                },
+                    name: {}
+            },
+            figures: {}
+        };
+
+    
+   newState.game =  Object.assign(
+    newState.game, 
+    getGameDataFromTemplate(newState, template, templateReadConfig)
+    );
+
+
+    newState.activeGameTemplate = templateName;
     boardFeatures.rotation = 
     tempConfig.hasOwnProperty('rotation') 
     ? 
@@ -25,30 +68,33 @@ export function prepareStateBeforeGame(newState, templateName, templateReadConfi
     boardFeatures.rotation;   
 
 
-    const [statistics, castlingMonitoring] = game.teams.reduce((result, {name}, index) => {
+    // console.log(isDraft(newState) ? current(newState.game) : newState.game)
+
+
+    const [statistics, castlingMonitoring, time] = newState.game.teams.reduce((result, {name}, index) => {
         if(index === 0) {
             result[0].moveFor = name;
-            result[0].turn = 1;
-            result[0].movesDone = 0;
         }
         result[0][name] = {
             wasBadCastling: false,
             wasPreviousMoveEndangeringKing: false
         };
         result[1][name] = {
-            isCastlingPossible: true,
+            isCastlingPossible: templateName === '960' ? false : true,
             rooks: {}
-        }
+        };
+        result[2][name] = null;
         return result;
-    }, [{}, {}]);
+    }, [{}, {}, {}]);
         
 
 
-        game.statistics = {...game.statistics, ...statistics};
-        game.castlingMonitoring = castlingMonitoring;
-        history.game.history.push(game);
-        history.game.position++;
-        history.game.initial = game;
+        newState.game.statistics = {...game.statistics, ...statistics};
+        newState.game.castlingMonitoring = castlingMonitoring;
+        newState.game.time = time;
+        history.game.history = [newState.game]
+        history.game.position = 0;
+        history.game.initial = newState.game;
 
 
         generatePossibleMoves(newState);

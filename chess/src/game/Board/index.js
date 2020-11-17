@@ -44,19 +44,26 @@ export default function Board({isGameOn}) {
 
 
     useEffect(() => {
-
+        if (winner === newWinner) return;
         if(winner !== newWinner ) {
             setNewWinner(winner);
-        } else if (winner === newWinner && winner !== null) {
-            setNewWinner(null);
-        }        
+          if(winner !== null) {
+            setShowEndModal(true);
+          } 
+        }
+        // } else if (winner === newWinner && winner !== null) {
+        //     setNewWinner(null);
+        // }        
     }, [winner, setNewWinner, newWinner]);
 
 
 
-    useEffect(() => {
-        if (newWinner) setShowEndModal(true);
-    }, [newWinner])
+    // useEffect(() => {
+    //     if (winner === null) return;
+        
+    // }, [newWinner, winner])
+
+
 
     const markTimerAsUpdated = () => {
         setUpdateTimerFlag(false);
@@ -92,8 +99,11 @@ export default function Board({isGameOn}) {
     useEffect(() => {
         if (!readyFigureToMove || !nextPosition || showPawnPromotion) return;   
         if (isTimeGame) {
-            if(updateTimerFlag) return;
-            if(!updatedTime) setUpdateTimerFlag(true);
+            if(updateTimerFlag && !updatedTime){
+                setUpdateTimerFlag(true);
+                return;
+            }
+            // if(!updatedTime) 
         }
         dispatch(moveMade({
             figureId: readyFigureToMove,
@@ -222,7 +232,15 @@ export default function Board({isGameOn}) {
                 position={coord}
                 {...fieldData}
                 temporaryState={temporaryState}
-                onFieldClick={isGameOn && handleClickOnField}
+                onFieldClick={
+                    (isGameOn && 
+                    (isTimeGame ? hasTimeStarted : true)
+                    ) 
+                    ? 
+                    handleClickOnField 
+                    : 
+                    undefined
+                }
                 />
             )
 
@@ -237,13 +255,11 @@ export default function Board({isGameOn}) {
         let modesStyles = {}, sizeStyles = {};
         if (isGameOn) {
            modesStyles = {
-                pointerEvents: 'auto',
                 cursor: 'cell'
            }
         } else {
             modesStyles =  {
-                pointerEvents: 'none',
-                cursor: 'not-allowed'
+                cursor: 'no-drop'
             }
         }
 
@@ -270,7 +286,7 @@ export default function Board({isGameOn}) {
 
     return (
         <>
-        <div className="Container">
+        <div className={classes.Container}>
             {
             isTimeGame &&  
             <Timer 
@@ -278,7 +294,7 @@ export default function Board({isGameOn}) {
             newWinner={newWinner}
             updateTime={setUpdatedTime}
             updateTimerFlag={updateTimerFlag}
-            markTimeAsUpdated={markTimerAsUpdated}
+            markTimerAsUpdated={markTimerAsUpdated}
             />
             }
           
@@ -302,7 +318,7 @@ export default function Board({isGameOn}) {
                 boardMotive
                 )}
                 {
-                  (isTimeGame && !hasTimeStarted) &&  
+                  (isGameOn && isTimeGame && !hasTimeStarted) &&  
                   <div className={classes.TimeStarter}>
                     <Button 
                     variant="maroon"

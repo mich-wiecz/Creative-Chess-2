@@ -9,10 +9,14 @@ export function getCastlingData(gameData, figure, nextCoord) {
     let castlingFlag, rookNextCoord, rookFigure;
 
 
+
+    console.log(moves.castlings && moves.castlings.findIndex(coord => coord === nextCoord) !== -1, moves.castlings && current(moves.castlings), nextCoord)
+
     if (name === "King" &&
         castlingMonitoring[team].isCastlingPossible &&
         moves.castlings &&
-        moves.castlings.findIndex(coord => coord === nextCoord) !== -1) {
+        moves.castlings[0].findIndex(coord => coord === nextCoord) !== -1) {
+
 
         let foundedRookId;
         const { rooks } = castlingMonitoring[team];

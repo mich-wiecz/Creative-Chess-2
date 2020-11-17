@@ -4,13 +4,14 @@ import TimeTravelButtons from '@global-components/TimeTravelButtons';
 import FireButton from '@global-components/FireButton';
 import MainBar from '@global-components/MainBar';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { useDispatch} from 'react-redux';
-import {gameResetedToDefault, gameResetedToInitial, gameActivated} from 'redux/chessSlice';
+import { useDispatch, useSelector} from 'react-redux';
+import {gameResetedToDefault, gameResetedToInitial, gameActivated, selectStatistics} from 'redux/chessSlice';
 
 
 export default function PlaygroundBar() {
 
   const dispatch = useDispatch();
+  const {movesDone} = useSelector(selectStatistics);
 
   function PlaygroundMenu ({...props}) {
     return (
@@ -60,7 +61,7 @@ className="bg-primary text-light"
        <PlaygroundMenu />
       <TimeTravelButtons disabled/>
       <FireButton onClick={() => dispatch(gameActivated())}>
-      Rozpocznij grę 
+       {movesDone === 0 ? "Rozpocznij grę" : "Wznów"} 
       </FireButton>
       </ButtonGroup>
       </MainBar>

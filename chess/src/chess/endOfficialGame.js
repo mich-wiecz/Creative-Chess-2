@@ -1,6 +1,6 @@
 export function endOfficialGame(gameData, { winner = "no winner", reason = 'none'}) {
-    gameData.reasonForWinning = reason;
-    gameData.winner = winner;
+    gameData.winData.reasonForWinning = reason;
+    gameData.winData.winner = winner;
     gameData.protectKings = false;
-    gameData.isTimeGame = false;
+    gameData.time.isTimeGame = false;
 }

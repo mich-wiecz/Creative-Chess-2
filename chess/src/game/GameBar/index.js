@@ -11,7 +11,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 export default function GameBar() {
 
-  const {isGameTime} = useSelector(selectTime);
+  const {isTimeGame} = useSelector(selectTime);
   const {position,history} = useSelector(selectGameHistory);
    const dispatch = useDispatch()
 
@@ -40,11 +40,11 @@ export default function GameBar() {
             </Navbar.Collapse>  
              
                   <TimeTravelButtons 
-                  onUndo={position !== 0 && (() => dispatch(moveUndone))}
-                  onRedo={position >= history.length && (() => dispatch(moveRedone))}
+                  onUndo={position !== 0 && (() => dispatch(moveUndone()))}
+                  onRedo={position < history.length - 1 && (() => dispatch(moveRedone()))}
                   />
                  <Button 
-                 disabled={!isGameTime}
+                //  disabled={isTimeGame}
                  onClick={() => dispatch(playgroundActivated())}
                  className="flex-grow-1 bg-myblue text-uppercase letter-spacing-default"
                  > 

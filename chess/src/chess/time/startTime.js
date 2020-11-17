@@ -1,3 +1,3 @@
 export function startTime (state) {
-    state.game.timeStarted = true;
+    state.game.time.timeStarted = true;
 }

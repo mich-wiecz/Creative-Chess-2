@@ -6,5 +6,5 @@ export function removeTime (state) {
     };
     game.time = defaultObj;
   const {initial} = state.history.game;
-  initial.game.time = defaultObj;
+  initial.time = defaultObj;
 }

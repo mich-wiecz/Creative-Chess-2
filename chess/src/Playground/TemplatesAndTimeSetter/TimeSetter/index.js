@@ -10,29 +10,35 @@ export default function TimeSetter() {
 
   const dispatch = useDispatch();
   const teams = useSelector(selectTeams);
-  const {isGameTime} = useSelector(selectTime);
+  const {isTimeGame} = useSelector(selectTime);
 
 
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState(2);
   const prevTime = useRef(null);
+  const debounceId = useRef(null);
 
 
-  const addTime = useCallback(() => {
+  const addTime = () => {
     const timeObj = teams.reduce((result, {name}) => {
       result[name] = time * 60;
       return result;
     }, {})
     dispatch(timeAdded(timeObj));
-  }, [dispatch, teams, time])
+  }
+
+
+  const addTimeCallback = useCallback(debounce(
+    () => {
+    addTime()
+    }, 1000)
+  , [teams, time, dispatch])
 
 
   useEffect(() => {
-    if(!isGameTime || prevTime === time) return;
-    debounce(() => {
-      prevTime.current = time;
-      addTime();
-    }, 1000)
-  }, [time, dispatch, teams, addTime, isGameTime])
+    if(!isTimeGame || prevTime === time ) return;
+    addTimeCallback()
+   
+  })
 
  const handleChangeLocalTime = (e) => {
    let {value} = e.currentTarget;
@@ -40,17 +46,17 @@ export default function TimeSetter() {
      value = 90
    };
    if(value < 0) {
-     value = 0;
+     value = 2;
    }
   setTime(value);
   }
 
 
-  const toggleIsGameTime = () => {
-    if (isGameTime) {
+  const toggleIsTimeGame = () => {
+    if (isTimeGame) {
       dispatch(timeRemoved())
     } else {
-      addTime();
+      addTime()
     }
   }
 
@@ -64,19 +70,18 @@ export default function TimeSetter() {
             Kliknij w piona, by wyłączyć czas w grze
           </h6>
           <PawnSwitch 
-          isOn={isGameTime}
-          onToggle={toggleIsGameTime}
+          isOn={isTimeGame}
+          onToggle={toggleIsTimeGame}
           />
         <FormControl 
         className="mt-5 w-25"
         type="number"
-        placeholder="0 - 60 min"
+        placeholder="2 - 60 min"
         aria-label="Set game time"
-        min="0"
+        min="2"
         max="60"
         value={time}
         onChange={handleChangeLocalTime}
-        disabled={!isGameTime}
         />
          </Container> 
     )

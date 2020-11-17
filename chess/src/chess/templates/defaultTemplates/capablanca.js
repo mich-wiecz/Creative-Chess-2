@@ -51,7 +51,7 @@ export const capablancaGameTemplate = (state) => createTemplate(
                       {
                           from: '0|1',
                           colSpan: 10,
-                          fill: range(0, 8).map(_ => whiteSet.Pawn())
+                          fill: range(0, 10).map(_ => whiteSet.Pawn())
                       },
                       {
                           from: '0|7',
@@ -61,7 +61,7 @@ export const capablancaGameTemplate = (state) => createTemplate(
                       {
                           from: '0|6',
                           colSpan: 10,
-                          fill: range(0, 8).map(_ => blackSet.Pawn())
+                          fill: range(0, 10).map(_ => blackSet.Pawn())
                       },
       
                   ]

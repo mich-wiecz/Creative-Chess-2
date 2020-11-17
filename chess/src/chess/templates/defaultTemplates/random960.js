@@ -15,8 +15,10 @@ function getRandomPositions( figuresSets) {
     ) => {
         const resultField = drawingArray[Math.floor(Math.random() * drawingArray.length)];
 
-        if (isKing)
+        if (isKing) {
             kingPosition = resultField;
+        }
+            
 
         availableFields = availableFields.filter((field) => field !== resultField);
 
@@ -25,7 +27,7 @@ function getRandomPositions( figuresSets) {
             result[setName] = []
         };
 
-        result[setName].push(figuresSets[setName][figureName]());
+        result[setName][resultField] = figuresSets[setName][figureName]();
     }
         
 
@@ -49,7 +51,7 @@ function getRandomPositions( figuresSets) {
         // 3. king have 4 possibilities because it cannot be on the furthest sides
         drawPositionOfFigure(
             "King",
-            availableFields.slice(1, availableFields.length - 1),
+            availableFields.sort().slice(1, availableFields.length - 1),
             true
         );
         // 4. The rook on left of the king
@@ -113,7 +115,7 @@ const buildConfiguration = {
             const { white: { figuresSet: whiteSet }, black: { figuresSet: blackSet } } = teams;
 
 
-        const {white: whitePositions, black: blackPositions} = getRandomPositions(null, {white: whiteSet, black: blackSet});
+        const {white: whitePositions, black: blackPositions} = getRandomPositions( {white: whiteSet, black: blackSet});
 
             return build([
                 {

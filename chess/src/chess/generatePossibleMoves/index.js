@@ -4,6 +4,8 @@ import { getPossibleMoves } from './getPossibleMoves';
 import {splitCoord, makeCoord} from 'chess/coords';
 import {getStepTypeForAll} from './getStepType';
 import { extractId, isStringFigure } from 'chess/figures/functions';
+import { current } from '@reduxjs/toolkit';
+import {isDraft} from 'immer'
 
 
 
@@ -16,6 +18,7 @@ import { extractId, isStringFigure } from 'chess/figures/functions';
 export default function generatePossibleMoves (state, figuresIdsArray, noCastling) {
 
 
+  console.log(isDraft(state) ? current(state) : state );
 
     const {possibleMovesMapping, figures: indFigures, castlingMonitoring, tags, boardMap} = state.game;
     figuresIdsArray = getFiguresIds(indFigures, figuresIdsArray);
@@ -70,7 +73,9 @@ export default function generatePossibleMoves (state, figuresIdsArray, noCastlin
     if (!qualifiedRooks.hasOwnProperty(kingTeam) || 
     kingAlreadyMadeMove ||
     !castlingMonitoring[kingTeam].isCastlingPossible
-    ) continue;
+    )  {
+      continue;
+    }
 
 
       for(let {position: rookPosition, id: rookId} of qualifiedRooks[kingTeam]) {
@@ -97,27 +102,34 @@ export default function generatePossibleMoves (state, figuresIdsArray, noCastlin
      
       stepCount++;
        if (getStepTypeForAll(newCoord, boardMap, kingTeam) !== 'walk') {
-        if (isStringFigure(boardMap[newCoord]))  
-        monit.figuresOnWay.push(extractId(boardMap[newCoord]))
+        if (isStringFigure(boardMap[newCoord]))  {
+          monit.figuresOnWay.push(extractId(boardMap[newCoord]))
+        }
            isFreeWay = false;
        }
        newCoord = makeCoord(rookCol + rookColMove * stepCount, rookRow);
-  } 
+      } 
 
 
 
-  if(!isFreeWay)  continue;
+            if(!isFreeWay) {
+              continue;
+            }
 
-    if (!kingMoves.hasOwnProperty('castlings')) {
-      kingMoves.castlings = [[]]
-    }
-      kingMoves['castlings'][0].push(monit.kingNextPosition);
-      const mappedCastlingMove = possibleMovesMapping[monit.kingNextPosition];
-      if (!mappedCastlingMove.hasOwnProperty('castlings')) {
-        mappedCastlingMove.castlings = [];
-      }
-      mappedCastlingMove.castlings.push(kingId + '##' + 0)
-    }
+              if (!kingMoves.hasOwnProperty('castlings')) {
+                kingMoves.castlings = [[]]
+              }
+                kingMoves['castlings'][0].push(monit.kingNextPosition);
+                const mappedCastlingMove = possibleMovesMapping[monit.kingNextPosition];
+
+
+                if (!mappedCastlingMove.hasOwnProperty('castlings')) {
+                  mappedCastlingMove.castlings = [];
+                  }
+
+
+                mappedCastlingMove.castlings.push(kingId + '##' + 0)
+              }
     
 
 
