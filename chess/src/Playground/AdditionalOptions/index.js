@@ -16,24 +16,6 @@ import {boardFeatureChanged, selectBoardRotation} from 'redux/chessSlice';
   )
 
 
-export default function AdditionalOptions () {
-
-  const [localBoardRotation, setLocalBoardRotation] = useState(0);
-  const [localFieldsRotation, setLocalFieldsRotation] = useState(0);
-  const {fieldsRotation, boardRotation} = useSelector(selectBoardRotation);
-  const dispatch = useDispatch();
-
-
-  useEffect(() => {
-    setLocalFieldsRotation(fieldsRotation);
-  }, [fieldsRotation])
-
-  useEffect(() => {
-    setLocalBoardRotation(boardRotation);
-  }, [boardRotation])
-
-
-
   function RotationInput ({value, onChange}) {
 
     return (
@@ -57,6 +39,25 @@ export default function AdditionalOptions () {
        </>
     )
   }
+
+
+export default function AdditionalOptions () {
+
+  const [localBoardRotation, setLocalBoardRotation] = useState(0);
+  const [localFieldsRotation, setLocalFieldsRotation] = useState(0);
+  const {fieldsRotation, boardRotation} = useSelector(selectBoardRotation);
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    setLocalFieldsRotation(fieldsRotation);
+  }, [fieldsRotation])
+
+  useEffect(() => {
+    setLocalBoardRotation(boardRotation);
+  }, [boardRotation])
+
+
 
 
     return (

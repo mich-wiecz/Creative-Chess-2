@@ -24,7 +24,7 @@ import {boardFeatureChanged, selectBoardFeatures} from 'redux/chessSlice';
 
 
 
-export default function Options() {
+export default function Options({show, onClose}) {
 
     const dispatch = useDispatch(),
     {
@@ -148,10 +148,11 @@ export default function Options() {
 
     return (
         <Modal
-        show={true}
+        show={show}
         size="lg"
         centered
         aria-label="Opcja"
+        onHide={onClose}
         >
         <Modal.Header closeButton>
         <Modal.Title>

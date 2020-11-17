@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import FireButton from '@global-components/FireButton';
 import BoardField from 'Game/BoardField';
 import Timer from '../Timer';
 import Button from 'react-bootstrap/Button';
@@ -7,7 +8,7 @@ import PawnPromotion from '../PawnPromotion';
 import ChessCoords from './ChessCoords';
 import {normalizeCoordForGrid, getFieldData} from './functions';
 import {useSelector, useDispatch} from 'react-redux';
-import {moveMade, timeStarted, selectTime, selectTeams, selectStatistics, selectBoardExtremes, selectBoardMap, selectIndividualFigures, selectModelFigures, selectBoardFeatures, selectWinData, selectWholeChessState} from 'redux/chessSlice';
+import {moveMade, timeStarted, selectTime, selectTeams, selectStatistics, selectBoardExtremes, selectBoardMap, selectIndividualFigures, selectModelFigures, selectBoardFeatures, selectWinData, selectWholeChessState, gameActivated} from 'redux/chessSlice';
 import classes from './Board.module.scss';
 import { splitCoord } from 'chess/figures/functions';
 
@@ -22,7 +23,13 @@ export default function Board({isGameOn}) {
     const {isTimeGame, timeStarted: hasTimeStarted} = useSelector(selectTime);
     const teams = useSelector(selectTeams);
     const {moveFor} = useSelector(selectStatistics);
-    const {rotation: {fieldsRotation, boardRotation}, frozenFieldSize, boardMotive} = useSelector(selectBoardFeatures);
+    const {
+        rotation: {fieldsRotation, boardRotation}, 
+        frozenFieldSize, 
+        boardMotive,
+        animationsOn,
+        showPossibleMoves
+    } = useSelector(selectBoardFeatures);
     const {winner, reasonForWinning} = useSelector(selectWinData);
     const dispatch = useDispatch();
 
@@ -50,18 +57,9 @@ export default function Board({isGameOn}) {
           if(winner !== null) {
             setShowEndModal(true);
           } 
-        }
-        // } else if (winner === newWinner && winner !== null) {
-        //     setNewWinner(null);
-        // }        
+        }      
     }, [winner, setNewWinner, newWinner]);
 
-
-
-    // useEffect(() => {
-    //     if (winner === null) return;
-        
-    // }, [newWinner, winner])
 
 
 
@@ -120,8 +118,10 @@ export default function Board({isGameOn}) {
 
 
 
-   const getTemporaryState = (coord) => {
-        if (possibleWalks.has(coord) || readyFigurePosition === coord) {
+   const getTemporaryState = (coord, showPossibleMoves) => {
+       if (readyFigurePosition === coord) return 'walk';
+       if(!showPossibleMoves) return;
+        if (possibleWalks.has(coord)) {
            return 'walk'
         } else if(possibleCaptures.has(coord)) {
            return 'capture'
@@ -219,7 +219,7 @@ export default function Board({isGameOn}) {
                 modelFigures,
                  boardMotive
                 ),
-             temporaryState = getTemporaryState(coord);
+             temporaryState = getTemporaryState(coord, showPossibleMoves);
       
             boardFields.push(
                 <BoardField 
@@ -318,8 +318,12 @@ export default function Board({isGameOn}) {
                 modelFigures, 
                 boardMotive
                 )}
+                 
                 {
-                  (isGameOn && isTimeGame && !hasTimeStarted) &&  
+                    !isGameOn 
+                    ?
+                  (isTimeGame && !hasTimeStarted)
+                  ?  
                   <div className={classes.TimeStarter}>
                     <Button 
                     variant="maroon"
@@ -327,8 +331,17 @@ export default function Board({isGameOn}) {
                     onClick={() => dispatch(timeStarted())}>
                         Czas Start
                     </Button>
-                </div>
+                    </div>
+                    :
+                      <div className={classes.TimeStarter}>
+                    <FireButton className="w-50" onClick={() => dispatch(gameActivated())}>
+                    Graj!
+                    </FireButton>
+                  </div>
+                  :
+                  null
                 }
+                
                  <ChessCoords.Horizontal 
             className={`${classes.ChessCoords} ${classes.Horizontal}`}
             />

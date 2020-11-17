@@ -1,4 +1,4 @@
-import React, { lazy, Suspense} from 'react';
+import React, { lazy, Suspense, useState} from 'react';
 import MainNavbar from './ui/Navbar/Navbar'
 import Footer from 'ui/Footer';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
@@ -15,7 +15,12 @@ const About = lazy(() => import('pages/About'));
 
 
 
+
+
 function App() {
+
+  const [showOptions, setShowOptions] = useState(false)
+
 
   return (
     <>
@@ -35,11 +40,11 @@ function App() {
 
 
 
-        <IsolatedRoute  
+        {/* <IsolatedRoute  
           path={'/options'}
-          >
-          <Options />
-        </IsolatedRoute>
+          > */}
+          <Options show={showOptions} onClose={() => setShowOptions(false)}/>
+        {/* </IsolatedRoute> */}
      
     {
       [

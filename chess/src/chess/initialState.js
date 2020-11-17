@@ -32,7 +32,7 @@ export const defaultMotives = [
         frozenFieldSize: null,
         boardMotive: defaultMotives[0],
         interactionStyle: 'clicking',
-        animationsOn: false,
+        animationsOn: true,
         showPossibleMoves: true,
         musicOn: false
     },

@@ -49,7 +49,7 @@ export default function Displayer({
             size="2x" 
             color="darkred"
             style={{
-                position: 'absolute',
+                position: 'fixed',
                 top: 0,
                 right: 0,
                 cursor: 'pointer'

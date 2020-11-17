@@ -97,6 +97,12 @@ export default function BoardFieldResizer() {
     }
 
 
+    const resetToDefault = () => {
+      dispatch(boardFeatureChanged(
+        ['frozenFieldSize', null]))
+    }
+
+
     const adjustSize = (size, axis, sizeExtremes) => {
         const upperAxis = axis.toUpperCase();
         let min = sizeExtremes[`min${upperAxis}`],
@@ -219,7 +225,8 @@ export default function BoardFieldResizer() {
 
 
     return (
-        <Container className={`${classes.Wrapper} m-5`}>
+      <>
+        <Container className={`${classes.Wrapper} m-4`}>
             <section
                 aria-label="enlarge actual board fields by multiplication "
                onClick={handleMagnification}
@@ -339,19 +346,21 @@ export default function BoardFieldResizer() {
   </ListGroup.Item>
         </ListGroup>
 
-            <section className={classes.BtnGroup}>
-            <Button onClick={handleSettingMinSize}>Rozmiar minimalny</Button>
-          <Button onClick={handleChangingBoardFieldSize} variant="maroon">
-            Zatwierdź
-          </Button>
-            </section>
             </section>
         </Container>
+
+
+
+<section className={classes.BtnGroup}>
+<Button  onClick={resetToDefault}>Przywróć domyślne</Button>
+<Button onClick={handleSettingMinSize}>Rozmiar minimalny</Button>
+<Button onClick={handleChangingBoardFieldSize} variant="maroon">
+Zatwierdź
+</Button>
+</section>
+</>
         
     )
 
 }
 
-
-
-// c\((classes), \["(\w+)"\]\)

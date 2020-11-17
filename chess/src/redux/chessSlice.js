@@ -71,6 +71,7 @@ const gameSlice = createSlice({
 
 export const selectBoardFeatures = state => state.chess.boardFeatures;
 export const selectBoardMotive = state => state.chess.boardFeatures.boardMotive;
+export const selectAnimationsOn = state => state.chess.boardFeatures.animationsOn;
 export const selectBoardRotation = state => state.chess.boardFeatures.rotation;
 export const selectTime = state => state.chess.game.time;
 export const selectModelFigures = state => state.chess.modelFigures.figures;
