@@ -25,7 +25,10 @@ export const defaultMotives = [
     activeGameTemplate: 'classic',
     templates: {},
     boardFeatures: {
-        rotation: 0,
+        rotation: {
+            fieldsRotation: 0,
+            boardRotation: 0
+        },
         frozenFieldSize: null,
         boardMotive: defaultMotives[0],
         interactionStyle: 'clicking',

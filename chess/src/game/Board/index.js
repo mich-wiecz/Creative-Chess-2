@@ -22,7 +22,7 @@ export default function Board({isGameOn}) {
     const {isTimeGame, timeStarted: hasTimeStarted} = useSelector(selectTime);
     const teams = useSelector(selectTeams);
     const {moveFor} = useSelector(selectStatistics);
-    const {rotation, frozenFieldSize, boardMotive} = useSelector(selectBoardFeatures);
+    const {rotation: {fieldsRotation, boardRotation}, frozenFieldSize, boardMotive} = useSelector(selectBoardFeatures);
     const {winner, reasonForWinning} = useSelector(selectWinData);
     const dispatch = useDispatch();
 
@@ -225,7 +225,7 @@ export default function Board({isGameOn}) {
                 <BoardField 
                 key={coord}
                 style={{
-                    transform: `rotate(${rotation ? rotation : 0})`,
+                    transform: `rotate(${fieldsRotation ? fieldsRotation : 0}deg)`,
                     gridColumn: `${coordForGrid[0]} / span 1`,
                     gridRow: `${coordForGrid[1]} / span 1`,
                 }}
@@ -278,7 +278,8 @@ export default function Board({isGameOn}) {
 
         return {
             ...modesStyles,
-            ...sizeStyles
+            ...sizeStyles,
+            transform: `rotate(${boardRotation ? boardRotation : 0}deg)`
         }
 
       
