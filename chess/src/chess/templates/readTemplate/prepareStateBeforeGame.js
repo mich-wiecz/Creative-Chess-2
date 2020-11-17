@@ -32,6 +32,7 @@ export function prepareStateBeforeGame(newState, templateName, templateReadConfi
             result[0].movesDone = 0;
         }
         result[0][name] = {
+            wasBadCastling: false,
             wasPreviousMoveEndangeringKing: false
         };
         result[1][name] = {

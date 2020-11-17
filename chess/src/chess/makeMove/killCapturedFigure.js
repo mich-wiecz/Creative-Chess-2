@@ -1,4 +1,4 @@
-import { updateFigureData } from '@chess/figures/functions';
+import { updateFigureData } from 'chess/figures/functions';
 import { removeAllFigMovesFromMapping } from './removeAllFigMovesFromMapping';
 import {updateCastlingAfterFigureChange} from './updateCastlingAfterFigureChange';
 
@@ -16,10 +16,10 @@ export function killCapturedFigure(capturedFig, state) {
         tags
     );
 
-    updateCapturedFigure('position', null);
-    updateCapturedFigure('status', 'captured');
 
     removeAllFigMovesFromMapping(id, moves, possibleMovesMapping);
 
+    updateCapturedFigure('position', null);
+    updateCapturedFigure('status', 'captured');
     updateCapturedFigure('moves', {});
 }

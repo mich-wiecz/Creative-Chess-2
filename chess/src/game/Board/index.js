@@ -35,6 +35,7 @@ export default function Board({isGameOn}) {
     const [possibleCastlings, setPossibleCastlings] = useState(new Set());
     const [updatedTime, setUpdatedTime] = useState(null);
     const [updateTimerFlag, setUpdateTimerFlag] = useState(false);
+    const [pawnDirection, setPawnDirection] = useState(null);
     const [showPawnPromotion, setShowPawnPromotion] = useState(false);
     const [newIdentityOfPawn, setNewIdentityOfPawn] = useState(null);
     const [newWinner, setNewWinner] = useState(null);
@@ -63,13 +64,14 @@ export default function Board({isGameOn}) {
 
 
     
-   const fillMoveData = (state, figureId, figurePosition) => {
-    setReadyFigureToMove(figureId);
-    setReadyFigurePosition(figurePosition);
-    const {walks, captures, castlings} = state.game.figures[figureId].figure.moves;
+   const fillMoveData = (state, position, {id, ...rest}) => {
+    setReadyFigureToMove(id);
+    setReadyFigurePosition(position);
+    const {walks, captures, castlings} = state.game.figures[id].figure.moves;
     setPossibleWalks(new Set(walks.flat()));
     setPossibleCaptures(new Set(captures.flat()))
     if(castlings) setPossibleCastlings(new Set(castlings.flat()));
+    if (rest.pawnDirection) setPawnDirection(rest.pawnDirection);
 }
 
 
@@ -77,16 +79,18 @@ export default function Board({isGameOn}) {
   const clearMoveData = useCallback(() => {
     setPossibleWalks(new Set());
     setPossibleCaptures(new Set());
+    setPossibleCastlings(new Set());
     setReadyFigureToMove(null);
     setReadyFigurePosition(null);
     setNextPosition(null);
     if(updatedTime) setUpdatedTime(null);
     if(newIdentityOfPawn) setNewIdentityOfPawn(null);
-}, [newIdentityOfPawn, updatedTime])
+    if(pawnDirection) setPawnDirection(null);
+}, [newIdentityOfPawn, updatedTime, pawnDirection])
 
 
     useEffect(() => {
-        if (!readyFigureToMove || !nextPosition || showPawnPromotion) return;
+        if (!readyFigureToMove || !nextPosition || showPawnPromotion) return;   
         if (isTimeGame) {
             if(updateTimerFlag) return;
             if(!updatedTime) setUpdateTimerFlag(true);
@@ -118,15 +122,15 @@ export default function Board({isGameOn}) {
 
     const handleClickOnField = (position, figureData) => {
 
-        function handlePawn() {
+        function handlePawnNextMove() {
             const nextRow = splitCoord(position)[1];
 
             if ((
-                figureData.pawnDirection === 'forward' &&
+                pawnDirection === 'forward' &&
                 boardExtremes.top === nextRow
             ) ||
                 (
-                    figureData.pawnDirection === 'downward' &&
+                    pawnDirection === 'downward' &&
                     boardExtremes.bottom === nextRow
                 ))
                 setShowPawnPromotion(true);
@@ -135,18 +139,21 @@ export default function Board({isGameOn}) {
 
         function handleReadyFigure() {
 
+
             const isProperPosition = possibleWalks.has(position) ||
                 possibleCaptures.has(position) ||
                 possibleCastlings.has(position);
 
             if (isProperPosition) {
-                if (isTimeGame)
+                if (isTimeGame) {
                     setUpdateTimerFlag(true);
+                }
+                if (pawnDirection) {
+                    handlePawnNextMove();
+                }
                 setNextPosition(position);
-                if (figureData && figureData.pawnDirection)
-                    handlePawn();
             } else if (figureData && figureData.team === moveFor) {
-                fillMoveData(state, figureData.id, position);
+                fillMoveData(state, position, figureData);
 
             } else {
                 clearMoveData();
@@ -157,7 +164,7 @@ export default function Board({isGameOn}) {
             if (readyFigureToMove) {
                 handleReadyFigure();
             } else  if (figureData && figureData.team === moveFor) {
-                fillMoveData(state, figureData.id, position);
+                fillMoveData(state, position, figureData);
             }       
     }
 
@@ -260,7 +267,6 @@ export default function Board({isGameOn}) {
 
       
     }
-    console.log(frozenFieldSize)
 
     return (
         <>

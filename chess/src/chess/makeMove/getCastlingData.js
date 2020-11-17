@@ -1,3 +1,4 @@
+import { current } from '@reduxjs/toolkit';
 import { makeCoord, splitCoord } from 'chess/figures/functions.js';
 
 export function getCastlingData(gameData, figure, nextCoord) {
@@ -7,30 +8,33 @@ export function getCastlingData(gameData, figure, nextCoord) {
 
     let castlingFlag, rookNextCoord, rookFigure;
 
+
     if (name === "King" &&
         castlingMonitoring[team].isCastlingPossible &&
         moves.castlings &&
-        moves.castlings.includes(nextCoord)) {
+        moves.castlings.findIndex(coord => coord === nextCoord) !== -1) {
+
         let foundedRookId;
-        const { rooks } = castlingMonitoring[team].rooks;
+        const { rooks } = castlingMonitoring[team];
         for (let rookId in rooks) {
-            if (rooks[rookId].nexKingPosition === position) {
+            if (rooks[rookId].kingNextPosition === nextCoord) {
                 foundedRookId = rookId;
                 break;
             }
-            throw new Error(`The is data proving that this should be castling but there is not matching rook`);
         }
+        if (!foundedRookId) {
+            console.log(current(moves.castlings ? moves.castlings : {}))
+            throw new Error(`There is data proving that this move should be castling but there is not matching rook`);
+        } 
         rookFigure = figures[foundedRookId].figure;
         const { position: rookPos } = rookFigure,
             [rookCol, rookRow] = splitCoord(rookPos);
 
-
-
         let [nextCol] = splitCoord(nextCoord);
         const [kingCol, kingRow] = splitCoord(position),
             direction = rookCol > kingCol ? -1 : 1;
-
-        rookNextCoord = makeCoord(nextCol + direction, rookRow);
+            rookNextCoord = makeCoord(nextCol + direction, rookRow);
+        
 
 
         while (nextCol !== kingCol) {
@@ -47,7 +51,7 @@ export function getCastlingData(gameData, figure, nextCoord) {
             }
 
         }
-        castlingFlag = true;
+       if (castlingFlag !== 'break') castlingFlag = true;
     } else {
         castlingFlag = false;
     }

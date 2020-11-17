@@ -7,7 +7,7 @@ export function updateCastlingAfterFigureChange(
     figure,
     type = 'move') {
     const { moves, position, team, madeMove, name, id } = figure;
-    if (madeMove) return;
+    if (madeMove || figure.hasOwnProperty('previousForm')) return;
     if (type === 'move') figure.madeMove = true;
 
         const {game} = state;
@@ -33,7 +33,9 @@ export function updateCastlingAfterFigureChange(
         const { kingNextPosition, figuresOnWay } = monit.rooks[id];
         if (figuresOnWay.length === 0) {
             const [, kingId] = getKingData(state, team);
-            figures[kingId].figure.moves.castlings = [];
+            if(!kingId) return;
+            const {moves: kingMoves} =  figures[kingId].figure;
+           kingMoves.castlings =  kingMoves.castlings.filter(coord => coord !== kingNextPosition);
             possibleMovesMapping[kingNextPosition].castlings = [];
         } else {
             delete monit.rooks[id];

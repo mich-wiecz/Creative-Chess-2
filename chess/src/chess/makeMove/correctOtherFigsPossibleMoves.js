@@ -1,6 +1,19 @@
+
 import { getPossibleMoves } from 'chess/generatePossibleMoves/getPossibleMoves';
 import { findMovesSchemaDataForSequence } from './findMovesSchemaDataForSequence';
-import {current} from '@reduxjs/toolkit'
+
+
+   function singleCoordRemoval(figMappingId, moveType, moves, seqIndex, possibleMovesMapping) {
+    const sequence = moves[moveType][seqIndex];
+    if (sequence.length > 0) {
+        const coord = sequence[0];
+        possibleMovesMapping[coord][moveType] = possibleMovesMapping[coord][moveType].filter(mappingId => mappingId !== figMappingId)
+        moves[moveType][seqIndex] = [];
+
+        moves[moveType][seqIndex] = [];
+    }       
+    }
+
 
 
 function updateMoveType (state, moveType, position) {
@@ -18,29 +31,31 @@ function updateMoveType (state, moveType, position) {
 
         mappingMoveArray.forEach(figMappingId => {
             const [figId, figSequenceIndex] = figMappingId.split('##');
+
            
               const  { figure } = figures[figId];
                const  { moves, memoizedMovesSchema } = figure;
 
-
-               if (!moves.hasOwnProperty(moveType)) console.log(current(moves), current(figure), figId, moveType);
             (function removeStaleCoords() {
                 const typeMoves = moves[moveType];
                 if(moveType === 'walks' || moveType === 'potentialCaptures') {
-                    const coordIndex = typeMoves[figSequenceIndex].findIndex(coord => coord === position);
-                    moves.captures[figSequenceIndex] = [];
-                    moves[moveType][figSequenceIndex].splice(coordIndex); 
+                    let coordIndex = typeMoves[figSequenceIndex].findIndex(coord => coord === position);
+                   const staleSequence =  moves[moveType][figSequenceIndex].splice(coordIndex);
+
+                staleSequence.forEach((coord) => {
+                    const coordMapping = possibleMovesMapping[coord];
+                    coordMapping[moveType] = coordMapping[moveType].filter(
+                        mappingFigId => mappingFigId !== figId + '##' +(figSequenceIndex))
+                })
+                singleCoordRemoval(figMappingId, 'captures', moves, figSequenceIndex, possibleMovesMapping);
+                    
                 } else {
-                   
-                    moves[moveType][figSequenceIndex] = [];
+                    singleCoordRemoval(figMappingId, moveType, moves, figSequenceIndex, possibleMovesMapping);
                 }
             })();
 
-            const getLog = (type) => {
-              return ( type === 'potentialCaptures' ?  (sth) => console.log(sth) : () => null);
-            } 
 
-            const [foundedStepsObject, foundedStep] = findMovesSchemaDataForSequence(memoizedMovesSchema, figSequenceIndex, moveType, getLog);
+            const [foundedStepsObject, foundedStep] = findMovesSchemaDataForSequence(memoizedMovesSchema, figSequenceIndex);
 
             const proxyMovesSchema = [
                 {
@@ -57,9 +72,11 @@ function updateMoveType (state, moveType, position) {
             );
 
             for (let moveType in moves) {
+                if (moveType === 'castlings') continue;
+                // Adding coords to possibleMovesMapping was done internally
                 moves[moveType][figSequenceIndex].push(...lackingMoves[moveType][0]);
             }
-
+            
         });
 
     }
@@ -67,11 +84,11 @@ function updateMoveType (state, moveType, position) {
 
 
 
-export function correctOtherFigsPossibleMoves(newState, position, nextCoord) {
+export function correctOtherFigsPossibleMoves(newState, position, nextCoord, movedFigId) {
 
     ['captures', 'blocks'].forEach( moveType => updateMoveType(newState, moveType, position));
 
-    ['captures', 'blocks', 'walks', 'potentialCaptures'].forEach(moveType => updateMoveType(newState, moveType, nextCoord));
+    ['captures', 'blocks', 'walks', 'potentialCaptures'].forEach(moveType => updateMoveType(newState, moveType, nextCoord, movedFigId));
 
 }
 

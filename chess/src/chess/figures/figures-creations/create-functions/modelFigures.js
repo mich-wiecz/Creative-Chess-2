@@ -83,6 +83,7 @@ export function createModelFigure (state, figData) {
     ...defaultModelFigure,
     imageName: name,
     movesSchema: schemaToState,
+    name,
     ...rest
     }
     state.modelFigures.figures[name] = {

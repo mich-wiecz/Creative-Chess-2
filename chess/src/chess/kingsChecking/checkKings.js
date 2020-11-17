@@ -4,7 +4,7 @@ import { getEnemyTeam } from '../makeMove/getEnemyTeam';
 import {isCheckmate} from './isCheckmate';
 
 
-export function checkKings(newState, team, movedFigName, movedFigNextPosition) {
+export function checkKings(newState, team, movedFigName, movedFigNextPosition, capturedId) {
     let isKingInDanger, isCheckmateFact;
 
     const { game } = newState;
@@ -13,7 +13,7 @@ export function checkKings(newState, team, movedFigName, movedFigNextPosition) {
     const enemyTeam = getEnemyTeam(team, allTeams);
     const [, enemyKingId] = getKingData(newState, enemyTeam);
 
-    if (checkIsKingInDanger(fellowKingPosition, possibleMovesMapping)) {
+    if (checkIsKingInDanger(fellowKingPosition, possibleMovesMapping, capturedId)) {
         isKingInDanger = true;
     } else {
         isKingInDanger = false;

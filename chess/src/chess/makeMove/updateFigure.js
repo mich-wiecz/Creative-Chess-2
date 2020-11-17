@@ -1,4 +1,4 @@
-import generatePossibleMoves from '@chess/generatePossibleMoves';
+import generatePossibleMoves from 'chess/generatePossibleMoves';
 import { updateFigureData } from 'chess/figures/functions';
 import { removeAllFigMovesFromMapping } from './removeAllFigMovesFromMapping';
 import { updateCastlingAfterFigureChange } from './updateCastlingAfterFigureChange';
@@ -21,7 +21,7 @@ export function updateFigure(
 
 
     if (Array.isArray(transformArray) && transformArray[0]) {
-        transformFigure(transformArray, newState.modelFigures, figure);
+        transformFigure(transformArray, newState, figures[figureId]);
      }
 
 
@@ -29,6 +29,7 @@ export function updateFigure(
     updateFigureData(figure, 'position', nextCoord, tags);
     generatePossibleMoves(
         newState,
-        [figureId]
+        [figureId],
+        'no-castling'
     );
 }

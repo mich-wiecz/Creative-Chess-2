@@ -16,6 +16,7 @@ export function addNextGameDataToHistory(newState) {
     const tooMuchCount = length - (limit - 1);
     if (tooMuchCount > 0) {
         history.splice(0, tooMuchCount);
+        gameHistory.position -= tooMuchCount;
     }
 
     history.push(newState.game);

@@ -37,7 +37,8 @@ export function createIndividualFigure (
     {id, ...teamObj}, 
     modification
     ) {
-    const {figures: indFigures} = state.game;
+        const {game, modelFigures: {figures: modFigures}} = state;
+    const {figures: indFigures} = game;
 
     const figureData =  {
         figure: {
@@ -49,6 +50,7 @@ export function createIndividualFigure (
             color: teamObj.color || teamObj.name,
             position: coord,
             status: 'active',
+            category: modFigures[figName].figure.category
         },
         model: {}
     };

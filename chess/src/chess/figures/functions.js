@@ -1,6 +1,7 @@
 
 
 
+
 export function updateFigureData (figure, property, newValue, tags) {
     // if (!figure.hasOwnProperty(property)) throw new Error(`Property: ${property} does not exist on provided figure`);
     const oldValue = figure[property];

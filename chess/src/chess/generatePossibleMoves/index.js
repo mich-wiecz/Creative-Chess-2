@@ -13,7 +13,7 @@ import { extractId, isStringFigure } from 'chess/figures/functions';
 
 
 
-export default function generatePossibleMoves (state, figuresIdsArray) {
+export default function generatePossibleMoves (state, figuresIdsArray, noCastling) {
 
 
 
@@ -39,6 +39,8 @@ export default function generatePossibleMoves (state, figuresIdsArray) {
 
   state.game.possibleMovesMapping = possibleMovesMapping;
 
+
+  if (noCastling === 'no-castling') return;
  const {King: kingsIds, Rook: rooksIds} = tags.name;
   if(!kingsIds || !rooksIds) return;
 
@@ -120,9 +122,7 @@ export default function generatePossibleMoves (state, figuresIdsArray) {
 
 
   }
-  
-
-  
+    
 
 
 
