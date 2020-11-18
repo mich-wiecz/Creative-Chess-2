@@ -3,9 +3,12 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image';
 import  Favicon from 'assets/favicon-32x32.png'; 
-import classes from './Navbar.module.scss';
-import {NavLink as RouterNavLink} from "react-router-dom"
+import classes from './MainNavbar.module.scss';
+import {NavLink as RouterNavLink} from "react-router-dom";
+import Button from 'react-bootstrap/Button'
 
+import {useDispatch, useSelector} from 'react-redux';
+import {logout, selectAuthenticated, selectUserInfo} from 'redux/userSlice';
 
 import {useToasts} from 'contexts/ToastProvider';
 
@@ -31,11 +34,15 @@ className="text-light" {...props}>
 
 export default function MainNavbar() {
 
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(selectAuthenticated);
+  const userInfo = useSelector(selectUserInfo);
+  
+
   const [showToast, createToast] = useToasts();
   
 
     const [activeKey, setActiveKey] = useState('/');
-
 
    const firstToast = createToast('first', {title: "Udało się"});
    const secondToast = createToast('second', {title: "Jednak nie"});
@@ -67,12 +74,29 @@ export default function MainNavbar() {
       onSelect={key => setActiveKey(key)}
       className={`${classes.UserNav} justify-self-end`}
       >
-      <NavLink userNav eventKey="/signup">
-            Rejestracja
-          </NavLink>
-          <NavLink userNav eventKey="/login" >
-            Logowanie
-          </NavLink>
+        {
+          isAuthenticated 
+          ?
+          <div className="d-flex align-items-center">
+          <p className="m-0 pr-3 " style={{color: 'lightblue'}}>
+           Witaj{userInfo.handle ? `, ${userInfo.handle}` : ""} 
+          </p>
+          <Button className="bg-transparent border-0" onClick={() => dispatch(logout())}>
+          Wyloguj się
+           </Button>
+        </div>
+          :
+          <>
+          <NavLink userNav eventKey="/signup">
+          Rejestracja
+        </NavLink>
+             <NavLink userNav eventKey="/login" >
+             Logowanie
+           </NavLink>
+           </>
+        }
+
+     
       </Nav>
        </Navbar>
     )

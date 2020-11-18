@@ -31,7 +31,7 @@ export default function Login() {
     }
 
     const handleSubmit = (values, { setSubmitting }) => {
-        dispatch(loginOrSignup('login', values));
+        dispatch(loginOrSignup({type: 'login', userData: values}));
         setSubmitting(false);
     };
 

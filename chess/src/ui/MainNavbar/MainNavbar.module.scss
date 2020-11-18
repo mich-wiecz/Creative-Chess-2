@@ -5,6 +5,7 @@ $length: 40px;
 .UserNav {
     position: relative;
     background: $color-maroon;
+    height: 40px;
 
     &:after  {
         content: '';

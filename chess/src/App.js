@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState} from 'react';
-import MainNavbar from './ui/Navbar/Navbar'
+import MainNavbar from './ui/MainNavbar/MainNavbar'
 import Footer from 'ui/Footer';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import AuthRoute from 'utils/routing/AuthRoute';
@@ -25,6 +25,11 @@ function App() {
   return (
     <>
   
+         {/* <IsolatedRoute  
+          path={'/options'}
+          > */}
+          <Options show={showOptions} onClose={() => setShowOptions(false)}/>
+        {/* </IsolatedRoute> */}
  
 
       <MainNavbar/>
@@ -38,13 +43,6 @@ function App() {
           </Suspense>
         </AuthRoute>
 
-
-
-        {/* <IsolatedRoute  
-          path={'/options'}
-          > */}
-          <Options show={showOptions} onClose={() => setShowOptions(false)}/>
-        {/* </IsolatedRoute> */}
      
     {
       [
@@ -71,16 +69,16 @@ function App() {
           </AuthRoute>
 
      
-
+          <IsolatedRoute  path="/">
+        <Game />
+      </IsolatedRoute>
 
       {/* <Route path="/404">
      <PageNotFound />
       </Route> */}
       </MySwitch>
 
-      <IsolatedRoute  path="/">
-        <Game />
-      </IsolatedRoute>
+  
 
 
       <Footer />

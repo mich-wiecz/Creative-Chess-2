@@ -36,7 +36,25 @@ export default function Signup() {
     const goToSecondPage = () => setFormPage('second');
 
     const handleSubmit = (values, { setSubmitting }) => {
-        dispatch(loginOrSignup('signup', values));
+        const {
+            handle,
+            email,
+            password,
+            repeatPassword,
+            ...rest
+        } = values;
+
+        dispatch(loginOrSignup({
+            type: 'signup',
+            userData: {
+                signup: {
+                    handle, 
+                    email, 
+                    password, 
+                    confirmPassword: repeatPassword},
+                details: {...rest}
+            }
+        }));
         setSubmitting(false);
     };
 

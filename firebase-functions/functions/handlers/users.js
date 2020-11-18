@@ -15,6 +15,7 @@ const {
 // Sign users up
 exports.signup = (req, res) => {
 
+
 const signupData = req.body.signup;
 const { valid, errors } = validateSignupData(signupData);
 if (!valid) return res.status(400).json(errors);

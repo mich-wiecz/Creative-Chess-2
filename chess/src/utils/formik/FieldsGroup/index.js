@@ -18,6 +18,7 @@ export default function FieldsGroup({
             top: '0',
             left: "60%"
         }
+
     return (
         <Form.Row key={name}>
         <Form.Group 
