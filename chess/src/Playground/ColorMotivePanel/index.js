@@ -17,7 +17,9 @@ export default function ColorMotivePanel () {
 
     const {boardMotive: activeMotive} = useSelector(selectBoardFeatures);
 
-    const [userMotives, setUserMotives] = useState([{first: 'black', second: 'white'}]);
+    const [userMotives, setUserMotives] = useState([]);
+    const [preparedMotive, setPreparedMotive] = useState(null);
+    const [activeKey, setActiveKey] = useState('collection');
 
    
     const localStoragePath = useRef('color-motives');
@@ -28,11 +30,6 @@ export default function ColorMotivePanel () {
     const areTheSameMotive = (motiveOne, motiveTwo) => {
         return motiveOne.first === motiveTwo.first && motiveOne.second === motiveTwo.second;
     }
-
-
-    // useEffect(() => {
-    //     if (activeMotive) setShowingToast(true);
-    // }, [activeMotive])
 
 
     useEffect(() => {
@@ -62,10 +59,25 @@ export default function ColorMotivePanel () {
     }
 
 
+
+    const prepareNewMotive = (selectedMotive) => {
+        setPreparedMotive(selectedMotive);
+        setActiveKey('creator')
+    }
+
+
+    const resetPreparedMotive = () => {
+        setPreparedMotive(null)
+    }
+
+   const isEnoughUserMoves  = userMotives.length > userMotivesLimit.current;
+
     return (
         <>
 <Tabs 
-defaultActiveKey="collection" id="color-motives-sections" 
+activeKey={activeKey}
+onSelect={key => setActiveKey(key)}
+id="color-motives-sections" 
 className="playground-tabs"  
 > 
 <Tab eventKey="collection" title="Kolekcja">
@@ -75,14 +87,16 @@ changeActiveMotive={changeActiveMotive}
 defaultMotives={defaultMotives}
 userMotives={userMotives}
 deleteUserMotive={deleteUserMotive}
-handleClickOnMotive={changeActiveMotive}
-handleDoubleClickOnMotive={deleteUserMotive}
+prepareNewMotive={prepareNewMotive}
 activeMotive={activeMotive}
+isEnoughUserMoves={isEnoughUserMoves}
 />
 </Tab>
 <Tab eventKey="creator" title="Stwórz własny" >
 <MotivesCreator
-addUserMotive={userMotives.length < userMotivesLimit.current && handleAddUserMotive}
+addUserMotive={!isEnoughUserMoves && handleAddUserMotive}
+preparedMotive={preparedMotive}
+resetPreparedMotive={resetPreparedMotive}
 />
 </Tab>
 </Tabs>

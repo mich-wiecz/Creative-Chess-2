@@ -12,8 +12,10 @@ export default function MotivesCollection({
     defaultMotives,
     userMotives,
     deleteUserMotive,
+    prepareNewMotive,
     changeActiveMotive,
     activeMotive,
+    isEnoughUserMoves
 }) {
 
 
@@ -34,7 +36,7 @@ export default function MotivesCollection({
     }
 
     const handleClickOnMotive = (motive) => {
-        wait(200)
+        wait(100)
         .then(() => {
             if(preventSingleClick.current)  return;
             changeActiveMotive(motive)
@@ -49,8 +51,13 @@ export default function MotivesCollection({
         setSelectedMotive(motive);
     }
 
-    const handleDeleteMotive = (motive) => {
-        deleteUserMotive(motive);
+    const handleDeleteMotive = (selectedMotive) => {
+        deleteUserMotive(selectedMotive);
+    }
+
+
+    const handlePrepareNewMotive = (selectedMotive) => {
+        prepareNewMotive(selectedMotive)
     }
 
 
@@ -106,7 +113,7 @@ export default function MotivesCollection({
         <section>
         <h6 >Motywy użytkownika</h6>
         <span className="text-muted d-block">( max 10 )</span>
-        <span className="text-muted d-block">( kliknij 2-krotnie w motyw, aby go zmienić )</span>
+        <span className="text-muted d-block">( kliknij 2-krotnie w motyw, aby wyświetlić opcje )</span>
         </section>
         <Row className="mt-4 justify-content-start align-items-start"> 
         {
@@ -133,7 +140,10 @@ export default function MotivesCollection({
             <OptionButton>Nie rób nic</OptionButton>
             </UserOptions.Option>
             <UserOptions.Option>
-            <OptionButton>Dodaj kolejny bazując na tym</OptionButton>
+            <OptionButton 
+            disabled={isEnoughUserMoves}
+            onClick={ () => handlePrepareNewMotive(selectedMotive)}
+            >Dodaj kolejny bazując na tym</OptionButton>
             </UserOptions.Option>
             </UserOptions.Modal>
 </>

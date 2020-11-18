@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ColorMotive from '../ColorMotive'
 import ChromePicker from 'react-color/lib/Chrome'
 import Container from 'react-bootstrap/Container';
@@ -7,12 +7,24 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 export default function MotivesCreator({
-    addUserMotive
+    addUserMotive,
+    preparedMotive,
+    resetPreparedMotive
 }) {
 
     const [firstColor, setFirstColor] = useState('#000');
     const [secondColor, setSecondColor] = useState('#fff');
     const [selectedField, setSelectedField] = useState('first');
+
+
+
+    useEffect(() => {
+        if (!preparedMotive) return;
+
+        setFirstColor(preparedMotive.first);
+        setSecondColor(preparedMotive.second)
+        // resetPreparedMotive();
+    }, [preparedMotive, resetPreparedMotive])
 
 
     const handleSelectingField = (_id, fieldColor) => {

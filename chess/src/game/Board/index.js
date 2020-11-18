@@ -285,6 +285,31 @@ export default function Board({isGameOn}) {
       
     }
 
+
+    function MiddleButton() {
+
+       if (isGameOn) return null;
+
+    return (
+    <div className={classes.Starter}>
+          {
+            isTimeGame && !hasTimeStarted 
+            ?
+            <Button 
+            variant="maroon"
+            className="w-75"
+            onClick={() => dispatch(timeStarted())}>
+                Czas Start
+            </Button>
+            :
+            <FireButton className="w-50" onClick={() => dispatch(gameActivated())}>
+            Graj!
+            </FireButton>
+          }
+    </div>
+    )
+    }
+
     return (
         <>
         <div className={classes.Container}>
@@ -319,29 +344,7 @@ export default function Board({isGameOn}) {
                 boardMotive
                 )}
                  
-                {
-                    !isGameOn 
-                    ?
-                  (isTimeGame && !hasTimeStarted)
-                  ?  
-                  <div className={classes.TimeStarter}>
-                    <Button 
-                    variant="maroon"
-                    className="w-75"
-                    onClick={() => dispatch(timeStarted())}>
-                        Czas Start
-                    </Button>
-                    </div>
-                    :
-                      <div className={classes.TimeStarter}>
-                    <FireButton className="w-50" onClick={() => dispatch(gameActivated())}>
-                    Graj!
-                    </FireButton>
-                  </div>
-                  :
-                  null
-                }
-                
+                <MiddleButton />
                  <ChessCoords.Horizontal 
             className={`${classes.ChessCoords} ${classes.Horizontal}`}
             />
