@@ -15,10 +15,12 @@ export default function TimeSetter() {
 
   const [time, setTime] = useState(2);
   const prevTime = useRef(null);
-  const debounceId = useRef(null);
+  const debouncedAddTime = useRef(debounce((time) => {
+    addTime(time)
+    }, 1000)).current;
 
 
-  const addTime = () => {
+  const addTime = (time) => {
     const timeObj = teams.reduce((result, {name}) => {
       result[name] = time * 60;
       return result;
@@ -27,16 +29,13 @@ export default function TimeSetter() {
   }
 
 
-  const addTimeCallback = useCallback(debounce(
-    () => {
-    addTime()
-    }, 1000)
-  , [teams, time, dispatch])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
 
 
   useEffect(() => {
-    if(!isTimeGame || prevTime === time ) return;
-    addTimeCallback()
+    if(!isTimeGame ) return;
+    debouncedAddTime(time)
    
   })
 
@@ -54,9 +53,10 @@ export default function TimeSetter() {
 
   const toggleIsTimeGame = () => {
     if (isTimeGame) {
+      if (debouncedAddTime) debouncedAddTime.cancel();
       dispatch(timeRemoved())
     } else {
-      addTime()
+      addTime(time)
     }
   }
 
