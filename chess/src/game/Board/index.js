@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import FireButton from '@global-components/FireButton';
 import BoardField from 'Game/BoardField';
 import Timer from '../Timer';
@@ -11,6 +11,22 @@ import {useSelector, useDispatch} from 'react-redux';
 import {moveMade, timeStarted, selectTime, selectTeams, selectStatistics, selectBoardExtremes, selectBoardMap, selectIndividualFigures, selectModelFigures, selectBoardFeatures, selectWinData, selectWholeChessState, gameActivated} from 'redux/chessSlice';
 import classes from './Board.module.scss';
 import { splitCoord } from 'chess/figures/functions';
+import {useToasts} from 'contexts/ToastProvider';
+
+
+
+
+const toastTitle = "Szachownica",
+toasts = {
+wasBadCastling: 0,
+wasPreviousMoveEndangeringKing: 1,
+}
+
+
+
+
+
+
 
 export default function Board({isGameOn}) {
 
@@ -22,12 +38,11 @@ export default function Board({isGameOn}) {
     const state = useSelector(selectWholeChessState);
     const {isTimeGame, timeStarted: hasTimeStarted} = useSelector(selectTime);
     const teams = useSelector(selectTeams);
-    const {moveFor} = useSelector(selectStatistics);
+    const {moveFor, ...restStatistics} = useSelector(selectStatistics);
     const {
         rotation: {fieldsRotation, boardRotation}, 
         frozenFieldSize, 
         boardMotive,
-        animationsOn,
         showPossibleMoves
     } = useSelector(selectBoardFeatures);
     const {winner, reasonForWinning} = useSelector(selectWinData);
@@ -47,6 +62,48 @@ export default function Board({isGameOn}) {
     const [newIdentityOfPawn, setNewIdentityOfPawn] = useState(null);
     const [newWinner, setNewWinner] = useState(null);
     const [showEndModal, setShowEndModal] = useState(false);
+
+
+    const [showToast, createToast] = useToasts();
+    let prevBadCastling = useRef(false);
+    let prevKingEndangered = useRef(false);
+
+
+    useEffect(() => {  
+        Object.values(toasts).forEach(toastName => {
+            createToast(toastName, {
+                title: toastTitle,
+            });
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
+    useEffect(() => {
+        
+        const teamStatistics = restStatistics[moveFor]
+       
+            if (teamStatistics.wasBadCastling) {
+                if (prevBadCastling.current === teamStatistics.wasBadCastling) return;
+                showToast(toasts.wasBadCastling, "Roszada niezgodna z zasadami! Pole po którym przemiaszczał by się król jest 'atakowane'");
+                prevBadCastling.current = true;
+                
+            } else if (prevBadCastling.current) {
+                prevBadCastling.current = false;
+            }
+           
+
+ 
+            if ( teamStatistics.wasPreviousMoveEndangeringKing) {
+                if(prevKingEndangered.current === teamStatistics.wasPreviousMoveEndangeringKing ) return;
+                showToast(toasts.wasPreviousMoveEndangeringKing, "Błędny ruch! Król mógłby zostać zbity");
+                prevKingEndangered.current = true;
+            } else if (prevKingEndangered.current) {
+            prevKingEndangered.current = false;
+            }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [moveFor, restStatistics])
 
 
 

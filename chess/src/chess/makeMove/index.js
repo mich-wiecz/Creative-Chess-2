@@ -92,14 +92,13 @@ export default function makeMove(newState,
             }
             
         }
-        updateStatistics(game, team, wasPreviousMoveEndangeringKing, updatedTimes);
+        updateStatistics(newState.game, team, wasPreviousMoveEndangeringKing, updatedTimes);
         
         if (!wasPreviousMoveEndangeringKing) {
 
         if (!castlingFlag) updateCastlingData(newState, figureId, nextCoord);
 
         if (capturedFigId) {
-            console.log(1000)
             const {figure: capturedFig} = figures[capturedFigId]
             killCapturedFigure(capturedFig, newState);
         }
@@ -110,7 +109,7 @@ export default function makeMove(newState,
     } else {
         const {position, history} = newState.history.game;
         newState.game = history[position];
-        game.statistics[team].wasBadCastling = true;
+        newState.game.statistics[team].wasBadCastling = true;
     }
     logger(game.tags.status.captured, possibleMovesMapping)
             

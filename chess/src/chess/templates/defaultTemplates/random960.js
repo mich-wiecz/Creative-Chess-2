@@ -4,7 +4,7 @@ import {createTemplate} from '../index';
 
 function getRandomPositions( figuresSets) {
     let availableFields, startFields;
-    availableFields = startFields =  range(0, 7);
+    availableFields = startFields =  range(0, 8);
     let kingPosition = null,
         result = {};
 

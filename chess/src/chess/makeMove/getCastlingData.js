@@ -1,4 +1,4 @@
-import { current } from '@reduxjs/toolkit';
+
 import { makeCoord, splitCoord } from 'chess/figures/functions.js';
 
 export function getCastlingData(gameData, figure, nextCoord) {
@@ -10,7 +10,6 @@ export function getCastlingData(gameData, figure, nextCoord) {
 
 
 
-    console.log(moves.castlings && moves.castlings.findIndex(coord => coord === nextCoord) !== -1, moves.castlings && current(moves.castlings), nextCoord)
 
     if (name === "King" &&
         castlingMonitoring[team].isCastlingPossible &&
@@ -27,7 +26,6 @@ export function getCastlingData(gameData, figure, nextCoord) {
             }
         }
         if (!foundedRookId) {
-            console.log(current(moves.castlings ? moves.castlings : {}))
             throw new Error(`There is data proving that this move should be castling but there is not matching rook`);
         } 
         rookFigure = figures[foundedRookId].figure;

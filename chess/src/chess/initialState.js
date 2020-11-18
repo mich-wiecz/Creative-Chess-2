@@ -65,7 +65,8 @@ export const defaultMotives = [
             moveFor: null,
             movesDone: 0,
             // white: {
-            //     wasPreviousMoveEndangeringKing: false
+            //     wasPreviousMoveEndangeringKing: false,
+                // wasBadCastling: false
             // }
           
         },
