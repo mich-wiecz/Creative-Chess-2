@@ -78,11 +78,10 @@ export default function GameTemplatesSetter() {
     return (  
 <Container>
   <Tab.Container 
-
   id="game-templates-tabs"
   >
     <Row>
-      <Col xs={4}>
+      <Col xs={12} md={4}>
     <Nav 
      defaultActiveKey={0}
      activeKey={activeImage}
@@ -90,7 +89,7 @@ export default function GameTemplatesSetter() {
        setActiveImage(Number(key))
      } }
     variant="pills" 
-    className="flex-column w-100 h-100 justify-content-center rounded">
+    className="flex-column w-100 h-100 justify-content-center rounded ">
     {
       templatesOrder.map((tempName, index) => {
         const {title} = templatesToShow[tempName];
@@ -108,9 +107,9 @@ export default function GameTemplatesSetter() {
       })
     }
 </Nav>
-<RulesButton />
+
 </Col>
-<Col xs={8}>
+<Col xs={12} md={8}>
 <Carousel 
 activeIndex={activeImage}
 onSelect={(index) => {
@@ -162,7 +161,9 @@ indicators={false}
 }
 </Carousel>
 </Col>
+<RulesButton />
 </Row>
+
 </Tab.Container>
 </Container>
 

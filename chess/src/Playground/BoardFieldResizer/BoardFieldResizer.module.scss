@@ -13,6 +13,10 @@ $font-size: 26px;
     left: 35%;
     cursor: pointer;
 
+    @media (max-width: 768px) {
+      left: 85%;
+    }
+
     svg {
       width: 40px;
       height: 40px;

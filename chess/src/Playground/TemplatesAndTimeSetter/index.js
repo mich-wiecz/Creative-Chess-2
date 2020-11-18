@@ -13,7 +13,8 @@ export default function TemplatesAndTimeSetter() {
         id="templates-and-time-setter" 
         className="playground-tabs"  
         > 
-        <Tab eventKey="templates-setter" title="Wybierz tryb">
+        <Tab eventKey="templates-setter" 
+        className="mt-5" title="Wybierz tryb">
         <GameTemplatesSetter />
         </Tab>
         <Tab eventKey="time-setter" title="Ustaw czas" >

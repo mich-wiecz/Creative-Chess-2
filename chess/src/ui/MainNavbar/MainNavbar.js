@@ -6,6 +6,8 @@ import  Favicon from 'assets/favicon-32x32.png';
 import classes from './MainNavbar.module.scss';
 import {NavLink as RouterNavLink} from "react-router-dom";
 import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {logout, selectAuthenticated, selectUserInfo} from 'redux/userSlice';
@@ -25,8 +27,8 @@ className="text-light" {...props}>
     <RouterNavLink 
     exact={exact}
     to={eventKey}
-    className="text-light"
-    activeClassName={` rounded p-2 ${userNav  ? "bg-primary text-light" : "bg-maroon"}`}
+    className={`text-light d-flex p-2 m-0`}
+    activeClassName={` rounded ${userNav  ? "bg-primary text-light" : "bg-maroon"}`}
     >
     {children}
     </RouterNavLink>
@@ -49,10 +51,11 @@ export default function MainNavbar() {
   
     return (
         <Navbar 
-        style={{zIndex: 2000}}
+        style={{zIndex: 500}}
         bg="primary" 
         className="text-light"
         text="light"
+        expand="md"
         >
           <Navbar.Brand onClick={() => {
           showToast(firstToast);
@@ -60,16 +63,29 @@ export default function MainNavbar() {
           } } className="text-light">
       <Image src={Favicon} alt="favicon - website logo" className="bg-light"/>
           </Navbar.Brand>
+          <Navbar.Toggle 
+          aria-controls="main-site-nav"
+          className="bg-light"
+          />
+          <Navbar.Collapse id="main-site-nav">
         <Nav
         variant="pills"
         className="ml-5 justify-self-end flex-grow-1"
         activeKey={activeKey}
         onSelect={(selectedKey) => setActiveKey(selectedKey)}
       >   
-          <NavLink  eventKey="/about">O aplikacji</NavLink>
-          <NavLink exact eventKey="/">Gra</NavLink>
+     <Col md={4} xs={5}>
+          <NavLink  eventKey="/about" >O aplikacji</NavLink>
+          </Col>
+        <Col md={4} xs={5} >
+          <NavLink exact eventKey="/" className="w-100">Gra</NavLink>
+          </Col>
+          <Col md={4} xs={5} >
           <NavLink eventKey="/options">Opcje</NavLink>
+          </Col>
       </Nav>
+      <Row className="justify-content-end">
+      <Col md={12} xs={6} >
       <Nav 
       onSelect={key => setActiveKey(key)}
       className={`${classes.UserNav} justify-self-end`}
@@ -86,18 +102,21 @@ export default function MainNavbar() {
            </Button>
         </div>
           :
-          <>
+          <div className="d-flex justify-content-around">
           <NavLink userNav eventKey="/signup">
           Rejestracja
         </NavLink>
              <NavLink userNav eventKey="/login" >
              Logowanie
            </NavLink>
-           </>
+           </div>
         }
 
      
       </Nav>
+      </Col>
+      </Row>
+      </Navbar.Collapse>
        </Navbar>
     )
 }

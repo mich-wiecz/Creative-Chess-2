@@ -21,7 +21,10 @@ export default function PlaygroundBar() {
       {...props}
     >
       <DropdownToggle  
-      className="bg-maroon"
+      className="bg-maroon h-100"
+       style={{
+         width: 50
+       }}
       />
       <DropdownMenu >
       <DropdownHeader 

@@ -5,18 +5,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function Displayer({
-    className = '', 
-    children, 
-    show, 
-    onClose,
-    ...props
-}) {
-
-    const minWidth = 800;
-
-
-   if (show) return (
+const Wrapper = ({mobileVersion, minWidth, className, show, children, onClose, ...props}) =>  {
+     
+  if (mobileVersion) {
+    return  (
+        <div 
+        className={`mb-2  bg-primary text-light p-4  overflow-auto rounded border-maroon fade ${show && "show"}`}
+        style={{
+            position: 'relative',
+            // top: '3%',
+            // left: '0',
+            width: "100%",
+            height: "100%",
+            // zIndex: 101,
+        }}
+        {...props}
+        >
+            {children}
+        </div>
+    )
+  }  else {
+      return    (
         <ResizableBox
         className={`${className} mb-5 react-resizable bg-primary text-light p-4  overflow-auto rounded border-maroon fade ${show && "show"}`}
         style={{
@@ -31,6 +40,7 @@ export default function Displayer({
         <div
         className={`react-resizable-handle react-resizable-handle-${h}`}
         style={{
+        position: 'absolute',
         width: 60,
         height: 60
         }}
@@ -45,21 +55,54 @@ export default function Displayer({
         {...props}
         >
             {children}
-            <FontAwesomeIcon icon={faWindowClose} 
-            size="2x" 
-            color="darkred"
+        </ResizableBox>
+      ) 
+  }
+}
+
+
+
+export default function Displayer({
+    width,
+    mobileVersion,
+    className = '', 
+    children, 
+    show, 
+    onClose,
+    ...props
+}) {
+
+    const minWidth = width;
+
+
+   if (!show) return null;
+
+   return (
+       <Wrapper mobileVersion={mobileVersion}
+       width={width}
+       className={className}
+        show={show}
+        onClose={onClose}
+        minWidth={minWidth}
+       >
+            {children}
+            <div 
+            className="d-inline-block bg-primary"
             style={{
-                position: 'fixed',
+                position: 'absolute',
                 top: 0,
                 right: 0,
                 cursor: 'pointer'
             }}
+            >
+           <FontAwesomeIcon icon={faWindowClose} 
+            size={`${mobileVersion ? "3x" : "2x"}` }
+            color="darkred"
             onClick={onClose}
             />
-        </ResizableBox>
-        
-    )
-    return null;
+            </div>
+       </Wrapper>
+   )
 }
 
 

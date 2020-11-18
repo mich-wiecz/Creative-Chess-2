@@ -13,6 +13,7 @@ import {useToasts} from 'contexts/ToastProvider';
 import Button from 'react-bootstrap/Button';
 import {useSelector, useDispatch} from 'react-redux';
 import {boardFeatureChanged, selectBoardFeatures} from 'redux/chessSlice';
+import {useHistory} from 'react-router-dom'
 
     const toastTitle = "Opcja zmieniona",
      toasts = {
@@ -24,7 +25,12 @@ import {boardFeatureChanged, selectBoardFeatures} from 'redux/chessSlice';
 
 
 
-export default function Options({show, onClose}) {
+export default function Options() {
+
+
+    const history = useHistory();
+
+    const goBackToMainPage = () => history.push('/')
 
     const dispatch = useDispatch(),
     {
@@ -148,11 +154,11 @@ export default function Options({show, onClose}) {
 
     return (
         <Modal
-        show={show}
+        show={true}
         size="lg"
         centered
         aria-label="Opcja"
-        onHide={onClose}
+        onHide={goBackToMainPage}
         >
         <Modal.Header closeButton>
         <Modal.Title>
@@ -234,7 +240,7 @@ export default function Options({show, onClose}) {
             </Row>
         </Modal.Body>
         <Modal.Footer className="bg-dark">
-        <Button>
+        <Button onClick={goBackToMainPage}>
            Zamknij opcje 
         </Button>
         </Modal.Footer>

@@ -25,12 +25,7 @@ function App() {
   return (
     <>
   
-         {/* <IsolatedRoute  
-          path={'/options'}
-          > */}
-          <Options show={showOptions} onClose={() => setShowOptions(false)}/>
-        {/* </IsolatedRoute> */}
- 
+  
 
       <MainNavbar/>
 
@@ -43,6 +38,13 @@ function App() {
           </Suspense>
         </AuthRoute>
 
+
+        <IsolatedRoute  
+          path={'/options'}
+          >
+          <Options show={true} onClose={() => setShowOptions(false)}/>
+        </IsolatedRoute>
+ 
      
     {
       [
@@ -60,13 +62,13 @@ function App() {
     }
 
 
-          <AuthRoute 
+          <IsolatedRoute 
           path={'/signup'}>
           <Suspense fallback={<WaitingModal />}
           >
              <Signup />
           </Suspense>
-          </AuthRoute>
+          </IsolatedRoute>
 
      
           <IsolatedRoute  path="/">

@@ -17,7 +17,8 @@ const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}}
 export default function PlaygroundNav({
   isGameOn,
   showAllTabs,
-  handleShowAllTabs
+  handleShowAllTabs,
+  mobileVersion
 }) {
 
 
@@ -39,7 +40,8 @@ export default function PlaygroundNav({
         </Popover>}
       >
         <Tabs.Item 
-        className=" py-2 text-center"
+        style={mobileVersion ?  {width:  120} : {}}
+        className=" py-2 text-center flex-grow-1"
         >
           <Tabs.Link 
           className=" px-0" 
@@ -61,11 +63,12 @@ export default function PlaygroundNav({
     <Row >
     <Col 
     className="mt-5"
-    xs={1} 
+    xs={12}
+    md={1} 
     >
       <Tabs variant="pills" 
-      style={{zIndex: 1400, minWidth: 40}}
-      className={`w-100 flex-column rounded bg-maroon`}
+      style={{zIndex: 9400, minWidth: 40}}
+      className={`w-100  flex-md-column justify-content-start rounded bg-maroon flex-xs-wrap flex-md-nowrap `}
       onMouseEnter={() => handleShowAllTabs(!showAllTabs)}
       onMouseLeave={() => handleShowAllTabs(false)}
       >
@@ -101,7 +104,7 @@ export default function PlaygroundNav({
       <TabItem 
       text={'Motyw kolorystyczny'} 
       icon={faPalette} 
-      eventKey={'color-motive'}
+      eventKey={'board-motive'}
       disabled={false}
       />
             <TabItem 

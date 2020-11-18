@@ -9,18 +9,29 @@ import BoardFieldResizer from './BoardFieldResizer';
 import Rules from './Rules';
 import Displayer from './Displayer';
 import PlaygroundNav from './PlaygroundNav';
+import windowDimensions from 'react-window-dimensions';
 
 import {useSelector} from 'react-redux';
 import {selectActiveGameTemplate} from 'redux/chessSlice';
+import debounce from 'lodash.debounce';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 
 
 
+  const mobileBreakpoint = 768;
 
 
-export default function Playground({
+ function Playground({
+   windowWidth,
   isGameOn,
   children: Board
 }) {
+
+
+   const isMobileVersion = windowWidth < mobileBreakpoint;
+
 
     const [showAllTabs, setShowAllTabs] = useState(false);
     const [activeKey, setActiveKey] = useState(null);
@@ -44,6 +55,63 @@ export default function Playground({
 
     const activeTemplate = useSelector(selectActiveGameTemplate);
 
+    function renderPlaygroundNav () {
+      return (
+        <PlaygroundNav 
+        mobileVersion={isMobileVersion}
+        isGameOn={isGameOn}
+         showAllTabs={showAllTabs}
+         handleShowAllTabs={setShowAllTabs}
+        />
+      )
+    }
+
+    function TabPane ({children, eventKey, className, ...props}) {
+      return (
+        <Tab.Pane 
+        className={`${className}`} 
+        eventKey={eventKey}
+        {...props}
+        >
+        {children}
+       </Tab.Pane>
+      )
+    }
+
+
+    function renderDisplayer () {
+      return (
+        <Displayer
+        width={windowWidth < 1000 ? 0.8 * windowWidth : 0.6 * windowWidth}
+        show={activeKey}
+        mobileVersion={isMobileVersion}
+        onClose={() => setActiveKey(null)}
+    >
+       <Tab.Content className="h-100">
+             <TabPane eventKey="game-rules" className="h-100">
+             <Rules mode={activeTemplate}/>
+            </TabPane>
+            <TabPane eventKey="modes">
+              <TemplatesAndTimeSetter/>
+            </TabPane>
+            <TabPane eventKey="interaction-table">
+             <InteractionsDescription />
+            </TabPane>
+            <TabPane eventKey="additional">
+            <AdditionalOptions />
+            </TabPane>
+            <TabPane eventKey="board-motive">
+            <ColorMotivePanel />
+            </TabPane>
+            <TabPane eventKey="poles-resizing">
+            <BoardFieldResizer />
+            </TabPane>
+            </Tab.Content>
+      </Displayer>
+      )
+    }
+
+
     return (
       <>
       {
@@ -51,17 +119,48 @@ export default function Playground({
       }
      
       <Tab.Container 
+      style={{position: 'relative'}}
       onSelect={(key) => handleSetActiveKey(key)} 
       activeKey={activeKey} id="playground-tabs"
       >
+        {
+          isMobileVersion &&
+          !activeKey &&
+          <FontAwesomeIcon 
+          icon={faPuzzlePiece}
+          size="4x"
+          className="text-primary bg-maroon p-2"
+          style={{
+            position: 'absolute',
+            top: "25%",
+            left: 0,
+            cursor: 'pointer',
+            borderRadius: '0 30px 30px 0',
+            zIndex: 4500
+          }}
+          onClick={() => setActiveKey('board-motive')}
+          />
+        }
+        {
+          isMobileVersion && 
+          activeKey &&
+          <div 
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '80%',
+            zIndex: 5000
+          }}
+          className="d-flex flex-column"
+          >
+            {renderPlaygroundNav()}
+            {renderDisplayer()}
+          </div>
+        }
         <main
          className="d-flex justify-content-between"
         >
-     <PlaygroundNav 
-     isGameOn={isGameOn}
-      showAllTabs={showAllTabs}
-      handleShowAllTabs={setShowAllTabs}
-     />
+    {!isMobileVersion && renderPlaygroundNav()}
       <section 
       style={{
         minHeight: '90vh',
@@ -69,31 +168,7 @@ export default function Playground({
       }}
       className={`p-5 mx-auto flex-grow-1 d-flex flex-column justify-content-center align-items-center`}
       >
-      <Displayer
-      show={activeKey}
-      onClose={() => setActiveKey(null)}
-  >
-     <Tab.Content className="h-100">
-           <Tab.Pane className="h-100" eventKey="game-rules">
-           <Rules mode={activeTemplate}/>
-          </Tab.Pane>
-          <Tab.Pane eventKey="modes">
-            <TemplatesAndTimeSetter/>
-          </Tab.Pane>
-          <Tab.Pane eventKey="interaction-table">
-           <InteractionsDescription />
-          </Tab.Pane>
-          <Tab.Pane eventKey="additional">
-          <AdditionalOptions />
-          </Tab.Pane>
-          <Tab.Pane eventKey="color-motive">
-          <ColorMotivePanel />
-          </Tab.Pane>
-          <Tab.Pane eventKey="poles-resizing">
-          <BoardFieldResizer />
-          </Tab.Pane>
-          </Tab.Content>
-    </Displayer>
+     {!isMobileVersion && renderDisplayer()}
     <div 
     style={{
       marginTop: activeKey ? '200px' : 0
@@ -107,3 +182,10 @@ export default function Playground({
     </>
     )
 }
+
+
+
+export default windowDimensions({
+  take: () => ({windowWidth: window.innerWidth}),
+  // debounce: onResize => debounce(onResize, 200)
+})(Playground);

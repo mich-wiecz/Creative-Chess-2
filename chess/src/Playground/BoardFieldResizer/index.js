@@ -238,8 +238,8 @@ export default function BoardFieldResizer() {
              x<strong>{magnification}</strong>
                 </span>  
             </section>
-
-            <section className={classes.AxisPart}>
+          <div className="d-flex  flex-column flex-md-row">
+            <section className={`${classes.AxisPart} p-sm-5`}>
             <div
             className={classes.PotentialBoardField}
             style={{
@@ -313,7 +313,7 @@ export default function BoardFieldResizer() {
      
             </section >
             
-            <section className={`text-dark`} style={{minWidth: 240}}>
+            <section className={`text-dark p-md-0 pt-5`} style={{minWidth: 240}}>
             <ListGroup>
               <ListGroup.Item>
               <div>
@@ -345,8 +345,10 @@ export default function BoardFieldResizer() {
               </div>
   </ListGroup.Item>
         </ListGroup>
+      
 
             </section>
+            </div>
         </Container>
 
 
