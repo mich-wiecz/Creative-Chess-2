@@ -49,7 +49,7 @@ export default function Login() {
            zIndex: 5000
            }
        }
-       show="true"
+       show={true}
        onHide={handleGoingMainPage}
        backdrop="static"
        >

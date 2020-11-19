@@ -1,11 +1,51 @@
-import React from 'react';
+import React, {useState} from 'react';
 import 'react-resizable/css/styles.css';
 import {ResizableBox} from 'react-resizable'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
+import { faWindowClose, faEye, faArrowsAltV } from '@fortawesome/free-solid-svg-icons';
+import Button from 'react-bootstrap/Button';
 
 
-const Wrapper = ({mobileVersion, minWidth, className, show, children, onClose, ...props}) =>  {
+const mobileIconsSize = "3x";
+
+function IconsGroup({mobileVersion, onClose, children}) {
+    return (
+        <div 
+        className="d-inline-block bg-primary rounded border border-maroon p-1"
+        style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            cursor: 'pointer',
+            zIndex: 5000
+        }}
+        >
+            {children}
+        <Button className="align-top m-0 p-0">
+       <FontAwesomeIcon icon={faWindowClose} 
+        size={`${mobileVersion ? mobileIconsSize : "2x"}` }
+        color="darkred"
+        onClick={onClose}
+        />
+        </Button>
+        </div>
+    )
+}
+
+
+
+
+const Wrapper = ({
+    mobileVersion, 
+    minWidth, 
+    className, 
+    show, 
+    children, 
+    onClose, 
+    opacity,
+    handleOpacity,
+    ...props
+}) =>  {
      
   if (mobileVersion) {
     return  (
@@ -13,15 +53,31 @@ const Wrapper = ({mobileVersion, minWidth, className, show, children, onClose, .
         className={`mb-2  bg-primary text-light p-4  overflow-auto rounded border-maroon fade ${show && "show"}`}
         style={{
             position: 'relative',
-            // top: '3%',
-            // left: '0',
             width: "100%",
             height: "100%",
-            // zIndex: 101,
+            minHeight: 500,
+            opacity,
         }}
         {...props}
         >
-            {children}
+       <IconsGroup 
+        onClose={onClose}
+        mobileVersion={mobileVersion}
+       >
+           <Button 
+           className="align-top m-0 p-0"
+           onMouseDown={() => handleOpacity('transparentize')}
+           onMouseUp={() => handleOpacity('normal')}
+           onMouseLeave={() => handleOpacity('normal')}
+           >
+           <FontAwesomeIcon 
+           icon={faEye}
+           size={mobileIconsSize}
+           className="mr-2 text-secondary"
+           />
+           </Button>
+        </IconsGroup>
+        {children}
         </div>
     )
   }  else {
@@ -33,18 +89,15 @@ const Wrapper = ({mobileVersion, minWidth, className, show, children, onClose, .
             position: 'absolute',
             top: '3%',
             left: '50%',
-            transform: 'translateX(-50%)',
+            transform: `translateX(-50%)`,
             zIndex: 101,
         }}
         handle={ (h) => 
-        <div
-        className={`react-resizable-handle react-resizable-handle-${h}`}
-        style={{
-        position: 'absolute',
-        width: 60,
-        height: 60
-        }}
-        />
+            <FontAwesomeIcon 
+            icon={faArrowsAltV}
+            size={mobileIconsSize}
+            className={`mr-2 text-secondary react-resizable-handle react-resizable-handle-${h}`}
+            />
         }
         resizeHandles={[ 'se']}
         axis="y"
@@ -54,11 +107,17 @@ const Wrapper = ({mobileVersion, minWidth, className, show, children, onClose, .
         height={400}
         {...props}
         >
-            {children}
+             <IconsGroup 
+        onClose={onClose}
+        mobileVersion={mobileVersion}
+       />
+       {children}
         </ResizableBox>
       ) 
   }
 }
+
+
 
 
 
@@ -69,38 +128,37 @@ export default function Displayer({
     children, 
     show, 
     onClose,
-    ...props
 }) {
 
+    const [opacity, setOpacity] = useState(1);
+
+
     const minWidth = width;
-
-
    if (!show) return null;
 
+
+    const handleOpacity = (type) => {
+       if (type === 'transparentize') {
+           setOpacity(0.1)
+       } else {
+           setOpacity(1);
+       }
+    }
+
+
+
    return (
-       <Wrapper mobileVersion={mobileVersion}
+       <Wrapper 
+       mobileVersion={mobileVersion}
        width={width}
        className={className}
         show={show}
         onClose={onClose}
         minWidth={minWidth}
+        opacity={opacity}
+        handleOpacity={handleOpacity}
        >
             {children}
-            <div 
-            className="d-inline-block bg-primary"
-            style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                cursor: 'pointer'
-            }}
-            >
-           <FontAwesomeIcon icon={faWindowClose} 
-            size={`${mobileVersion ? "3x" : "2x"}` }
-            color="darkred"
-            onClick={onClose}
-            />
-            </div>
        </Wrapper>
    )
 }

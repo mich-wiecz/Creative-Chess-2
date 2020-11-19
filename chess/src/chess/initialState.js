@@ -36,7 +36,6 @@ export const defaultMotives = [
         showPossibleMoves: true,
         musicOn: false
     },
-    userBoardMotives: [],
     modelFigures: {
         tags: {
             category: {
@@ -80,6 +79,7 @@ export const defaultMotives = [
         winData: {
             winner: null,
             reasonForWinning: null,
+            movesDoneWhenWin: null
         },
         teams: [],
         boardExtremes: {},

@@ -40,5 +40,5 @@ export default memo(function BoardField({
         </div>
     )
 }, (prevProps, nextProps) => {
-    return prevProps.temporaryState === nextProps.temporaryState && prevProps.figureData === nextProps.figureData;
+    return prevProps.temporaryState === nextProps.temporaryState && prevProps.figureData === nextProps.figureData && prevProps.color === nextProps;
 })

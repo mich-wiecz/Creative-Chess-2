@@ -24,7 +24,8 @@ const NavLink = (
     ...props}) => 
  <Nav.Link 
  as={"div"}
-className={` text-light `} {...props}>
+className={` text-light p-0`} {...props}
+>
     <RouterNavLink 
     exact={exact}
     to={eventKey}
@@ -54,14 +55,14 @@ export default function MainNavbar() {
         <Navbar 
         style={{zIndex: 500}}
         bg="primary" 
-        className="text-light"
+        className="text-light p-0"
         text="light"
         expand="md"
         >
           <Navbar.Brand onClick={() => {
           showToast(firstToast);
           showToast(secondToast);
-          } } className="text-light">
+          } } className="text-light ml-5">
       <Image src={Favicon} alt="favicon - website logo" className="bg-light"/>
           </Navbar.Brand>
           <Navbar.Toggle 
@@ -76,13 +77,14 @@ export default function MainNavbar() {
         onSelect={(selectedKey) => setActiveKey(selectedKey)}
       >   
      <Col md={4} xs={5}>
-          <NavLink disabled eventKey="/about" className="text-danger">
+          <NavLink disabled eventKey="/about" className={` ${classes.Disabled}`}
+          >
             O aplikacji</NavLink>
           </Col>
-        <Col md={4} xs={5} >
+        <Col md={3} xs={5} >
           <NavLink exact eventKey="/" className="w-100">Gra</NavLink>
           </Col>
-          <Col md={4} xs={5} >
+          <Col md={3} xs={5} >
           <NavLink eventKey="/options">Opcje</NavLink>
           </Col>
       </Nav>

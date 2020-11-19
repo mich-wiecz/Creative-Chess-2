@@ -13,15 +13,51 @@ import windowDimensions from 'react-window-dimensions';
 
 import {useSelector} from 'react-redux';
 import {selectActiveGameTemplate} from 'redux/chessSlice';
-import debounce from 'lodash.debounce';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 
 
+const widthBreakpoint = 768;
 
-  const mobileBreakpoint = 768;
 
+
+
+function TabPane ({children, eventKey, className, ...props}) {
+  return (
+    <Tab.Pane 
+    className={`${className}`} 
+    eventKey={eventKey}
+    {...props}
+    >
+    {children}
+   </Tab.Pane>
+  )
+}
+
+
+
+function PlaygroundSwitch({onClick}) {
+  return (
+    <FontAwesomeIcon 
+    icon={faPuzzlePiece}
+    size="4x"
+    className="text-primary bg-maroon p-2"
+    style={{
+      position: 'absolute',
+      top: "25%",
+      left: 0,
+      cursor: 'pointer',
+      borderRadius: '0 30px 30px 0',
+      zIndex: 4500
+    }}
+    onClick={onClick}
+    />
+  )
+}
+
+
+ 
 
  function Playground({
    windowWidth,
@@ -30,7 +66,7 @@ import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 }) {
 
 
-   const isMobileVersion = windowWidth < mobileBreakpoint;
+   const isMobileVersion = windowWidth < widthBreakpoint;
 
 
     const [showAllTabs, setShowAllTabs] = useState(false);
@@ -63,18 +99,6 @@ import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
          showAllTabs={showAllTabs}
          handleShowAllTabs={setShowAllTabs}
         />
-      )
-    }
-
-    function TabPane ({children, eventKey, className, ...props}) {
-      return (
-        <Tab.Pane 
-        className={`${className}`} 
-        eventKey={eventKey}
-        {...props}
-        >
-        {children}
-       </Tab.Pane>
       )
     }
 
@@ -111,76 +135,99 @@ import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
       )
     }
 
-
-    return (
-      <>
-      {
-        !isGameOn && <PlaygroundBar />
-      }
-     
-      <Tab.Container 
-      style={{position: 'relative'}}
-      onSelect={(key) => handleSetActiveKey(key)} 
-      activeKey={activeKey} id="playground-tabs"
-      >
-        {
-          isMobileVersion &&
-          !activeKey &&
-          <FontAwesomeIcon 
-          icon={faPuzzlePiece}
-          size="4x"
-          className="text-primary bg-maroon p-2"
-          style={{
-            position: 'absolute',
-            top: "25%",
-            left: 0,
-            cursor: 'pointer',
-            borderRadius: '0 30px 30px 0',
-            zIndex: 4500
-          }}
-          onClick={() => setActiveKey('board-motive')}
-          />
-        }
-        {
-          isMobileVersion && 
-          activeKey &&
-          <div 
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '80%',
-            zIndex: 5000
-          }}
-          className="d-flex flex-column"
-          >
-            {renderPlaygroundNav()}
-            {renderDisplayer()}
-          </div>
-        }
-        <main
-         className="d-flex justify-content-between"
-        >
-    {!isMobileVersion && renderPlaygroundNav()}
-      <section 
-      style={{
-        minHeight: '90vh',
-        position: 'relative'
-      }}
-      className={`p-5 mx-auto flex-grow-1 d-flex flex-column justify-content-center align-items-center`}
-      >
-     {!isMobileVersion && renderDisplayer()}
+function PlaygroundForSmallDevices() {
+  return (
     <div 
     style={{
-      marginTop: activeKey ? '200px' : 0
+      position: 'absolute',
+      width: '100%',
+      height: '80%',
+      zIndex: 5000
     }}
+    className="d-flex flex-column"
     >
-    {Board}
+      {renderPlaygroundNav()}
+      {renderDisplayer()}
     </div>
-    </section>
-    </main>
-    </Tab.Container>
-    </>
-    )
+  )
+}
+
+
+function MainPartContainer({displayer, nav}) {
+  return (
+    <main
+    className="d-flex justify-content-between"
+   >
+{nav}
+ <section 
+ style={{
+ minHeight: '90vh',
+ position: 'relative'
+ }}
+className={`p-5 mx-auto flex-grow-1 d-flex flex-column justify-content-center align-items-center`}
+> 
+  {displayer}   
+<div 
+style={{
+ marginTop: activeKey ? '200px' : 0
+}}
+>
+ 
+{Board}
+</div>
+</section>
+</main>
+  )
+}
+
+
+function renderForMobile() {
+  return (
+    <>
+    {
+      activeKey
+      ?
+      <PlaygroundForSmallDevices />
+     :
+     <PlaygroundSwitch onClick={() => setActiveKey('board-motive')}/>
+    }
+   <MainPartContainer />
+</>
+  )
+}
+
+
+function renderNormally() {
+  return (
+   <MainPartContainer 
+   nav={renderPlaygroundNav()} 
+   displayer={renderDisplayer()} 
+   />
+  )
+}
+
+
+return (
+  <>
+  {
+    !isGameOn && <PlaygroundBar />
+  }
+ 
+  <Tab.Container 
+  style={{position: 'relative'}}
+  onSelect={(key) => handleSetActiveKey(key)} 
+  activeKey={activeKey} id="playground-tabs"
+  >
+ {
+   isMobileVersion 
+   ?
+   renderForMobile()
+   :
+   renderNormally()
+ }
+</Tab.Container>
+</>
+)
 }
 
 

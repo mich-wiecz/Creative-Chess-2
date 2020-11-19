@@ -20,8 +20,8 @@ export default function useBoardStore () {
     const boardExtremes = useSelector(selectBoardExtremes);
     const state = useSelector(selectWholeChessState);
     const {isTimeGame} = useSelector(selectTime);
-    const {moveFor, ...restStatistics} = useSelector(selectStatistics);
-    const {winner} = useSelector(selectWinData);
+    const {moveFor, movesDone, ...restStatistics} = useSelector(selectStatistics);
+    const {winner, movesDoneWhenWin} = useSelector(selectWinData);
     const dispatch = useDispatch();
 
 
@@ -38,6 +38,7 @@ export default function useBoardStore () {
     const [newIdentityOfPawn, setNewIdentityOfPawn] = useState(null);
     const [newWinner, setNewWinner] = useState(null);
     const [showEndModal, setShowEndModal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
 
 
@@ -47,6 +48,8 @@ export default function useBoardStore () {
     const [showToast, createToast] = useToasts();
     let prevBadCastling = useRef(false);
     let prevKingEndangered = useRef(false);
+    let loadingDeferId = useRef(null);
+    let prevMovesDone = useRef(0);
 
 
 
@@ -60,12 +63,13 @@ export default function useBoardStore () {
     }, [])
 
 
+ 
    /**
     * Toasts for wrong moves
     */
     useEffect(() => {
         
-        const teamStatistics = restStatistics[moveFor]
+        const teamStatistics = restStatistics[moveFor];
        
             if (teamStatistics.wasBadCastling) {
                 if (prevBadCastling.current === teamStatistics.wasBadCastling) return;
@@ -92,14 +96,13 @@ export default function useBoardStore () {
 
 
     useEffect(() => {
-        if (winner === newWinner) return;
-        if(winner !== newWinner ) {
+        if (winner !== newWinner && movesDoneWhenWin === movesDone) {
+            if(winner !== null) {
+                setShowEndModal(true);
+              } 
             setNewWinner(winner);
-          if(winner !== null) {
-            setShowEndModal(true);
-          } 
-        }      
-    }, [winner, setNewWinner, newWinner]);
+        }   
+    }, [winner, setNewWinner, newWinner, movesDoneWhenWin, movesDone]);
 
 
 
@@ -135,6 +138,38 @@ export default function useBoardStore () {
 }, [newIdentityOfPawn, updatedTime, pawnDirection])
 
 
+
+
+
+useEffect(() => {
+    if (movesDone !== prevMovesDone.current) {
+        /**
+       * To clear decorated fields when they are not actual
+       */
+        clearLoading()   
+        clearMoveData()
+        prevMovesDone.current = movesDone;
+    }
+  }, [movesDone, clearMoveData])
+
+
+  const clearLoading = () => {
+    clearTimeout(loadingDeferId.current)
+    setLoading(false);
+  }
+  
+
+
+   useEffect(() => {
+    const teamStatistics = restStatistics[moveFor];
+
+    if ( teamStatistics.wasBadCastling || 
+        teamStatistics.wasPreviousMoveEndangeringKing) {
+       clearLoading()
+    }
+   }, [ restStatistics, moveFor])
+
+
     useEffect(() => {
         if (!readyFigureToMove || !nextPosition || showPawnPromotion) return;   
         if (isTimeGame) {
@@ -142,8 +177,10 @@ export default function useBoardStore () {
                 setUpdateTimerFlag(true);
                 return;
             }
-            // if(!updatedTime) 
         }
+        loadingDeferId.current = setTimeout(() => {
+            setLoading(true);
+        }, 1000) 
         dispatch(moveMade({
             figureId: readyFigureToMove,
             nextCoord: nextPosition,
@@ -238,6 +275,7 @@ export default function useBoardStore () {
         showPawnPromotion,
        showEndModal,
        newWinner,
+       loading
         },
         {
             handleClickOnField,

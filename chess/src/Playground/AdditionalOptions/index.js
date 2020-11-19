@@ -3,8 +3,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import PawnSwitch from '@global-components/PawnSwitch';
-import {useSelector, useDispatch} from 'react-redux';
-import {boardFeatureChanged, selectBoardRotation} from 'redux/chessSlice';
+import { useDispatch} from 'react-redux';
+import {boardFeatureChanged} from 'redux/chessSlice';
 import {useToasts} from 'contexts/ToastProvider';
 
 
@@ -48,23 +48,13 @@ export default function AdditionalOptions () {
 
   const [localBoardRotation, setLocalBoardRotation] = useState(0);
   const [localFieldsRotation, setLocalFieldsRotation] = useState(0);
-  const {fieldsRotation, boardRotation} = useSelector(selectBoardRotation);
+  // const {fieldsRotation, boardRotation} = useSelector(selectBoardRotation);
   const dispatch = useDispatch();
 
 const [showToast, createToast] = useToasts();
   useEffect(() => {
     createToast('rotation');
   })
-
-  useEffect(() => {
-    setLocalFieldsRotation(fieldsRotation);
-  }, [fieldsRotation])
-
-  useEffect(() => {
-    setLocalBoardRotation(boardRotation);
-  }, [boardRotation])
-
-
 
 
     return (

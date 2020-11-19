@@ -1,8 +1,5 @@
 import generatePossibleMoves from 'chess/generatePossibleMoves';
 import {  getGameDataFromTemplate } from './getGameDataFromTemplate';
-import initialState from 'chess/initialState';
-import {current, isDraft} from 'immer';
-
 export function prepareStateBeforeGame(newState, templateName, templateReadConfig = {}) {
 
     const {templates, boardFeatures, history} = newState;
@@ -13,11 +10,6 @@ export function prepareStateBeforeGame(newState, templateName, templateReadConfi
     const {configuration: tempConfig, template} = templateData;
 
     const { game } = newState;
-    // game.figures = {};
-    // if (initialState) {
-    //     game.tags = {...initialState.game.tags};
-    // }
-
         newState.game =  {
             statistics: {
                 turn: 0,
@@ -66,9 +58,6 @@ export function prepareStateBeforeGame(newState, templateName, templateReadConfi
     tempConfig.rotation 
     : 
     boardFeatures.rotation;   
-
-
-    // console.log(isDraft(newState) ? current(newState.game) : newState.game)
 
 
     const [statistics, castlingMonitoring, time] = newState.game.teams.reduce((result, {name}, index) => {

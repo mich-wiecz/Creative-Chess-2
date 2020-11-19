@@ -1,5 +1,6 @@
 import React, {} from 'react';
 import FireButton from '@global-components/FireButton';
+import Spinner from 'react-bootstrap/Spinner';
 import ActualBoard from './ActualBoard';
 import Timer from '../Timer';
 import Button from 'react-bootstrap/Button';
@@ -47,6 +48,32 @@ function MiddleButton({
 
 
 
+   function MakingMoveSpinner() {
+       return (
+        <div
+        className="d-flex flex-column justify-content-center align-items-center"
+         style={{
+            position: 'absolute',
+            top: "50%",
+            left: "50%",
+            transform: 'translate(-50%, -50%)',
+            width: 150,
+            height: 150,
+            zIndex: 100000
+        }}
+        >
+        <Spinner 
+         style={{
+            width: 100,
+            height: 100,
+        }}
+        animation="border" 
+        role="status" 
+        variant="primary"
+        />
+        </div>
+       )
+   }
 
 
 
@@ -64,7 +91,7 @@ export default function Board({isGameOn}) {
     const teams = useSelector(selectTeams);
     const {moveFor} = useSelector(selectStatistics);
     const {
-        rotation: {fieldsRotation, boardRotation}, 
+        rotation: { boardRotation}, 
         frozenFieldSize, 
         boardMotive,
         showPossibleMoves
@@ -79,6 +106,7 @@ export default function Board({isGameOn}) {
             showPawnPromotion,
            showEndModal,
            newWinner,
+           loading
             },
             {
                 handleClickOnField,
@@ -171,7 +199,7 @@ export default function Board({isGameOn}) {
             
             <div 
             style={setBoardStyles()}
-            className={classes.BoardGrid}
+            className={`${classes.BoardGrid} position-relative`}
             onDragStart={e => {
                 e.preventDefault();
             }}
@@ -180,6 +208,8 @@ export default function Board({isGameOn}) {
             className={`${classes.ChessCoords} ${classes.Vertical}`}
             boardExtremes={boardExtremes}
             />
+            {loading &&  <MakingMoveSpinner />}
+         
             <ActualBoard 
             boardMap={boardMap}
             boardExtremes={boardExtremes}

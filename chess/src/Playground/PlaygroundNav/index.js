@@ -40,8 +40,8 @@ export default function PlaygroundNav({
         </Popover>}
       >
         <Tabs.Item 
-        style={mobileVersion ?  {width:  120} : {}}
-        className=" py-2 text-center flex-grow-1"
+        style={mobileVersion ?  {width:  "20%", paddingTop: 50, paddingBottom: 50} : {}}
+        className=" py-2 text-center flex-grow-0"
         >
           <Tabs.Link 
           className=" px-0" 
@@ -110,7 +110,9 @@ export default function PlaygroundNav({
             <TabItem 
       text={'Interakcje z szachownicą'} 
       icon={faMousePointer} 
-      eventKey={'interaction-table'}/>
+      eventKey={'interaction-table'}
+      disabled
+      />
        <TabItem 
       text={'Dodatkowe'} 
       icon={faStar} 
@@ -123,3 +125,5 @@ export default function PlaygroundNav({
   </Row>
   )
 }
+
+

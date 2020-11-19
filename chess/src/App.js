@@ -1,9 +1,8 @@
-import React, { lazy, Suspense, useState} from 'react';
+import React, { lazy, Suspense} from 'react';
 import MainNavbar from './ui/MainNavbar/MainNavbar'
 import Footer from 'ui/Footer';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import AuthRoute from 'utils/routing/AuthRoute';
-import PageNotFound from "utils/routing/PageNotFound";
 import Options from 'Game/Options';
 import Game from 'Game';
 
@@ -19,14 +18,11 @@ const About = lazy(() => import('pages/About'));
 
 function App() {
 
-  const [showOptions, setShowOptions] = useState(false)
 
 
   return (
     <>
   
-  
-
       <MainNavbar/>
 
       <MySwitch>
@@ -42,7 +38,7 @@ function App() {
         <IsolatedRoute  
           path={'/options'}
           >
-          <Options show={true} onClose={() => setShowOptions(false)}/>
+          <Options/>
         </IsolatedRoute>
  
      
@@ -75,13 +71,7 @@ function App() {
         <Game />
       </IsolatedRoute>
 
-      {/* <Route path="/404">
-     <PageNotFound />
-      </Route> */}
       </MySwitch>
-
-  
-
 
       <Footer />
     </>

@@ -19,10 +19,8 @@ const setAuthorizationHeader = (token) => {
         .post(`/${type}`, userData)
         .then(res => {
             setAuthorizationHeader(res.data.token);
-            // return userData.email;
         })
         .then(email => {
-            console.log(1234)
             axios
             .get(`/user/`, {email})
             .then(res => {
@@ -92,7 +90,6 @@ const usersSlice = createSlice({
             state.status.loading = false;
         })
         .addCase(loginOrSignup.fulfilled, (state, action) => {
-            console.log(action)
             state.status.authenticated = true;
             state.status.loading = false;
             state.status.wasError = false;
