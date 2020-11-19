@@ -57,7 +57,7 @@ templatesOrder.map((tempName) => {
  let text, variant;
  const isActive = tempName === activeGameTemplate
  if(isActive) {
-   text = "Aktualnie wybrany";
+   text = `${tempName === '960' ? "Losuj jeszcze raz" : "Aktualnie wybrany"}`;
    variant = "success"
  } else {
    text = 'Wybierz';
@@ -79,9 +79,9 @@ templatesOrder.map((tempName) => {
       <Button 
       variant={variant}
       disabled={!isTemplate}
-      onClick={!isActive ? (() => {
+      onClick={(tempName === '960' || !isActive) ? (() => {
         showToast("Zmieniono tryb gry")
-       handleChangingGameTemplate(isActive, tempName)
+       handleChangingGameTemplate(tempName)
       }) : undefined }
       className="mx-3"
       style={{

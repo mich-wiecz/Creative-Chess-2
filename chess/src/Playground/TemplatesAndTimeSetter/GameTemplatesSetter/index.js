@@ -58,8 +58,7 @@ export default function GameTemplatesSetter({showToast}) {
   const activeGameTemplate = useSelector(selectActiveGameTemplate);
   const templates = useSelector(selectTemplates);
 
-  const handleChangingGameTemplate = (isActive, tempName) => {
-    if(isActive) return;
+  const handleChangingGameTemplate = (tempName) => {
     dispatch(templateChanged(tempName))
   }
 
