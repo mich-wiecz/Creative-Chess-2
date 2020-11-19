@@ -36,6 +36,7 @@ export const defaultMotives = [
         showPossibleMoves: true,
         musicOn: false
     },
+    userBoardMotives: [],
     modelFigures: {
         tags: {
             category: {

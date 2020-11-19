@@ -5,6 +5,9 @@ import Button from 'react-bootstrap/Button';
 import PawnSwitch from '@global-components/PawnSwitch';
 import {useSelector, useDispatch} from 'react-redux';
 import {boardFeatureChanged, selectBoardRotation} from 'redux/chessSlice';
+import {useToasts} from 'contexts/ToastProvider';
+
+
 
   const InputSection = ({label, htmlFor, children}) => (
     <section className="mt-4 w-50">
@@ -48,6 +51,10 @@ export default function AdditionalOptions () {
   const {fieldsRotation, boardRotation} = useSelector(selectBoardRotation);
   const dispatch = useDispatch();
 
+const [showToast, createToast] = useToasts();
+  useEffect(() => {
+    createToast('rotation');
+  })
 
   useEffect(() => {
     setLocalFieldsRotation(fieldsRotation);
@@ -91,10 +98,13 @@ export default function AdditionalOptions () {
         <Button 
     className="text-light" 
     variant="outline-dark"
-    onClick={() => dispatch(boardFeatureChanged(['rotation', {
-      fieldsRotation: localFieldsRotation,
-      boardRotation: localBoardRotation
-    }]))}
+    onClick={() => {
+      showToast('rotation', "Zmieniłeś/aś kąty szachownicy")
+      dispatch(boardFeatureChanged(['rotation', {
+        fieldsRotation: localFieldsRotation,
+        boardRotation: localBoardRotation
+      }]))
+    } }
     >
     Zatwierdź
     </Button>
@@ -103,10 +113,13 @@ export default function AdditionalOptions () {
     <Button 
     className="text-light" 
     variant="outline-dark"
-    onClick={() => dispatch(boardFeatureChanged(['rotation', {
-      fieldsRotation: 0,
-      boardRotation: 0
-    }]))}
+    onClick={() => {
+      showToast('rotation', "Przywróciłeś/aś domyślne kąty szachownicy")
+      dispatch(boardFeatureChanged(['rotation', {
+        fieldsRotation: 0,
+        boardRotation: 0
+      }]))
+    }}
     >
       Zeruj
     </Button>

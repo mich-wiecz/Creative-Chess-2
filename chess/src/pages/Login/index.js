@@ -44,8 +44,8 @@ export default function Login() {
        <Modal
        style={{
            position: 'absolute',
-           top: '10%',
-           left: "20%",
+           top: '20%',
+           left: "0",
            zIndex: 5000
            }
        }

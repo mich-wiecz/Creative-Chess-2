@@ -102,7 +102,7 @@ export default function PlaygroundNav({
       icon={faGamepad} 
       eventKey={'modes'}/>
       <TabItem 
-      text={'Motyw kolorystyczny'} 
+      text={'Motyw szachownicy'} 
       icon={faPalette} 
       eventKey={'board-motive'}
       disabled={false}

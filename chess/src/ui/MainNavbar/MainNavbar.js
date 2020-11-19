@@ -20,14 +20,15 @@ const NavLink = (
     eventKey, 
     userNav, 
     children, 
+    className,
     ...props}) => 
  <Nav.Link 
  as={"div"}
-className="text-light" {...props}>
+className={` text-light `} {...props}>
     <RouterNavLink 
     exact={exact}
     to={eventKey}
-    className={`text-light d-flex p-2 m-0`}
+    className={`${className} text-light d-flex p-2 m-0 `}
     activeClassName={` rounded ${userNav  ? "bg-primary text-light" : "bg-maroon"}`}
     >
     {children}
@@ -75,7 +76,8 @@ export default function MainNavbar() {
         onSelect={(selectedKey) => setActiveKey(selectedKey)}
       >   
      <Col md={4} xs={5}>
-          <NavLink  eventKey="/about" >O aplikacji</NavLink>
+          <NavLink disabled eventKey="/about" className="text-danger">
+            O aplikacji</NavLink>
           </Col>
         <Col md={4} xs={5} >
           <NavLink exact eventKey="/" className="w-100">Gra</NavLink>

@@ -327,8 +327,8 @@ export default function Board({isGameOn}) {
             }
         } else {
             sizeStyles = {
-                gridAutoColumns: "minmax(40px, 6vmin)",
-                gridAutoRows: "minmax(40px, 6vmin)"
+                gridAutoColumns: "minmax(40px, 6.5vmin)",
+                gridAutoRows: "minmax(40px, 6.5vmin)"
             }
         }
 

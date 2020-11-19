@@ -16,6 +16,9 @@ const gameSlice = createSlice({
             const [feature, value] = action.payload;
             state.boardFeatures[feature] = value;
         },
+        userMotivesUpdated(state, action) {
+          state.userBoardMotives = action.payload;
+        },
         modelFiguresAdded(state, action) {
             createModelFigures(state, action.payload);
         },
@@ -71,6 +74,7 @@ const gameSlice = createSlice({
 
 export const selectBoardFeatures = state => state.chess.boardFeatures;
 export const selectBoardMotive = state => state.chess.boardFeatures.boardMotive;
+export const selectUserBoardMotives = state => state.chess.userBoardMotives;
 export const selectAnimationsOn = state => state.chess.boardFeatures.animationsOn;
 export const selectBoardRotation = state => state.chess.boardFeatures.rotation;
 export const selectTime = state => state.chess.game.time;
@@ -94,6 +98,6 @@ export const selectWholeChessState = state => state.chess;
 
 
 
-export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone,  officialGameEnded, timeAdded, timeStarted, templateChanged, timeRemoved, gameResetedToDefault, gameResetedToInitial, playgroundActivated, boardFeatureChanged, gameActivated} = gameSlice.actions;
+export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone,  officialGameEnded, timeAdded, timeStarted, templateChanged, timeRemoved, gameResetedToDefault, gameResetedToInitial, playgroundActivated, boardFeatureChanged, gameActivated, userMotivesUpdated} = gameSlice.actions;
 
 export default gameSlice.reducer;

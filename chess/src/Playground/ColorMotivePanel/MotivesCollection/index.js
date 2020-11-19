@@ -36,7 +36,7 @@ export default function MotivesCollection({
     }
 
     const handleClickOnMotive = (motive) => {
-        wait(100)
+        wait(150)
         .then(() => {
             if(preventSingleClick.current)  return;
             changeActiveMotive(motive)
@@ -91,7 +91,7 @@ export default function MotivesCollection({
 
     function OptionButton({ children, onClick, ...props }) {
         return (
-            <Button {...props} variant="myblue" onClick={() => {
+            <Button {...props} variant="myblue" className="w-100" onClick={() => {
                 if (onClick) onClick();
                 setShowingModal(false);
             } }>

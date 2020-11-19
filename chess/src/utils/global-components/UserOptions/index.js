@@ -14,13 +14,16 @@ Modal:  function  ({
     return (
         <Modal
         centered={centered}
+        style={{
+          zIndex: 12000
+        }}
       {...props}
       >
         <Modal.Header className="bg-myblue text-light" closeButton={closeButton}>
     <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body >
-            <ListGroup>
+        <Modal.Body className="bg-secondary">
+            <ListGroup className="bg-primary">
        {children}
        </ListGroup>
         </Modal.Body>

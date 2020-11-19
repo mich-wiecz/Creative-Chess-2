@@ -6,7 +6,9 @@ import {timeAdded, timeRemoved, selectTeams, selectTime} from 'redux/chessSlice'
 import {useSelector, useDispatch} from 'react-redux';
 import debounce from 'lodash.debounce';
 
-export default function TimeSetter() {
+export default function TimeSetter({
+  showToast
+}) {
 
   const dispatch = useDispatch();
   const teams = useSelector(selectTeams);
@@ -26,6 +28,7 @@ export default function TimeSetter() {
       return result;
     }, {})
     dispatch(timeAdded(timeObj));
+    showToast(`Czas gry to ${time} minut dla każdego gracza`)
   }
 
 
@@ -34,8 +37,9 @@ export default function TimeSetter() {
 
 
   useEffect(() => {
-    if(!isTimeGame ) return;
-    debouncedAddTime(time)
+    if(!isTimeGame  ||  time === prevTime.current) return;
+    debouncedAddTime(time);
+    prevTime.current = time;
    
   })
 
