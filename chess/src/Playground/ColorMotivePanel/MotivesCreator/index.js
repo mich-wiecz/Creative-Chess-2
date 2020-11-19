@@ -8,13 +8,6 @@ import Button from 'react-bootstrap/Button';
 import {useToasts} from 'contexts/ToastProvider';
 
 
-const toastTitle = "Opcja zmieniona",
-toasts = {
-animation: 0,
-possibleMoves: 1,
-music: 2,
-interaction: 3,
-}
 
 
 export default function MotivesCreator({
@@ -33,6 +26,7 @@ export default function MotivesCreator({
 
     useEffect(() => {
      createToast('motive-added');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -42,7 +36,6 @@ export default function MotivesCreator({
 
         setFirstColor(preparedMotive.first);
         setSecondColor(preparedMotive.second)
-        // resetPreparedMotive();
     }, [preparedMotive, resetPreparedMotive])
 
 

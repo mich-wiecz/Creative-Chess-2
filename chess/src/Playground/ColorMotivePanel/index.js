@@ -5,7 +5,7 @@ import MotivesCreator from './MotivesCreator';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import {useSelector, useDispatch} from 'react-redux';
-import {selectBoardMotive, selectUserBoardMotives, boardFeatureChanged, userMotivesUpdated} from 'redux/chessSlice';
+import {selectBoardMotive, boardFeatureChanged} from 'redux/chessSlice';
 import {defaultMotives} from 'chess/initialState'
 
 
@@ -15,7 +15,6 @@ export default function ColorMotivePanel () {
     const dispatch = useDispatch();
 
     const activeMotive = useSelector(selectBoardMotive);
-    const savedUserMotives = useSelector(selectUserBoardMotives);
 
     const [userMotives, setUserMotives] = useState([]);
     const [preparedMotive, setPreparedMotive] = useState(null);
@@ -37,18 +36,19 @@ export default function ColorMotivePanel () {
     useEffect(() => {
 
         if (!wereMotivesDownloaded.current) {
-            setUserMotives(savedUserMotives);
+            const savedUserMotives = localStorage.getItem('userMotives');
+            if (savedUserMotives) {
+                setUserMotives(JSON.parse(savedUserMotives))
+            }
             wereMotivesDownloaded.current = true;
         }
        
-    }, [dispatch, userMotives, savedUserMotives])
+    }, [dispatch, userMotives])
      
 
     useEffect(() => {
-        return () => {
-            dispatch(userMotivesUpdated(userMotives))
-        }
-    }, [])
+          localStorage.setItem('userMotives', JSON.stringify(userMotives))
+    }, [userMotives])
 
     useEffect(() => {
 
