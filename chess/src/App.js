@@ -1,10 +1,9 @@
 import React, { lazy, Suspense} from 'react';
-import MainNavbar from './ui/Navbar/Navbar'
+import MainNavbar from './ui/MainNavbar/MainNavbar'
 import Footer from 'ui/Footer';
-import { Route} from 'react-router-dom';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import AuthRoute from 'utils/routing/AuthRoute';
-import PageNotFound from "utils/routing/PageNotFound";
+import Options from 'Game/Options';
 import Game from 'Game';
 
 
@@ -16,15 +15,16 @@ const About = lazy(() => import('pages/About'));
 
 
 
+
 function App() {
+
+
 
   return (
     <>
-  {/* <Options /> */}
-
-
-
+  
       <MainNavbar/>
+
       <MySwitch>
       <AuthRoute  
           path={'/login'}
@@ -32,7 +32,16 @@ function App() {
           <Suspense fallback={<WaitingModal />}>
              <Login />
           </Suspense>
-  </AuthRoute>
+        </AuthRoute>
+
+
+        <IsolatedRoute  
+          path={'/options'}
+          >
+          <Options/>
+        </IsolatedRoute>
+ 
+     
     {
       [
         {path: "/about", component: <About/>}
@@ -49,25 +58,20 @@ function App() {
     }
 
 
-          <AuthRoute 
+          <IsolatedRoute 
           path={'/signup'}>
           <Suspense fallback={<WaitingModal />}
           >
              <Signup />
           </Suspense>
-          </AuthRoute>
+          </IsolatedRoute>
 
-      <IsolatedRoute exact path="/">
+     
+          <IsolatedRoute  path="/">
         <Game />
       </IsolatedRoute>
 
-
-      <Route path="/404">
-     <PageNotFound />
-      </Route>
       </MySwitch>
-
-
 
       <Footer />
     </>

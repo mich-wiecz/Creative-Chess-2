@@ -6,8 +6,10 @@ import FirstFormPage from './FirstFormPage';
 import SecondFormPage from './SecondFormPage';
 import useFormikConfiguration from './formik-configuration';
 import SpinnerButton from '@global-components/SpinnerButton';
-import FieldsGroup from '../../utils/formik/FieldsGroup';
-import FieldsList from '../../utils/formik/FieldsList';
+import FieldsGroup from 'utils/formik/FieldsGroup';
+import FieldsList from 'utils/formik/FieldsList';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 import {loginOrSignup, selectStatusData} from 'redux/userSlice';
 import {useSelector, useDispatch} from 'react-redux';
@@ -36,7 +38,25 @@ export default function Signup() {
     const goToSecondPage = () => setFormPage('second');
 
     const handleSubmit = (values, { setSubmitting }) => {
-        dispatch(loginOrSignup('signup', values));
+        const {
+            handle,
+            email,
+            password,
+            repeatPassword,
+            ...rest
+        } = values;
+
+        dispatch(loginOrSignup({
+            type: 'signup',
+            userData: {
+                signup: {
+                    handle, 
+                    email, 
+                    password, 
+                    confirmPassword: repeatPassword},
+                details: {...rest}
+            }
+        }));
         setSubmitting(false);
     };
 
@@ -137,8 +157,10 @@ export default function Signup() {
         )
       
 
-      return  <Form 
-        className="d-flex justify-content-center  p-3 flex-column rounded bg-primary w-50 mx-auto mt-5 text-light border-maroon"
+      return (
+          <Row className=" justify-content-center mx-auto" style={{width: 500}}>
+          <Col  className="flex-column rounded bg-primary  mx-auto mt-5 text-light border-maroon p-3" >
+        <Form 
         noValidate onSubmit={handleSubmit}>
           { formPages[formPage]({
               renderFields,
@@ -150,6 +172,9 @@ export default function Signup() {
               }) }
           
             </Form>
+            </Col>
+            </Row>
+      ) 
 }}
             </Formik>
       )

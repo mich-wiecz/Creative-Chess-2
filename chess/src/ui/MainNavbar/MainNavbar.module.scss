@@ -5,6 +5,7 @@ $length: 40px;
 .UserNav {
     position: relative;
     background: $color-maroon;
+    height: 40px;
 
     &:after  {
         content: '';
@@ -22,4 +23,10 @@ $length: 40px;
 
 
 
+}
+
+
+
+.Disabled {
+    text-decoration: line-through;
 }

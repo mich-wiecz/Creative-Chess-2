@@ -64,7 +64,6 @@ export default function FieldsList({
                 controlId={`${listName}[${index}]`}
                 >
                 <Form.Control
-                {...props}
                     name={`${listName}[${index}]`}
                     onBlur={handleBlur}
                     value={list[index]}

@@ -31,7 +31,7 @@ export default function Login() {
     }
 
     const handleSubmit = (values, { setSubmitting }) => {
-        dispatch(loginOrSignup('login', values));
+        dispatch(loginOrSignup({type: 'login', userData: values}));
         setSubmitting(false);
     };
 
@@ -44,12 +44,12 @@ export default function Login() {
        <Modal
        style={{
            position: 'absolute',
-           top: '10%',
-           left: "20%",
+           top: '20%',
+           left: "0",
            zIndex: 5000
            }
        }
-       show="true"
+       show={true}
        onHide={handleGoingMainPage}
        backdrop="static"
        >

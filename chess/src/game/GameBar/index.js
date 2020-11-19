@@ -6,12 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfo } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import GameInfo from './GameInfo';
-import {moveUndone, moveRedone, playgroundActivated, selectTime, selectGameHistory} from 'redux/chessSlice';
+import {moveUndone, moveRedone, playgroundActivated, selectGameHistory} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
 
 export default function GameBar() {
 
-  const {isTimeGame} = useSelector(selectTime);
   const {position,history} = useSelector(selectGameHistory);
    const dispatch = useDispatch()
 
@@ -44,7 +43,6 @@ export default function GameBar() {
                   onRedo={position < history.length - 1 && (() => dispatch(moveRedone()))}
                   />
                  <Button 
-                //  disabled={isTimeGame}
                  onClick={() => dispatch(playgroundActivated())}
                  className="flex-grow-1 bg-myblue text-uppercase letter-spacing-default"
                  > 

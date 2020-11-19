@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
+import Tabs from 'react-bootstrap/Nav';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,10 +16,9 @@ const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}}
 
 export default function PlaygroundNav({
   isGameOn,
-  activeKey,
   showAllTabs,
   handleShowAllTabs,
-  handleSetActiveKey,
+  mobileVersion
 }) {
 
 
@@ -40,17 +39,18 @@ export default function PlaygroundNav({
           </Popover.Content>
         </Popover>}
       >
-        <Nav.Item 
-
-        className=" py-2 text-center"
-        onClick={() => {
-          handleSetActiveKey(activeKey === eventKey ?  null : eventKey);
-        }}
+        <Tabs.Item 
+        style={mobileVersion ?  {width:  "20%", paddingTop: 50, paddingBottom: 50} : {}}
+        className=" py-2 text-center flex-grow-0"
         >
-          <Nav.Link className=" px-0" eventKey={eventKey} disabled={disabled}>
+          <Tabs.Link 
+          className=" px-0" 
+          eventKey={eventKey} 
+          disabled={disabled}
+          >
             <TabIcon icon={icon} />
-          </Nav.Link>
-        </Nav.Item>
+          </Tabs.Link>
+        </Tabs.Item>
       </OverlayTrigger>
     );
   }
@@ -63,12 +63,13 @@ export default function PlaygroundNav({
     <Row >
     <Col 
     className="mt-5"
-    xs={1} 
+    xs={12}
+    md={1} 
     >
-      <Nav variant="pills" 
-      style={{zIndex: 1400, minWidth: 40}}
-      className={`w-100 flex-column rounded bg-maroon`}
-      onMouseEnter={() => handleShowAllTabs(true)}
+      <Tabs variant="pills" 
+      style={{zIndex: 9400, minWidth: 40}}
+      className={`w-100  flex-md-column justify-content-start rounded bg-maroon flex-xs-wrap flex-md-nowrap `}
+      onMouseEnter={() => handleShowAllTabs(!showAllTabs)}
       onMouseLeave={() => handleShowAllTabs(false)}
       >
         <TabItem 
@@ -87,6 +88,7 @@ export default function PlaygroundNav({
       text={'Zmień rozmiar pól'} 
       icon={faArrowsAlt} 
       eventKey={'poles-resizing'}
+      disabled={false}
       />
       <TabItem 
       text={'Dodaj figury'} 
@@ -100,21 +102,28 @@ export default function PlaygroundNav({
       icon={faGamepad} 
       eventKey={'modes'}/>
       <TabItem 
-      text={'Motyw kolorystyczny'} 
+      text={'Motyw szachownicy'} 
       icon={faPalette} 
-      eventKey={'color-motive'}
+      eventKey={'board-motive'}
       disabled={false}
       />
             <TabItem 
       text={'Interakcje z szachownicą'} 
       icon={faMousePointer} 
-      eventKey={'interaction-table'}/>
+      eventKey={'interaction-table'}
+      disabled
+      />
        <TabItem 
       text={'Dodatkowe'} 
       icon={faStar} 
-      eventKey={'additional'}/>
-      </Nav>
+      eventKey={'additional'}
+      disabled={false}
+      />
+     
+      </Tabs>
     </Col>
   </Row>
   )
 }
+
+

@@ -41,20 +41,19 @@ export default function Help  () {
       <td>   {" "}
             Zaznaczanie obszaru, który po puszczeniu{" "}
             <abbr title="Lewy przycisk myszy">lpm</abbr> zostanie usunięty - nie
-            działa na pola, na których siedzą figury</td>
+            działa na pola, na których znajdują się figury</td>
     </tr>
 
-    <tr>
+     <tr>
       <td>4</td>
       <td >  
-          <kbd>Ctrl</kbd> + wciśnięty <abbr title="Lewy przycisk myszy">lpm</abbr> +
+          <kbd>Shift</kbd> +
             przeciąganie
     </td>
       <td>   {" "}
-            Zaznaczanie obszaru, który po puszczeniu{" "}
-            <abbr title="Lewy przycisk myszy">lpm</abbr> zostanie usunięty - nie
-            działa na pola, na których znajdują się figury</td>
-    </tr>
+            Zaznaczanie obszaru, które to po puszczeniu{" "}
+            <kbd>Shift</kbd> można przeciągnąć w dowolne miejsce</td>
+    </tr> 
 
     
     <tr>

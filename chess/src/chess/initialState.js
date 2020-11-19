@@ -25,11 +25,14 @@ export const defaultMotives = [
     activeGameTemplate: 'classic',
     templates: {},
     boardFeatures: {
-        rotation: 0,
+        rotation: {
+            fieldsRotation: 0,
+            boardRotation: 0
+        },
         frozenFieldSize: null,
         boardMotive: defaultMotives[0],
         interactionStyle: 'clicking',
-        animationsOn: false,
+        animationsOn: true,
         showPossibleMoves: true,
         musicOn: false
     },
@@ -62,7 +65,8 @@ export const defaultMotives = [
             moveFor: null,
             movesDone: 0,
             // white: {
-            //     wasPreviousMoveEndangeringKing: false
+            //     wasPreviousMoveEndangeringKing: false,
+                // wasBadCastling: false
             // }
           
         },
@@ -75,6 +79,7 @@ export const defaultMotives = [
         winData: {
             winner: null,
             reasonForWinning: null,
+            movesDoneWhenWin: null
         },
         teams: [],
         boardExtremes: {},

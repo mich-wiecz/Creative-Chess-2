@@ -1,18 +1,42 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ColorMotive from '../ColorMotive'
 import ChromePicker from 'react-color/lib/Chrome'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import {useToasts} from 'contexts/ToastProvider';
+
+
+
 
 export default function MotivesCreator({
-    addUserMotive
+    addUserMotive,
+    preparedMotive,
+    resetPreparedMotive
 }) {
+
+
+    const [showToast, createToast] = useToasts();
 
     const [firstColor, setFirstColor] = useState('#000');
     const [secondColor, setSecondColor] = useState('#fff');
     const [selectedField, setSelectedField] = useState('first');
+
+
+    useEffect(() => {
+     createToast('motive-added');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
+
+    useEffect(() => {
+        if (!preparedMotive) return;
+
+        setFirstColor(preparedMotive.first);
+        setSecondColor(preparedMotive.second)
+    }, [preparedMotive, resetPreparedMotive])
 
 
     const handleSelectingField = (_id, fieldColor) => {
@@ -30,7 +54,13 @@ export default function MotivesCreator({
           className="bg-primary-light d-flex flex-column justify-content-center align-items-center rounded"
           >
           <Button  
-          onClick={addUserMotive && (() => addUserMotive({first: firstColor, second: secondColor}))}
+          onClick={addUserMotive && (() => {
+              showToast('motive-added', "Dodałeś/aś nowy motyw");
+            addUserMotive({
+                first: firstColor, 
+                second: secondColor
+            })})
+             } 
           variant="secondary"
           >
               Dodaj do kolekcji

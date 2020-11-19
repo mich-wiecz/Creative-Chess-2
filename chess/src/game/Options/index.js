@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import PawnSwitch from '@global-components/PawnSwitch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,6 +13,7 @@ import {useToasts} from 'contexts/ToastProvider';
 import Button from 'react-bootstrap/Button';
 import {useSelector, useDispatch} from 'react-redux';
 import {boardFeatureChanged, selectBoardFeatures} from 'redux/chessSlice';
+import {useHistory} from 'react-router-dom'
 
     const toastTitle = "Opcja zmieniona",
      toasts = {
@@ -25,6 +26,11 @@ import {boardFeatureChanged, selectBoardFeatures} from 'redux/chessSlice';
 
 
 export default function Options() {
+
+
+    const history = useHistory();
+
+    const goBackToMainPage = () => history.push('/')
 
     const dispatch = useDispatch(),
     {
@@ -52,7 +58,7 @@ export default function Options() {
 
     const handleInteractionStyle = (style) => {
         if (interactionStyle === style) return;
-        dispatch(boardFeatureChanged({feature: 'interactionStyle', value: style}))
+        dispatch(boardFeatureChanged(['interactionStyle',  style]))
     }
 
     function   OptionWrapper ({
@@ -152,6 +158,7 @@ export default function Options() {
         size="lg"
         centered
         aria-label="Opcja"
+        onHide={goBackToMainPage}
         >
         <Modal.Header closeButton>
         <Modal.Title>
@@ -174,7 +181,7 @@ export default function Options() {
                     textOff="wyłączone"
                     />
                     )
-                    dispatch(boardFeatureChanged({feature: 'animationsOn', value: !animationsOn}))
+                    dispatch(boardFeatureChanged([ 'animationsOn', !animationsOn]))
             } }
            />
            <Option 
@@ -190,7 +197,7 @@ export default function Options() {
                     textOff="wyłączone"
                     />
                     )
-                    dispatch(boardFeatureChanged({feature: 'showPossibleMoves', value: !showPossibleMoves}))
+                    dispatch(boardFeatureChanged(['showPossibleMoves',  !showPossibleMoves]))
                 }}
            />
            <Option 
@@ -206,7 +213,7 @@ export default function Options() {
                     textOff="wyłączona"
                     />
                     )
-                    dispatch(boardFeatureChanged({feature: 'musicOn', value: !musicOn}))
+                    dispatch(boardFeatureChanged(['musicOn', !musicOn]))
             }}
            />
             <OptionWrapper
@@ -233,7 +240,7 @@ export default function Options() {
             </Row>
         </Modal.Body>
         <Modal.Footer className="bg-dark">
-        <Button>
+        <Button onClick={goBackToMainPage}>
            Zamknij opcje 
         </Button>
         </Modal.Footer>

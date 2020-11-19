@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {memo} from 'react';
 import Figure from './Figure';
 
-export default function BoardField({
+export default memo(function BoardField({
     position,
     color,
     className = '',
@@ -39,4 +39,6 @@ export default function BoardField({
             }
         </div>
     )
-}
+}, (prevProps, nextProps) => {
+    return prevProps.temporaryState === nextProps.temporaryState && prevProps.figureData === nextProps.figureData && prevProps.color === nextProps;
+})

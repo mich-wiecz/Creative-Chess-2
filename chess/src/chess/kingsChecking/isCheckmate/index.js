@@ -22,8 +22,9 @@ export function isCheckmate (kingId, figures, possibleMovesMapping) {
         if (isOneEnemy && couldFellowFigureCaptureEnemy(possibleMovesMapping[enemyPosition].captures)) return false;
 
         const coords = !isOneEnemy ? getSharedWalksOfManyEnemies(captures, figures) : enemyMoves.walks[enemyMovesSequenceIndex];
-        if(coords.length !== 0 && couldFellowFigureBlock(coords, possibleMovesMapping, figures, kingTeam))  return false;
+        if(coords.length !== 0 && couldFellowFigureBlock(coords, possibleMovesMapping, figures, kingTeam, kingId))  return false;
 
+        console.log(couldKingMakeSafeMove(kingMoves, possibleMovesMapping, figures, kingTeam))
 
       if (couldKingMakeSafeMove(kingMoves, possibleMovesMapping, figures, kingTeam)) return false;
 

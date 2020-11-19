@@ -13,35 +13,36 @@ const setAuthorizationHeader = (token) => {
 
 
  export const loginOrSignup = createAsyncThunk(
-      'user/loginAndSignup',
-      async (type, userData) => {
-        const data = await axios
+      'user/loginOrSignup',
+      async ({type, userData}) => {
+        const response = await axios
         .post(`/${type}`, userData)
         .then(res => {
             setAuthorizationHeader(res.data.token);
-            return userData.email;
         })
         .then(email => {
             axios
-            .get(`/user/${email}`)
-            .then(res => res.json())
+            .get(`/user/`, {email})
+            .then(res => {
+                return res;
+            })
         }) 
         
-        return data;
+        return response;
       }
   );
 
 
-  export const getUserData = createAsyncThunk(
-      'user/getUserData',
-      async () => {
-          const data = axios
-          .get('/user')
-          .then(res => res.json());
+//   export const getUserData = createAsyncThunk(
+//       'user/getUserData',
+//       async () => {
+//           const data = axios
+//           .get('/user')
+//           .then(res => res.data);
 
-          return data;
-      }
-  )
+//           return data;
+//       }
+//   )
 
 
   const initialState = {
@@ -65,11 +66,6 @@ const usersSlice = createSlice({
         },
         userUnauthenticated() {
             return initialState;
-        },
-        userSetted(state, action) {
-            state.status.authenticated = true;
-            state.status.loading = false;
-            Object.assign(state.userInfo, action.payload)
         },
         logout: {
             reducer(state) {
@@ -97,18 +93,26 @@ const usersSlice = createSlice({
             state.status.authenticated = true;
             state.status.loading = false;
             state.status.wasError = false;
-            Object.assign(state.userInfo, action.payload);
+            if(action.meta.arg.type === 'signup') {
+                const {userData: {signup: {handle, email}, details}} = action.meta.arg;
+                state.userInfo = {
+                    handle,
+                    email,
+                    ...details
+                }
+            }
+           
         })
-        .addCase(getUserData.fulfilled, (state, action) => {
-            state.status.authenticated = true;
-            Object.assign(state.userInfo, action.payload);
-        })
+        // .addCase(getUserData.fulfilled, (state, action) => {
+        //     state.status.authenticated = true;
+        //     Object.assign(state.userInfo, action.payload);
+        // })
     }
 });
 
 
 
-export const {userAuthenticated, userUnauthenticated, userSetted, logout} = usersSlice.actions;
+export const {userAuthenticated, userUnauthenticated, logout} = usersSlice.actions;
 
 
 export const selectAuthenticated = state => state.user.status.authenticated;

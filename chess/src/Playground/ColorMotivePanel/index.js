@@ -5,9 +5,8 @@ import MotivesCreator from './MotivesCreator';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import {useSelector, useDispatch} from 'react-redux';
-import {selectBoardFeatures, boardFeatureChanged} from 'redux/chessSlice';
+import {selectBoardMotive, boardFeatureChanged} from 'redux/chessSlice';
 import {defaultMotives} from 'chess/initialState'
-
 
 
 export default function ColorMotivePanel () {
@@ -15,14 +14,18 @@ export default function ColorMotivePanel () {
 
     const dispatch = useDispatch();
 
-    const {boardMotive: activeMotive} = useSelector(selectBoardFeatures);
+    const activeMotive = useSelector(selectBoardMotive);
 
-    const [userMotives, setUserMotives] = useState([{first: 'black', second: 'white'}]);
+    const [userMotives, setUserMotives] = useState([]);
+    const [preparedMotive, setPreparedMotive] = useState(null);
+    const [activeKey, setActiveKey] = useState('collection');
 
    
-    const localStoragePath = useRef('color-motives');
+    // const localStoragePath = useRef('board-motives');
     const userMotivesLimit = useRef(10);
+    const wereMotivesDownloaded = useRef(false);
 
+    const isEnoughUserMotives  = userMotives.length >= userMotivesLimit.current ;
 
     
     const areTheSameMotive = (motiveOne, motiveTwo) => {
@@ -30,20 +33,29 @@ export default function ColorMotivePanel () {
     }
 
 
-    // useEffect(() => {
-    //     if (activeMotive) setShowingToast(true);
-    // }, [activeMotive])
+    useEffect(() => {
 
+        if (!wereMotivesDownloaded.current) {
+            const savedUserMotives = localStorage.getItem('userMotives');
+            if (savedUserMotives) {
+                setUserMotives(JSON.parse(savedUserMotives))
+            }
+            wereMotivesDownloaded.current = true;
+        }
+       
+    }, [dispatch, userMotives])
+     
 
     useEffect(() => {
-        const userMotives = JSON.parse(localStorage.getItem(localStoragePath.current));
-        if(userMotives) setUserMotives(userMotives);
-        const pathCopy = localStoragePath.current;
-        return () => {
-            localStorage.removeItem(pathCopy);
-            localStorage.setItem(pathCopy, userMotives)
-        }
+          localStorage.setItem('userMotives', JSON.stringify(userMotives))
     }, [userMotives])
+
+    useEffect(() => {
+
+        if (isEnoughUserMotives) {
+            setActiveKey('collection');
+        }
+    }, [userMotives, isEnoughUserMotives])
 
 
 
@@ -62,10 +74,25 @@ export default function ColorMotivePanel () {
     }
 
 
+
+    const prepareNewMotive = (selectedMotive) => {
+        setPreparedMotive(selectedMotive);
+        setActiveKey('creator')
+    }
+
+
+    const resetPreparedMotive = () => {
+        setPreparedMotive(null)
+    }
+
+  
+
     return (
         <>
 <Tabs 
-defaultActiveKey="collection" id="color-motives-sections" 
+activeKey={activeKey}
+onSelect={key => setActiveKey(key)}
+id="color-motives-sections" 
 className="playground-tabs"  
 > 
 <Tab eventKey="collection" title="Kolekcja">
@@ -75,14 +102,16 @@ changeActiveMotive={changeActiveMotive}
 defaultMotives={defaultMotives}
 userMotives={userMotives}
 deleteUserMotive={deleteUserMotive}
-handleClickOnMotive={changeActiveMotive}
-handleDoubleClickOnMotive={deleteUserMotive}
+prepareNewMotive={prepareNewMotive}
 activeMotive={activeMotive}
+isEnoughUserMoves={isEnoughUserMotives}
 />
 </Tab>
-<Tab eventKey="creator" title="Stwórz własny" >
+<Tab eventKey="creator" title={`Stwórz własny ${isEnoughUserMotives ? "(Przekroczono limit)" : ""}`} disabled={isEnoughUserMotives}>
 <MotivesCreator
-addUserMotive={userMotives.length < userMotivesLimit.current && handleAddUserMotive}
+addUserMotive={handleAddUserMotive}
+preparedMotive={preparedMotive}
+resetPreparedMotive={resetPreparedMotive}
 />
 </Tab>
 </Tabs>

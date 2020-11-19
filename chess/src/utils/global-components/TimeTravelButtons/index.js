@@ -21,14 +21,14 @@ export default function TimeTravelButtons({
         <Button 
         variant="light"  
         disabled={!onUndo || isTimeGame}
-        onClick={onUndo}
+        onClick={onUndo ? onUndo : undefined}
         >
           <FontAwesomeIcon icon={faStepBackward}/>
         </Button>
         <Button 
         variant="light" 
         disabled={!onRedo || isTimeGame}
-        onClick={onRedo}
+        onClick={onRedo ? onRedo : undefined}
         >
           <FontAwesomeIcon icon={faStepForward}/>
         </Button>

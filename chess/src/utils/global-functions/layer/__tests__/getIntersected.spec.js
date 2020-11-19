@@ -136,11 +136,6 @@ import { responses } from '../functions/responses';
         "10b": "10b"
      }
 
-     const intersectedResultObj = {
-         ...resultObj,
-         ...intersectedPart
-     }
-
      describe('topObj is {} and resultObj have properties', () => {
         
          it('returns exactly resultObj', () => {

@@ -4,12 +4,6 @@ import { getPossibleMoves } from './getPossibleMoves';
 import {splitCoord, makeCoord} from 'chess/coords';
 import {getStepTypeForAll} from './getStepType';
 import { extractId, isStringFigure } from 'chess/figures/functions';
-import { current } from '@reduxjs/toolkit';
-import {isDraft} from 'immer'
-
-
-
-
 
 
 
@@ -17,8 +11,6 @@ import {isDraft} from 'immer'
 
 export default function generatePossibleMoves (state, figuresIdsArray, noCastling) {
 
-
-  console.log(isDraft(state) ? current(state) : state );
 
     const {possibleMovesMapping, figures: indFigures, castlingMonitoring, tags, boardMap} = state.game;
     figuresIdsArray = getFiguresIds(indFigures, figuresIdsArray);

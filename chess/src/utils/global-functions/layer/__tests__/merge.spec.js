@@ -49,16 +49,16 @@ import { responses } from '../functions/responses';
               otherValue | topObj 
               ${7}       | ${defaultTopObj} 
               ${true}    | ${{1: false, b: 22, c: 'shhhh'}} 
-             `(`returned object should contain a value from response.assignValue($otherValue is that case) in keys where normally should be values from topObj ($topObj is that case) when callback always returns this value from response`, ({otherValue, topObj}) => {
-                let expectedValuesInTopObjKeys = {};
+             `(`returned object should contain a value from response.assignValue($otherValue in that case) in keys where normally should be values from topObj ($topObj is that case) when callback always returns this value from response`, ({otherValue, topObj}) => {
+                let expectedValuesInTopObj = {};
                 for(let item in topObj) {
-                    expectedValuesInTopObjKeys[item] = otherValue;
+                    expectedValuesInTopObj[item] = otherValue;
                 }
-                
+
                 expect(
                    merge(defaultBottomObj, topObj, 
-                     () => callbackMock(() => responses.assignValue(otherValue))))
-                     .toEqual(expect.objectContaining(expectedValuesInTopObjKeys))
+                     () => responses.assignValue(otherValue)))
+                     .toEqual(expect.objectContaining(expectedValuesInTopObj))
              })
 
 
@@ -163,7 +163,12 @@ import { responses } from '../functions/responses';
       describe('callback is specified', () => {
          it.each([responses.default, responses.omit, responses.cancel, () => responses.assignValue(100)])(
             'for %s response (every iteration) returned object will always contain properties from resultObj', (response) => {
-               expect(merge(defaultBottomObj, defaultTopObj, () => callbackMock(response), defaultResultObj))
+               expect(merge(defaultBottomObj, defaultTopObj, () => {
+                 if (typeof response === 'function') {
+                    return response()
+                 }
+                 return response;
+               } , defaultResultObj))
                            .toEqual(expect.objectContaining(defaultResultObj))
             }
          )

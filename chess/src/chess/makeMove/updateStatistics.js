@@ -3,10 +3,11 @@ import {getEnemyTeam} from './getEnemyTeam'
 
 export function updateStatistics(gameData, team, wasPreviousMoveEndangeringKing = false, updatedTimes) {
     const {statistics, time, teams} = gameData;
-    statistics[team].wasPreviousMoveEndangeringKing = wasPreviousMoveEndangeringKing ;
+    statistics[team].wasBadCastling = false;
+    statistics[team].wasPreviousMoveEndangeringKing = wasPreviousMoveEndangeringKing;
     if (wasPreviousMoveEndangeringKing) return;
     
- 
+    
     const enemyTeam = getEnemyTeam(team, teams),
     isLastTeam = team === teams[teams.length -1].name;
 

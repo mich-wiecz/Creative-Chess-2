@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {splitTime} from '@global-functions/splitTime';
 import './Timer.scss';
-import {selectTime, selectStatistics, selectTeams, selectBoardMotive, officialGameEnded} from 'redux/chessSlice';
+import {selectTime, selectStatistics, selectTeams, selectBoardMotive, officialGameEnded, selectAnimationsOn} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
 // import variables from 'global.scss';
 
@@ -18,6 +18,7 @@ export default function Timer({
     const {timeStarted} = time;
     const {moveFor} = useSelector(selectStatistics);
     const boardMotive = useSelector(selectBoardMotive);
+    const animationsOn = useSelector(selectAnimationsOn);
     const teams = useSelector(selectTeams);
 
 
@@ -62,10 +63,10 @@ export default function Timer({
     useEffect(() => {
         if(timeStarted && !timerAlreadyRunning) {
             startFirstTeamTimer();
-            setAnimationClass('game-breakpoint');
+           if (animationsOn) setAnimationClass('game-breakpoint');
             setTimerAlreadyRunning(true);
         } 
-    }, [timeStarted, startFirstTeamTimer, timerAlreadyRunning])
+    }, [timeStarted, startFirstTeamTimer, timerAlreadyRunning, animationsOn])
 
 
 
@@ -91,9 +92,9 @@ export default function Timer({
             startSecondTeamTimer();
             prevTeam.current = secondTeamData.name;
         }
-       setAnimationClass('turnCompleted');
+      if (animationsOn) setAnimationClass('turnCompleted');
         markTimerAsUpdated();
-    }, [moveFor, firstTeamData.name, secondTeamData.name, markTimerAsUpdated, dispatch, firstTeamTime, secondTeamTime, startSecondTeamTimer, startFirstTeamTimer, timerAlreadyRunning, animationClass])
+    }, [moveFor, firstTeamData.name, secondTeamData.name, markTimerAsUpdated, dispatch, firstTeamTime, secondTeamTime, startSecondTeamTimer, startFirstTeamTimer, timerAlreadyRunning, animationClass, animationsOn])
 
 
 
@@ -120,8 +121,8 @@ export default function Timer({
 
 
     useEffect(() => {
-        if(newWinner) setAnimationClass('game-breakpoint');
-    }, [newWinner])
+        if(newWinner && animationsOn) setAnimationClass('game-breakpoint');
+    }, [newWinner, animationsOn])
 
 
 

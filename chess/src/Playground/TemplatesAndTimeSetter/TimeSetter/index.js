@@ -1,21 +1,24 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
+import React, {useState } from 'react';
 import FormControl from 'react-bootstrap/FormControl';
 import PawnSwitch from '@global-components/PawnSwitch';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import {timeAdded, timeRemoved, selectTeams, selectTime} from 'redux/chessSlice';
+import {timeAdded, timeRemoved, selectTeams} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
-import debounce from 'lodash.debounce';
 
-export default function TimeSetter() {
+
+const initialTime = 2;
+
+export default function TimeSetter({
+  showToast
+}) {
 
   const dispatch = useDispatch();
   const teams = useSelector(selectTeams);
-  const {isTimeGame} = useSelector(selectTime);
 
 
-  const [time, setTime] = useState(2);
-  const prevTime = useRef(null);
-  const debounceId = useRef(null);
+  const [time, setTime] = useState(initialTime);
+  const [timeBlocked, setTimeBlocked] = useState(true);
 
 
   const addTime = () => {
@@ -24,21 +27,9 @@ export default function TimeSetter() {
       return result;
     }, {})
     dispatch(timeAdded(timeObj));
+    showToast(`Czas gry to ${time} minut dla każdego gracza`)
   }
 
-
-  const addTimeCallback = useCallback(debounce(
-    () => {
-    addTime()
-    }, 1000)
-  , [teams, time, dispatch])
-
-
-  useEffect(() => {
-    if(!isTimeGame || prevTime === time ) return;
-    addTimeCallback()
-   
-  })
 
  const handleChangeLocalTime = (e) => {
    let {value} = e.currentTarget;
@@ -52,12 +43,13 @@ export default function TimeSetter() {
   }
 
 
-  const toggleIsTimeGame = () => {
-    if (isTimeGame) {
-      dispatch(timeRemoved())
-    } else {
-      addTime()
-    }
+  const toggleTimeBlocked = () => {
+   if (timeBlocked) {
+     setTimeBlocked(false)
+   } else {
+     setTimeBlocked(true)
+     dispatch(timeRemoved())
+   }
   }
 
 
@@ -70,8 +62,8 @@ export default function TimeSetter() {
             Kliknij w piona, by wyłączyć czas w grze
           </h6>
           <PawnSwitch 
-          isOn={isTimeGame}
-          onToggle={toggleIsTimeGame}
+          isOn={!timeBlocked}
+          onToggle={toggleTimeBlocked}
           />
         <FormControl 
         className="mt-5 w-25"
@@ -83,6 +75,9 @@ export default function TimeSetter() {
         value={time}
         onChange={handleChangeLocalTime}
         />
+        <Button disabled={timeBlocked} onClick={addTime} className="w-25 mt-2 bg-secondary" >
+          Zatwierdź
+        </Button>
          </Container> 
     )
   

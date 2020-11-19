@@ -58,8 +58,6 @@ export default function makeMove(newState,
         if (castlingFlag !== 'break') {
 
 
-            console.log(castlingFlag)
-
         const nextField = boardMap[nextCoord],
         capturedFigId = isMoveCapture(nextField) ? extractId(nextField) : null;
 
@@ -72,6 +70,11 @@ export default function makeMove(newState,
 
         correctOtherFigsPossibleMoves(newState, position, nextCoord, id);
         if(castlingFlag) correctOtherFigsPossibleMoves(newState, rookFigure.position, rookNextCoord);
+
+
+
+        updateFigure(newState, figureId, nextCoord, transformArray);
+        if (castlingFlag) updateFigure(newState, rookFigure.id, rookNextCoord);
 
 
         if (game.protectKings) {
@@ -89,27 +92,24 @@ export default function makeMove(newState,
             }
             
         }
-        updateStatistics(game, team, wasPreviousMoveEndangeringKing, updatedTimes);
+        updateStatistics(newState.game, team, wasPreviousMoveEndangeringKing, updatedTimes);
         
         if (!wasPreviousMoveEndangeringKing) {
 
         if (!castlingFlag) updateCastlingData(newState, figureId, nextCoord);
 
         if (capturedFigId) {
-            console.log(1000)
             const {figure: capturedFig} = figures[capturedFigId]
             killCapturedFigure(capturedFig, newState);
         }
      
-        updateFigure(newState, figureId, nextCoord, transformArray);
-        if (castlingFlag) updateFigure(newState, rookFigure.id, rookNextCoord);
         addNextGameDataToHistory(newState);  
     }
 
     } else {
         const {position, history} = newState.history.game;
         newState.game = history[position];
-        game.statistics[team].wasBadCastling = true;
+        newState.game.statistics[team].wasBadCastling = true;
     }
     logger(game.tags.status.captured, possibleMovesMapping)
             
