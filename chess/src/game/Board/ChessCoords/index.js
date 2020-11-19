@@ -1,14 +1,10 @@
 import React from 'react';
 import range from '@global-functions/range';
-import { useSelector} from 'react-redux';
-import {selectBoardExtremes} from 'redux/chessSlice';
 import {transformColToLetter} from 'chess/coords'
 
 
 
- function Vertical({className}) {
-
-    const {bottom, top} = useSelector(selectBoardExtremes);
+ function Vertical({className, boardExtremes: {top, bottom}}) {
 
 
     return (
@@ -29,9 +25,7 @@ import {transformColToLetter} from 'chess/coords'
 }
 
 
-function Horizontal({className}) {
-
-    const {left, right} = useSelector(selectBoardExtremes); 
+function Horizontal({className, boardExtremes: {left, right}}) {
     return (
         <div className={className}>
            {
