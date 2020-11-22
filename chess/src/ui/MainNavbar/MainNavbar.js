@@ -14,6 +14,10 @@ import {logout, selectAuthenticated, selectUserInfo} from 'redux/userSlice';
 
 import {useToasts} from 'contexts/ToastProvider';
 
+
+
+
+
 const NavLink = (
   {
     exact = false, 
@@ -21,7 +25,8 @@ const NavLink = (
     userNav, 
     children, 
     className,
-    ...props}) => 
+    ...props}) => (
+
  <Nav.Link 
  as={"div"}
 className={` text-light p-0`} {...props}
@@ -35,6 +40,7 @@ className={` text-light p-0`} {...props}
     {children}
     </RouterNavLink>
 </Nav.Link>
+    )
 
 export default function MainNavbar() {
 
@@ -53,7 +59,7 @@ export default function MainNavbar() {
   
     return (
         <Navbar 
-        style={{zIndex: 500}}
+        style={{zIndex: 500, width: '100vw'}}
         bg="primary" 
         className="text-light p-0"
         text="light"
@@ -76,15 +82,16 @@ export default function MainNavbar() {
         activeKey={activeKey}
         onSelect={(selectedKey) => setActiveKey(selectedKey)}
       >   
-     <Col md={4} xs={5}>
-          <NavLink disabled eventKey="/about" className={` ${classes.Disabled}`}
+  <Col md={3} xs={5} style={{maxWidth: 160}}>
+          <NavLink eventKey="/about"
           >
-            O aplikacji</NavLink>
+            O mnie
+            </NavLink>
           </Col>
-        <Col md={3} xs={5} >
-          <NavLink exact eventKey="/" className="w-100">Gra</NavLink>
+        <Col md={3} xs={5} style={{maxWidth: 160}}>
+          <NavLink exact eventKey="/">Gra</NavLink>
           </Col>
-          <Col md={3} xs={5} >
+          <Col md={3} xs={5} style={{maxWidth: 160}}>
           <NavLink eventKey="/options">Opcje</NavLink>
           </Col>
       </Nav>

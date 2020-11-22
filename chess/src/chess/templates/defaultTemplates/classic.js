@@ -1,4 +1,4 @@
-import {createTemplate} from '../index';
+
 import range from 'utils/global-functions/range';
 
 
@@ -24,8 +24,7 @@ const buildConfiguration = {
 
 
 
-export const classicGameTemplate = (state) => createTemplate(
-    state,
+export const classicGameTemplate = [
  (FiguresManager, build) => {
 
         const classicFigures =  FiguresManager.modelFigures.findByTags([['category', 'classic']]);
@@ -74,4 +73,4 @@ export const classicGameTemplate = (state) => createTemplate(
     configuration: gameConfiguration,
     meta
     }
-);
+];

@@ -5,7 +5,7 @@ import {createModelFigures} from 'chess/figures/figures-creations/create-functio
 import makeMove from 'chess/makeMove';
 import {endOfficialGame} from 'chess/endOfficialGame';
 import {travelInTime, resetToInitial} from 'chess/timeTravel';
-import {setTime, startTime, removeTime} from 'chess/time'
+import {setTime, startTime, removeTime} from 'chess/time';
 
 
 const gameSlice = createSlice({
@@ -21,22 +21,26 @@ const gameSlice = createSlice({
         },
         templateAdded: {
              reducer(state, action) {
+                 console.log(action)
                 addTemplate(state.templates, action.payload);
+                readTemplate(state, action.payload.title);
              },
-            prepare(initState, buildCb, about) {
-               return createTemplate(initState, buildCb, about)
+            prepare(state, buildCb, about) {
+               return {
+                   payload: createTemplate(state, buildCb, about)
+               };
             }
+        },
+        templateChanged(state, action) {
+            if( !state.templates) return;
+            readTemplate(state, action.payload);
+
         },
         gameActivated(state) {
             state.mode = 'game';
         },
         playgroundActivated(state) {
             state.mode = 'playground'
-        },
-        templateChanged(state, action) {
-            if( !state.templates) return;
-            readTemplate(state, action.payload);
-
         },
         moveMade(state, action) {
             makeMove(state, action.payload);
@@ -87,11 +91,6 @@ export const selectBoardExtremes = state => state.chess.game.boardExtremes;
 export const selectWinData = state => state.chess.game.winData;
 export const selectTeams = state => state.chess.game.teams;
 export const selectWholeChessState = state => state.chess;
-
-
-
-
-// There are gew categories: history, time, board-appearance and game mechanics and I could split it to different reducers
 
 
 

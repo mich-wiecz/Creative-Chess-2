@@ -1,6 +1,5 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
-import Spinner from 'react-bootstrap/Spinner';
 import classes from './WaitingModal.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
@@ -14,10 +13,12 @@ export  function WaitingModal() {
         show={true}
         backdrop="static"
         keyboard={false}
+        size="lg"
+        centered
+        styles={{
+          zIndex: 18000
+        }}
       >
-        <Modal.Header>
-          <Modal.Title>Modal title</Modal.Title>
-        </Modal.Header>
         <Modal.Body>
          <h2>
              Trwa ładowanie zawartości strony
@@ -26,13 +27,9 @@ export  function WaitingModal() {
              <span className={classes.AnimatedDot}>.</span>
          </h2>
 
-        <Spinner animation="border" role="status">
-        <span className="sr-only">Ładowanie...</span> 
-        </Spinner>
-
         </Modal.Body>
         <Modal.Footer>
-        <p className="text-muted">Czas na chwilę relaksu.. <FontAwesomeIcon icon={faDove}/></p>
+        <p className="text-muted mr-3">Czas na chwilę relaksu.. <FontAwesomeIcon icon={faDove}/></p>
         </Modal.Footer>
       </Modal>
     )

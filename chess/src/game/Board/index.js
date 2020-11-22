@@ -24,12 +24,12 @@ function MiddleButton({
     activateGame
 }) {
 
-    if (isGameOn) return null;
+    if (isGameOn && (isTimeGame ? hasTimeStarted : true) ) return null;
 
  return (
  <div className={classes.Starter}>
        {
-         isTimeGame && !hasTimeStarted 
+          !hasTimeStarted 
          ?
          <Button 
          variant="maroon"
@@ -163,8 +163,8 @@ export default function Board({isGameOn}) {
             }
         } else {
             sizeStyles = {
-                gridAutoColumns: "minmax(40px, 6.5vmin)",
-                gridAutoRows: "minmax(40px, 6.5vmin)"
+                gridAutoColumns: "minmax(30px, 6.5vmin)",
+                gridAutoRows: "minmax(30px, 6.5vmin)"
             }
         }
 

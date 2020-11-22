@@ -50,7 +50,7 @@ letter-spacing: 12px;
 }
 
 body {
-    overflow-x: hidden;
+    overflow: hidden;
     background-image:
     url("./assets/clouds-background.jpg");
   background-repeat: repeat;
@@ -74,3 +74,11 @@ body {
 @import "~bootstrap/scss/bootstrap";
 
 
+.active-about-link {
+    background-color: #75660e !important;
+}
+
+
+.evenRate {
+    background-color: darken($light, 1%) !important;
+}

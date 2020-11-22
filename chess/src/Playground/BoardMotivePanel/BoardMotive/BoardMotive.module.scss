@@ -1,0 +1,41 @@
+
+$quadrateSize:  50px;
+$previewMagnification: 2;
+$previewTopPosition: -170%;
+$previewLeftPosition: -80%;
+
+.ColorMotive {
+    position: relative;
+    border: 2px solid transparent;
+    width: $quadrateSize;
+    height: $quadrateSize;
+    display: flex;
+    flex-wrap: wrap;
+
+
+
+    .Preview {
+        padding: 5px;
+        position: absolute;
+        top: $previewTopPosition;
+        left: $previewLeftPosition;
+        width: 100%;
+        height: 100%;
+        transform: scale(0);
+        border-radius: 10px;
+
+    }
+
+
+    &:hover .Preview {
+        transform: scale($previewMagnification);
+
+    }
+}
+
+.Chosen {
+    border: 2px solid lightcyan;
+    box-shadow: 0 0 6px 3px lightcyan;
+}
+
+

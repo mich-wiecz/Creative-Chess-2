@@ -1,6 +1,4 @@
 import range from '@global-functions/range';
-import {createTemplate} from '../index';
-
 
 function getRandomPositions( figuresSets) {
     let availableFields, startFields;
@@ -107,8 +105,8 @@ const buildConfiguration = {
 
 
 
-    export const random960GameTemplate = (state) => createTemplate(
-            state, (FiguresManager, build) => {
+    export const random960GameTemplate =  [
+             (FiguresManager, build) => {
 
             const classicFigures = FiguresManager.modelFigures.findByTags([['category', 'classic']]);
             const teams = FiguresManager.createBlackAndWhiteTeams(classicFigures);
@@ -152,7 +150,7 @@ const buildConfiguration = {
         configuration: gameConfiguration,
         meta
         }
-    );
+    ]
 
 
 
