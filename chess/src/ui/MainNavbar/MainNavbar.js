@@ -85,7 +85,7 @@ export default function MainNavbar() {
   <Col md={3} xs={5} style={{maxWidth: 160}}>
           <NavLink eventKey="/about"
           >
-            O aplikacji
+            O mnie
             </NavLink>
           </Col>
         <Col md={3} xs={5} style={{maxWidth: 160}}>
