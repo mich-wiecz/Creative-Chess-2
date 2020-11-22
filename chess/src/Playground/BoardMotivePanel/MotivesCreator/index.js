@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import ColorMotive from '../ColorMotive'
+import ColorMotive from '../BoardMotive'
 import ChromePicker from 'react-color/lib/Chrome'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

@@ -26,7 +26,7 @@ export default function GameBar() {
             <FontAwesomeIcon icon={faInfo} size={'lg'}/>
             </Navbar.Toggle>
           <Navbar.Collapse 
-          className="bg-primary text-light m-0 rounded border-maroon p-2"
+          className="bg-primary text-light m-0 rounded p-2"
           style={{
             position: 'absolute',
             top: '80%',

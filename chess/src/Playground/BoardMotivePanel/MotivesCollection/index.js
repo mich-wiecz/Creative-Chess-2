@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import ColorMotive from '../ColorMotive'
+import ColorMotive from '../BoardMotive'
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row';

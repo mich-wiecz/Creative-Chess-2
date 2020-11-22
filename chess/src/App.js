@@ -4,9 +4,8 @@ import Footer from 'ui/Footer';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import AuthRoute from 'utils/routing/AuthRoute';
 import Options from 'Game/Options';
-import Game from 'Game';
 
-
+const Game = lazy(() => import('Game'));
 const Signup = lazy(() => import('pages/Signup'));
 const Login = lazy(() => import('pages/Login'));
 const About = lazy(() => import('pages/About'));
@@ -22,7 +21,6 @@ function App() {
 
   return (
     <>
-  
       <MainNavbar/>
 
       <MySwitch>
@@ -68,7 +66,9 @@ function App() {
 
      
           <IsolatedRoute  path="/">
+          <Suspense fallback={<WaitingModal />}>
         <Game />
+        </Suspense>
       </IsolatedRoute>
 
       </MySwitch>

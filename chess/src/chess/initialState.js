@@ -3,7 +3,7 @@ import { classicNames, capablancaNames } from '@figures/names';
 import { classicFiguresValues, capablancaFiguresValues } from '@figures/values';
 import { classicFiguresMoves, capablancaFiguresMoves } from '@figures/movesSchemas';
 import {createModelFigure} from 'chess/figures/figures-creations/create-functions/modelFigures';
-import { addTemplate, readTemplate} from 'chess/templates';
+import { addTemplate, createTemplate, readTemplate} from 'chess/templates';
 import * as defaultGameTemplates from 'chess/templates/defaultTemplates';
 
 export const functionalMovesSchemas = {};
@@ -173,12 +173,12 @@ export const defaultMotives = [
 
 
             for(let template in defaultGameTemplates) {
-                const templateData = defaultGameTemplates[template](initialState);
+                const templateData =  createTemplate(initialState, ...defaultGameTemplates[template]);
                 addTemplate(initialState.templates, templateData);
             }
 
-
             readTemplate(initialState, 'classic');
+
     })()
             
 

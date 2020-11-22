@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
-import {templateChanged, selectActiveGameTemplate, selectTemplates} from 'redux/chessSlice';
+import {templateChanged, selectActiveGameTemplate, selectTemplates, templateAdded} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import classic from 'assets/board-screenshots/classic.png';
 import capablanca from 'assets/board-screenshots/capablanca.png';
@@ -10,7 +10,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import {rulesUrls} from 'data.json';
 import TemplatesMenu from './TemplatesMenu'
-import BoardsSlides from './BoardsSlides'
+import BoardsSlides from './BoardsSlides';
+import {random960GameTemplate} from 'chess/templates/defaultTemplates';
+import store from 'redux/store';
 
 
 
@@ -59,7 +61,12 @@ export default function GameTemplatesSetter({showToast}) {
   const templates = useSelector(selectTemplates);
 
   const handleChangingGameTemplate = (tempName) => {
-    dispatch(templateChanged(tempName))
+    if (tempName === '960') {
+      dispatch(templateAdded(store.getState().chess, ...random960GameTemplate ))
+    } else {
+      dispatch(templateChanged(tempName))
+    }
+    
   }
 
 

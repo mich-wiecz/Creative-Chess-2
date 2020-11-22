@@ -3,7 +3,7 @@ import Tab from 'react-bootstrap/Tab';
 import PlaygroundBar from './PlaygroundBar'
 import AdditionalOptions from './AdditionalOptions';
 import InteractionsDescription from './InteractionsDescription';
-import ColorMotivePanel from './ColorMotivePanel';
+import BoardMotivePanel from './BoardMotivePanel';
 import TemplatesAndTimeSetter from './TemplatesAndTimeSetter';
 import BoardFieldResizer from './BoardFieldResizer';
 import Rules from './Rules';
@@ -125,7 +125,7 @@ function PlaygroundSwitch({onClick}) {
             <AdditionalOptions />
             </TabPane>
             <TabPane eventKey="board-motive">
-            <ColorMotivePanel />
+            <BoardMotivePanel />
             </TabPane>
             <TabPane eventKey="poles-resizing">
             <BoardFieldResizer />

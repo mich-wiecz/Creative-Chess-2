@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "./ColorMotive.module.scss";
+import classes from "./BoardMotive.module.scss";
 
 
 

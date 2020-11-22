@@ -70,8 +70,9 @@ export default function PlaygroundBar() {
         <ButtonGroup className="w-100 pt-2">
        <PlaygroundMenu />
       <TimeTravelButtons disabled/>
-      <FireButton onClick={() => dispatch(gameActivated())}>
-       {movesDone === 0 ? "Rozpocznij grę" : "Wznów"} 
+      <FireButton onClick={
+        () =>  dispatch(gameActivated())}>
+       {movesDone === 0 ? "Rozpocznij" : "Wznów"} 
       </FireButton>
       </ButtonGroup>
       </MainBar>

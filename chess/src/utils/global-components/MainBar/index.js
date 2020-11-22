@@ -8,9 +8,10 @@ export default function MainBar({children, ...props}) {
         <Col 
         lg={6}
         md={7}
-        xs={10}
+        sm={10}
+        xs={12}
       style={{
-        zIndex: 150,
+        zIndex: 4000,
         height: 45
       }}
       className=" mx-auto d-flex"

@@ -1,4 +1,3 @@
-import {createTemplate} from '../index';
 import range from 'utils/global-functions/range';
 const meta = {
     longTitle: 'Capablanki (dwie dodatkowe figury)',
@@ -21,8 +20,7 @@ const buildConfiguration = {
 
 
 
-export const capablancaGameTemplate = (state) => createTemplate(
-    state,
+export const capablancaGameTemplate = [
     (FiguresManager, build) => {
 
         const allCapablancaFigures =  FiguresManager.modelFigures.findByTags([['category', (category) => {
@@ -73,4 +71,4 @@ export const capablancaGameTemplate = (state) => createTemplate(
     configuration: gameConfiguration,
     meta
 }
-);
+];

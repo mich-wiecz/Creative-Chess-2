@@ -3,26 +3,23 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import {selectStatistics} from 'redux/chessSlice';
 import {useSelector} from 'react-redux';
 
-
+function Information ({title, value}) {
+  return (
+    <ListGroup.Item>
+    <span className="pr-2">
+      {title}:
+    </span>
+    <span className="font-weight-bold">
+      {value}
+    </span>
+  </ListGroup.Item>
+  )
+}
 
 export default function GameInfo() {
 
 
   const {turn, movesDone, moveFor} = useSelector(selectStatistics);
-
-
-  function Information ({title, value}) {
-    return (
-      <ListGroup.Item>
-      <span className="pr-2">
-        {title}:
-      </span>
-      <span className="font-weight-bold">
-        {value}
-      </span>
-    </ListGroup.Item>
-    )
-  }
 
 
     return (

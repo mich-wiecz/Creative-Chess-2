@@ -25,6 +25,77 @@ import {useHistory} from 'react-router-dom'
 
 
 
+    function   OptionWrapper ({
+        disabled,
+        title, 
+        children, 
+        ...props
+    }) {
+        return (
+            <section 
+            {...props}
+            className="d-flex flex-column justify-content-center mb-4 bg-primary border-maroon py-3 px-5 position-relative"
+            >
+                    {
+                    disabled &&
+                    <div
+                    style={{
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        bottom: 0,
+                        right: 0,
+                        background: '#0009',
+                        zIndex: 9000
+                    }}
+                    >
+                        <div
+                        className="bg-secondary text-light d-flex justify-content-center align-items-center"
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '0',
+                            right: 0,
+                            transform: 'translateY(-50%)',
+                            background: 'black'
+                        }}
+                        >
+                      <span className="py-3">Nieaktywne</span> 
+                        </div>
+                      
+                    </div>
+                }
+            <span 
+            className="text-center text-light mb-3">
+                {title}
+            </span>
+            <div className="position-relative">
+        
+            {children}
+            </div>
+               
+            </section>
+        )
+    }
+
+
+    function Option ({ isOn, onToggle, ...props}) {
+        return (
+            <OptionWrapper {...props}>
+            <PawnSwitch 
+            className="mx-auto" 
+            isOn={isOn}
+            onToggle={onToggle}
+            />
+          </OptionWrapper>
+        )
+    }
+
+
+
+
+
+
 export default function Options() {
 
 
@@ -61,37 +132,6 @@ export default function Options() {
         dispatch(boardFeatureChanged(['interactionStyle',  style]))
     }
 
-    function   OptionWrapper ({
-        title, 
-        children, 
-        ...props
-    }) {
-        return (
-            <section 
-            {...props}
-            className="d-flex flex-column justify-content-center mb-4 bg-primary border-maroon py-3 px-5 "
-            >
-            <span 
-            className="text-center text-light mb-3">
-                {title}
-            </span>
-                {children}
-            </section>
-        )
-    }
-
-
-    function Option ({ isOn, onToggle, ...props}) {
-        return (
-            <OptionWrapper {...props}>
-            <PawnSwitch 
-            className="mx-auto" 
-            isOn={isOn}
-            onToggle={onToggle}
-            />
-          </OptionWrapper>
-        )
-    }
 
 
 
@@ -159,6 +199,7 @@ export default function Options() {
         centered
         aria-label="Opcja"
         onHide={goBackToMainPage}
+        backdrop="static"
         >
         <Modal.Header closeButton>
         <Modal.Title>
@@ -201,6 +242,7 @@ export default function Options() {
                 }}
            />
            <Option 
+           disabled
             title="Muzyka"
             aria-label="Przełączanie muzyki"
             isOn={musicOn}
@@ -217,6 +259,7 @@ export default function Options() {
             }}
            />
             <OptionWrapper
+            disabled
             title="Sposób przemieszczania figur"
             aria-label="Sposób przemieszczania figur"
             className=""
