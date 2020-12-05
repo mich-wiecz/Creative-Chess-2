@@ -41,7 +41,7 @@ export default  function Resizer({
     const setStep = () => {
         switch (actualUnit) {
           case "px":
-            return 10;
+            return 5;
           case "in":
             return 0.05;
           default:
@@ -67,6 +67,9 @@ export default  function Resizer({
               e.preventDefault()
             }
             onMouseMove={handleMouseMove}
+            onTouchMove={(e) => {
+              handleMouseMove(e)
+            }}
             className={classes.ResizableBoardField}
             style={{
               width: `${size.x}${actualUnit}`,
@@ -104,7 +107,7 @@ export default  function Resizer({
                    name="x"
                    className={classes.Input}
                    type="number"
-                   value={(size.x * magnification).toFixed(1)}
+                   value={(size.x * magnification)}
                    onChange={handleInputChange}
                    step={setStep()}
                 />

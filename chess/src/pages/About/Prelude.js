@@ -9,7 +9,7 @@ import React, {useRef, forwardRef} from 'react';
 import GithubIcon from 'assets/GitHub-Mark-32px.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhoneAlt, faClipboard } from '@fortawesome/free-solid-svg-icons';
-
+import {useTranslation} from 'contexts/TranslationProvider';
 
 
 
@@ -41,14 +41,16 @@ const ContactDataItem = forwardRef((
         {
             onClipboardClick &&
             <InputGroup.Append
-            className="cursor-pointer"
+            className="cursor-pointer "
             onClick={() => onClipboardClick(ref)}
             >
-          <InputGroup.Text id={label}>
+          <InputGroup.Text 
+          id={label} 
+          className="bg-dark">
           <FontAwesomeIcon 
          icon={faClipboard}
          size="sm"
-         color="black"
+         color="white"
          />
           </InputGroup.Text>
         </InputGroup.Append>
@@ -81,13 +83,24 @@ const Prelude =  forwardRef((_props, ref) => {
     ref.current.select();
    }
 
+
+
+       
+const getTranslation = useTranslation();
+
      return (
 <Card ref={ref} className="my-5" id="prelude" onClick={() => {
   console.log(ref.current.offsetTop)
 }}>
   <Card.Header>
   <Card.Title className="text-center">
-     Dzień dobry!
+    {
+      getTranslation({
+        pl: "Dzień dobry",
+        en: "Hello"
+      })
+    }
+     
      </Card.Title>
   </Card.Header>
 <Row>
@@ -104,15 +117,37 @@ const Prelude =  forwardRef((_props, ref) => {
   >
   <Card.Body>
     <Card.Text>
+      {
+        getTranslation({
+          en: (
+            <>
+      <span className="d-block">
+        My name is Michał Wieczorek.
+      </span>
         <span className="d-block">
-      Nazywam się Michał Wieczorek. 
+        I am 22 years old.
+      </span>
+      <span className="d-block lead">
+      I offer my abilities and skills as a front-end developer. I cordially invite you to check the text below and contact me.
+      </span>
+            </>
+          ),
+      pl: (
+        <>
+      <span className="d-block">
+        Nazywam się Michał Wieczorek.
       </span>
         <span className="d-block">
         Mam 23 lata.
       </span>
       <span className="d-block lead">
-       Chciałbym zaoferować swoje zdolności i umiejętności jako front-end developer. Zachęcam do przeczytania poniższego tekstu i do kontaktu.
+      Oferuję swoje zdolności i umiejętności jako front-end developer. Zapraszam do zapoznania się z tekstem poniżej i do kontaktu.
       </span>
+            </>
+      )
+        })
+      }
+       
     </Card.Text>
   </Card.Body>
   <section>

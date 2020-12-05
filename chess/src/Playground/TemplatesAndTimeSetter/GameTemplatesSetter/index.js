@@ -8,6 +8,7 @@ import random960 from 'assets/board-screenshots/960.png';
 import Tab from 'react-bootstrap/Tab';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import {rulesUrls} from 'data.json';
 import TemplatesMenu from './TemplatesMenu'
 import BoardsSlides from './BoardsSlides';
@@ -37,9 +38,10 @@ const templatesOrder = ['classic', '960', 'capablanca'];
 
 
 
-function RulesButton({activeImage}) {
+function RulesButton({activeImage, style}) {
   return (
     <Button 
+    style={style}
     as="a" 
     href={rulesUrls[templatesOrder[activeImage]]}
     target="_blanc"
@@ -49,9 +51,10 @@ function RulesButton({activeImage}) {
   )
 }
 
+const boardSide = 250;
 
 
-export default function GameTemplatesSetter({showToast}) {
+export default function GameTemplatesSetter() {
 
 
   const [activeImage, setActiveImage] = useState(0);
@@ -71,11 +74,18 @@ export default function GameTemplatesSetter({showToast}) {
 
 
     return (  
-<Container>
+<Container >
   <Tab.Container 
   id="game-templates-tabs"
   >
-    <Row>
+    <Row className="justify-content-around position-relative">
+      <Col 
+      xs={7} 
+      md={5}
+      lg={4}
+      xl={4}
+      className="mt-3 mt-md-0"
+      >
   <TemplatesMenu 
   activeImage={activeImage}
   setActiveImage={setActiveImage}
@@ -83,19 +93,32 @@ export default function GameTemplatesSetter({showToast}) {
   templatesOrder={templatesOrder}
   templatesToShow={templatesToShow}
   />
+  </Col>
+  <Col 
+  style={{
+    maxWidth: boardSide * 1.5
+  }}
+  >
     <BoardsSlides 
+    boardSide={boardSide}
      activeImage={activeImage}
      setActiveImage={setActiveImage}
      templatesOrder={templatesOrder}
      activeGameTemplate={activeGameTemplate}
      templatesToShow={templatesToShow}
      templates={templates}
-     showToast={showToast}
      handleChangingGameTemplate={handleChangingGameTemplate}
     />  
-<RulesButton activeImage={activeImage}/>
-</Row>
-
+    </Col>
+    <RulesButton 
+  activeImage={activeImage}
+  style={{
+    position: 'absolute',
+    bottom: '-15%',
+    left: '0%'
+  }}
+  />
+    </Row>
 </Tab.Container>
 </Container>
 

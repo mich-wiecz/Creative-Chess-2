@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 
 import unitsCalculator from '@global-functions/unitsCalculator';
 import changeNumericProperties from '@global-functions/changeNumericProperties';
@@ -21,7 +21,11 @@ const SIZE_EXTREMES = {
   minY: 40,
   maxX: 120,
   maxY: 120,
-  };
+  },
+  DEFAULT_SIZE = {
+    x: 40,
+    y: 40
+  }
 
 
 
@@ -41,29 +45,35 @@ export default function BoardFieldResizer() {
   const {frozenFieldSize, boardMotive} = useSelector(selectBoardFeatures);
   const dispatch = useDispatch()
 
+const properSize = frozenFieldSize 
+?
+frozenFieldSize
+:
+DEFAULT_SIZE;
 
+const getInitialMagnification = () => {
+  if (properSize.x > SIZE_EXTREMES.maxX || properSize.y > SIZE_EXTREMES.maxY) {
+    return 2
+  }
+  if (properSize.x < SIZE_EXTREMES.minX || properSize.y < SIZE_EXTREMES.minY) {
+    return 0.5
+  }
 
-    const [boardFieldSize, setBoardFieldSize] = useState({
-        x: 40,
-        y: 40
-        });
-    const [magnification, setMagnification] = useState(1);
+  return 1;
+}
+
+const initialMagnification = getInitialMagnification();
+
+    const [magnification, setMagnification] = useState(initialMagnification);
     const [actualUnit, setActualUnit] = useState('px');
     const [areProportionsKept, setAreProportionKept] = useState(true);
     const [sizeExtremes, setSizeExtremes] = useState(SIZE_EXTREMES);
     const [size, setSize] = useState({
-        x: boardFieldSize.x,
-        y: boardFieldSize.y
+      x: properSize.x / initialMagnification,
+      y: properSize.y / initialMagnification
     })
 
-
-
-    useEffect(() => {
-      if(!frozenFieldSize) return;
-      setBoardFieldSize(frozenFieldSize)
-     }, [frozenFieldSize])
-
-
+    const touchMovements = useRef(null);
 
 
     const  handleUnitsChange = (e) => {
@@ -103,6 +113,8 @@ export default function BoardFieldResizer() {
     const resetToDefault = () => {
       dispatch(boardFeatureChanged(
         ['frozenFieldSize', null]))
+        setSize(DEFAULT_SIZE)
+        setMagnification(1)
     }
 
 
@@ -124,11 +136,35 @@ export default function BoardFieldResizer() {
 
     const handleMouseMove = (e) => {
 
+        const isTouch = e.type === 'touchmove';
+        if (e.buttons !== 1 && !isTouch) return;
 
-        if (e.buttons !== 1) return;
+        let moveX, moveY;
+        if (isTouch) {
+          const xPos = e.changedTouches[0].clientX,
+          yPos = e.changedTouches[0].clientY
+          if (!touchMovements.current) {
+            touchMovements.current = {
+              x: xPos,
+              y: yPos,
+            }
+            return;
+          } else {
+            moveX = xPos - touchMovements.current.x;
+            moveY = touchMovements.current.y - yPos;
+
+            touchMovements.current = {
+              x: xPos,
+              y: yPos,
+            }
+          }
+        } else {
+          moveX = e.movementX;
+          moveY = -e.movementY;
+        }
 
         let [deltaX, deltaY] = unitsCalculator.calculate(
-            [e.movementX, -e.movementY],
+            [moveX, moveY],
             {
                 baseUnit: 'px',
                 resultUnit: actualUnit
@@ -153,16 +189,6 @@ export default function BoardFieldResizer() {
 
     }
 
-
-    const  handleSettingMinSize = () => {
-        const multiplier = 1 / magnification;
-        setMagnification(1);
-        setSize({
-            x: sizeExtremes.minX * multiplier,
-            y: sizeExtremes.minY * multiplier
-        });
-        setSizeExtremes(prev => multiplyObjectValues(prev, multiplier))
-    }
 
 
     const handleInputChange = (e) => {
@@ -202,14 +228,21 @@ export default function BoardFieldResizer() {
 
 
     return (
-      <>
-        <Container className={`${classes.Wrapper} m-4 `}>
+      <div
+      className="mx-auto mt-0 mt-lg-3"
+      style={{
+        maxWidth: 900
+      }}
+      >
+        <Container 
+        className={`${classes.Wrapper} m-4 `}
+        >
           <Magnification 
           handleMagnification={handleMagnification}
           boardMotive={boardMotive}
           magnification={magnification}
           />
-          <div className="w-100 d-flex  flex-column flex-md-row justify-content-md-around" >
+          <div className="w-100 mt-4 mt-md-0 d-flex flex-column flex-lg-row justify-content-md-around" >
            <Resizer 
            sizeExtremes={sizeExtremes}
            actualUnit={actualUnit}
@@ -230,9 +263,8 @@ export default function BoardFieldResizer() {
        <ExecutivePanel 
        handleChangingBoardFieldSize={handleChangingBoardFieldSize}
        resetToDefault={resetToDefault}
-       handleSettingMinSize={handleSettingMinSize}
        />
-   </>
+   </div>
         
     )
 

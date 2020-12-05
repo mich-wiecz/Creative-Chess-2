@@ -5,16 +5,17 @@ export default function MyToast({
     text = "Witaj", 
     autohide = true,
     delay = 6000,
+    onClose,
     toastStyleType,
     ...props
 }) {
     return (
         <Toast
+         onClose={onClose}
         autohide={autohide}
         delay={delay}
         {...props}
         >
-     
   <Toast.Header className={` ${
       toastStyleType === 0 
       ? "bg-maroon" 

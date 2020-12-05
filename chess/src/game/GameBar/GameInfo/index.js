@@ -1,11 +1,19 @@
 import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Col from 'react-bootstrap/Col';
 import {selectStatistics} from 'redux/chessSlice';
 import {useSelector} from 'react-redux';
 
 function Information ({title, value}) {
   return (
-    <ListGroup.Item>
+    <ListGroup.Item 
+    as={Col}
+    style={{
+      minWidth: 200
+    }}
+    md={6}
+    xs={12}
+    >
     <span className="pr-2">
       {title}:
     </span>
@@ -23,7 +31,9 @@ export default function GameInfo() {
 
 
     return (
-      <ListGroup className="text-dark">
+      <div 
+      className="text-dark d-flex flex-wrap"
+      >
 <Information 
 title="Tura"
 value={turn}
@@ -36,6 +46,6 @@ value={movesDone}
 title="Ruch dla"
 value={moveFor === 'white' ? "Białych" : "Czarnych"}
 />
-</ListGroup>
+</div>
       )
 }

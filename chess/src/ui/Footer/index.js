@@ -6,7 +6,7 @@ export default function Footer() {
         <Navbar  
         className={` text-dark d-flex justify-content-between` } 
         fixed="bottom" 
-        style={{zIndex: 100}}
+        style={{zIndex: -1}}
         as="footer">
             <section className="d-flex">
             <span className="mr-2">&copy;</span>

@@ -16,7 +16,7 @@ import windowDimensions from 'react-window-dimensions';
 import debounce from 'lodash.debounce';
 import {Navigation, TableOfContent} from './Links';
 import {generateDots} from './generateDots';
-
+import {useTranslation} from 'contexts/TranslationProvider'
 
 
  
@@ -37,6 +37,10 @@ import {generateDots} from './generateDots';
     }, [loaded])
 
 
+
+
+    const getTranslation = useTranslation();
+
      return (
 <>
  <Container 
@@ -56,7 +60,26 @@ style={{
 <Navigation 
 loaded={loaded}
 container={container}
-sections={[prelude, hardSkills, softSkills, motivation, bio, history]}
+sections={
+        getTranslation({
+            pl: [
+                [prelude, "Wstęp"], 
+                [hardSkills, 'Umiejętności twarde'], 
+                [softSkills, "Umiejętności miękkie"], 
+                [motivation, "Moja motywacja"], 
+                [bio, "Życiorys"], 
+                [history, "Historia strony"]
+            ],
+            en: [
+                [prelude, "Introduction"], 
+                [hardSkills, 'Hard skills'], 
+                [softSkills, "Soft skills"], 
+                [motivation, "My motivation"], 
+                [bio, "Short biography"], 
+                [history, "History of the site"]
+            ]
+        })
+      }
 windowHeight={windowHeight}
 />
 </Col>
@@ -69,11 +92,10 @@ ref={container}
          xl={8}
          className=" d-inline-block bg-secondary rounded border border-dark"
          style={{
+             maxWidth: '100vw',
             maxHeight: "93vh",
             overflowY: 'scroll',
-            // overflowX: 'hidden',
             zIndex: 2000,
-            // maxWidth: 1200
         }}
          >
   
@@ -86,7 +108,13 @@ ref={container}
             transform: 'translateY(420%)'
         }}
         >
-            Co mam do zaoferowania?
+            {
+                getTranslation({
+                    pl: "Co mam do zaoferowania?",
+                    en: "What I have to offer?"
+                })
+            }
+           
         </h4>  
 {generateDots(10)}
 </div>
@@ -118,7 +146,12 @@ ref={container}
         duration={300}  
         containerId="container" 
         >
-     Dane kontaktowe
+     {
+         getTranslation({
+             pl: "Dane kontaktowe",
+             en: "Contact details"
+         })
+     }
         </Link>
         </Button>
 </End>

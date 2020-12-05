@@ -69,6 +69,9 @@ const gameSlice = createSlice({
         officialGameEnded(state, action) {
             endOfficialGame(state.game, action.payload)
         },
+        winCompleted(state) {
+            state.game.winData.winDone = true;
+        }
     }
 });
 
@@ -94,6 +97,6 @@ export const selectWholeChessState = state => state.chess;
 
 
 
-export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone,  officialGameEnded, timeAdded, timeStarted, templateChanged, timeRemoved, gameResetedToDefault, gameResetedToInitial, playgroundActivated, boardFeatureChanged, gameActivated} = gameSlice.actions;
+export const {modelFiguresAdded, templateAdded, gamePrepared, moveMade, moveRedone, moveUndone,  officialGameEnded, winCompleted, timeAdded, timeStarted, templateChanged, timeRemoved, gameResetedToDefault, gameResetedToInitial, playgroundActivated, boardFeatureChanged, gameActivated} = gameSlice.actions;
 
 export default gameSlice.reducer;

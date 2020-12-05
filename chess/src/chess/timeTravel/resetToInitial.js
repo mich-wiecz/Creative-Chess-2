@@ -5,4 +5,7 @@ export function resetToInitial (state) {
     state.game = gameHist.initial;
     gameHist.history = [gameHist.initial];
     gameHist.position = 0;
+
+    localStorage.removeItem('firstTeamTime');
+    localStorage.removeItem('secondTeamTime');
 }

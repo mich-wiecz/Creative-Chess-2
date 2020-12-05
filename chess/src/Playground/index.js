@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import Tab from 'react-bootstrap/Tab';
-import PlaygroundBar from './PlaygroundBar'
 import AdditionalOptions from './AdditionalOptions';
 import InteractionsDescription from './InteractionsDescription';
 import BoardMotivePanel from './BoardMotivePanel';
@@ -9,16 +8,12 @@ import BoardFieldResizer from './BoardFieldResizer';
 import Rules from './Rules';
 import Displayer from './Displayer';
 import PlaygroundNav from './PlaygroundNav';
-import windowDimensions from 'react-window-dimensions';
 
 import {useSelector} from 'react-redux';
-import {selectActiveGameTemplate} from 'redux/chessSlice';
+import {selectActiveGameTemplate, selectTime} from 'redux/chessSlice';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
-
-
-const widthBreakpoint = 768;
 
 
 
@@ -42,14 +37,15 @@ function PlaygroundSwitch({onClick}) {
     <FontAwesomeIcon 
     icon={faPuzzlePiece}
     size="4x"
-    className="text-primary bg-maroon p-2"
+    className="text-primary bg-maroon p-2 pl-4"
     style={{
       position: 'absolute',
-      top: "25%",
+      top: "5%",
       left: 0,
+      transform: 'translateX(-100%)',
       cursor: 'pointer',
-      borderRadius: '0 30px 30px 0',
-      zIndex: 4500
+      borderRadius: '30px 0 0 30px',
+      zIndex: 500
     }}
     onClick={onClick}
     />
@@ -60,17 +56,21 @@ function PlaygroundSwitch({onClick}) {
  
 
  function Playground({
+   mobileVersion,
    windowWidth,
+   isMobilePlaygroundOn,
+   setIsMobilePlaygroundOn,
   isGameOn,
   children: Board
 }) {
 
 
-   const isMobileVersion = windowWidth < widthBreakpoint;
 
-
-    const [showAllTabs, setShowAllTabs] = useState(false);
+    const [showAllPopovers, setShowAllPopovers] = useState(false);
     const [activeKey, setActiveKey] = useState(null);
+
+    const activeTemplate = useSelector(selectActiveGameTemplate);
+    const {isTimeGame} = useSelector(selectTime);
 
 
   const handleSetActiveKey = (key) => {
@@ -87,17 +87,34 @@ function PlaygroundSwitch({onClick}) {
       if (isGameOn) {
         setActiveKey('');
       }
-    }, [isGameOn])
+    }, [isGameOn]);
 
-    const activeTemplate = useSelector(selectActiveGameTemplate);
+
+
+    useEffect(() => {
+      if (!mobileVersion) {
+        if (isMobilePlaygroundOn) {
+          setIsMobilePlaygroundOn(true)
+        }
+        return;
+      }
+      if (activeKey && !isMobilePlaygroundOn) {
+        setIsMobilePlaygroundOn(true)
+      }
+      if (!activeKey && isMobilePlaygroundOn) {
+        setIsMobilePlaygroundOn(false)
+      }
+
+    }, [activeKey, isMobilePlaygroundOn, mobileVersion, setIsMobilePlaygroundOn])
+
 
     function renderPlaygroundNav () {
       return (
         <PlaygroundNav 
-        mobileVersion={isMobileVersion}
+        mobileVersion={mobileVersion}
         isGameOn={isGameOn}
-         showAllTabs={showAllTabs}
-         handleShowAllTabs={setShowAllTabs}
+         showAllPopovers={showAllPopovers}
+         handleShowAllPopovers={setShowAllPopovers}
         />
       )
     }
@@ -108,8 +125,10 @@ function PlaygroundSwitch({onClick}) {
         <Displayer
         width={windowWidth < 1000 ? 0.8 * windowWidth : 0.6 * windowWidth}
         show={activeKey}
-        mobileVersion={isMobileVersion}
-        onClose={() => setActiveKey(null)}
+        mobileVersion={mobileVersion}
+        onClose={() => {
+          setActiveKey(null)
+        } }
     >
        <Tab.Content className="h-100">
              <TabPane eventKey="game-rules" className="h-100">
@@ -153,26 +172,26 @@ function PlaygroundForSmallDevices() {
 }
 
 
-function MainPartContainer({displayer, nav}) {
+function MainPartContainer({displayer: Displayer, nav: Nav, switch: Switch}) {
   return (
     <main
     className="d-flex justify-content-between"
    >
-{nav}
+{Nav}
  <section 
  style={{
  minHeight: '90vh',
+ maxWidth: '90vw',
  position: 'relative'
  }}
 className={`p-5 mx-auto flex-grow-1 d-flex flex-column justify-content-center align-items-center`}
 > 
-  {displayer}   
-<div 
-style={{
- marginTop: activeKey ? '200px' : 0
-}}
->
- 
+  {Displayer}   
+  <div
+  className="position-relative"
+  style={isTimeGame ?  {marginTop: 100} : {}}
+  >
+{Switch}
 {Board}
 </div>
 </section>
@@ -187,11 +206,23 @@ function renderForMobile() {
     {
       activeKey
       ?
+      <>
       <PlaygroundForSmallDevices />
+      <MainPartContainer />
+      </>
      :
-     <PlaygroundSwitch onClick={() => setActiveKey('board-motive')}/>
+     <>
+     <MainPartContainer 
+     switch={
+      <PlaygroundSwitch 
+      onClick={() => {
+        setActiveKey('board-motive')
+      } }
+      />
+     }
+     />
+      </>
     }
-   <MainPartContainer />
 </>
   )
 }
@@ -209,17 +240,14 @@ function renderNormally() {
 
 return (
   <>
-  {
-    !isGameOn && <PlaygroundBar />
-  }
  
   <Tab.Container 
-  style={{position: 'relative'}}
+  style={{position: 'relative', maxWidth: '100vw'}}
   onSelect={(key) => handleSetActiveKey(key)} 
   activeKey={activeKey} id="playground-tabs"
   >
  {
-   isMobileVersion 
+   mobileVersion 
    ?
    renderForMobile()
    :
@@ -232,7 +260,4 @@ return (
 
 
 
-export default windowDimensions({
-  take: () => ({windowWidth: window.innerWidth}),
-  // debounce: onResize => debounce(onResize, 200)
-})(Playground);
+export default Playground;

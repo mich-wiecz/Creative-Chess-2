@@ -33,17 +33,6 @@ const setAuthorizationHeader = (token) => {
   );
 
 
-//   export const getUserData = createAsyncThunk(
-//       'user/getUserData',
-//       async () => {
-//           const data = axios
-//           .get('/user')
-//           .then(res => res.data);
-
-//           return data;
-//       }
-//   )
-
 
   const initialState = {
       status: {
@@ -51,7 +40,8 @@ const setAuthorizationHeader = (token) => {
         loading: false,
         wasError: false,
       },
-    userInfo: {}
+    userInfo: {},
+    language: 'en',
 };
 
 
@@ -77,6 +67,14 @@ const usersSlice = createSlice({
                 delete axios.defaults.headers.common['Authentication'];
                 return {}
             }
+        },
+        languageChanged(state, action) {
+          if (action.payload) {
+              state.language = action.payload
+          } else {
+              state.language = state.language === 'pl' ? 'en' : 'pl';
+          }
+
         }
        
     },
@@ -112,13 +110,13 @@ const usersSlice = createSlice({
 
 
 
-export const {userAuthenticated, userUnauthenticated, logout} = usersSlice.actions;
+export const {userAuthenticated, userUnauthenticated, logout, languageChanged} = usersSlice.actions;
 
 
 export const selectAuthenticated = state => state.user.status.authenticated;
 export const selectStatusData = state =>  state.user.status;
 export const selectUserInfo = state => state.user.userInfo;
-
+export const selectLanguage = state => state.user.language;
 
 
 

@@ -18,8 +18,6 @@ export default function Rules({mode}) {
   }
 
 
-
-
   return <div
   style={{
     position: 'relative',
@@ -71,7 +69,7 @@ export default function Rules({mode}) {
     }}
     src={rulesUrls[mode]} 
     title={setModeTitle()}
-    alt={"Hesdgafsgddfgdgfr"}
+    alt={"Zasady gry w szachy"}
     />
     </div>
 }

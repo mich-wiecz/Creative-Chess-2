@@ -1,4 +1,4 @@
-export const hardSkills = {
+export const plHardSkills = {
     "React": {
         "Formik": 4,
         "React-testing-library": 1,
@@ -25,7 +25,7 @@ export const hardSkills = {
        "Prototypy, klasy": 4,
        "Asynchroniczność": 3,
        "Struktury danych": 3,
-       "Składnia ES7": 6,
+       "Składnia ES6+": 6,
        "Pisanie przejrzystego kodu": 4,
        "HTML Canvas": 3,
        rest: 5
@@ -53,6 +53,65 @@ export const hardSkills = {
    "Lodash": 3,
    "REST API": 2,
    "Axios": 2,
-   "Debugging": 2,
+   "Debugowanie": 2,
    "npm / yarn": 3
+}
+
+export const enHardSkills = {
+  "React": {
+    "Formik": 4,
+    "React-testing-library": 1,
+    "React-router": 2,
+    "React-transition-group": 4,
+    rest: 5
+},
+"English": {
+ "reading": 6,
+ "writing": 4,
+ "listening": 5,
+ "speaking": 3,
+ rest: 5,
+ note: "Importantly, I am completely surrounded by english. I did 90% of my studies in English. I am able to read and understand the documentation without any problems (without the help of a translator)."
+},
+"CSS": {
+   "Grid": 4,
+   "Flexbox": 6,
+   "Animations": 3,
+   "Sass": 4,
+   rest: 6
+   },
+ "JavaScript": {
+   "Prototypes, classes": 4,
+   "Asynchronicity": 3,
+   "Data structures": 3,
+   "ES6+ Syntax": 6,
+   "Writing clear code": 4,
+   "HTML Canvas": 3,
+   rest: 5
+   },
+"Excel": 3,
+"HTML": 6,
+"Mathematics": 4,
+"Typing": 4,
+"Computer Graphic": 1,
+"Working with API": 3,
+"Design patterns": 1,
+"Regex": 3,
+"Webpack": 1,
+"Git and github": 3,
+"Node and Express.js": 2,
+"Firebase": 1,
+"Immer": 4,
+"Chrome dev tools": 3,
+"Working with SVG": 4,
+"Visual Studio Code": 4,
+"Bootstrap and React-bootstrap": 4,
+"Typescript": 4,
+"Jest": 4,
+"SOLID rules": 1,
+"Lodash": 3,
+"REST API": 2,
+"Axios": 2,
+"Debugging": 2,
+"npm / yarn": 3
 }

@@ -42,16 +42,10 @@ export default function Login() {
 
     return (
        <Modal
-       style={{
-           position: 'absolute',
-           top: '20%',
-           left: "0",
-           zIndex: 5000
-           }
-       }
        show={true}
        onHide={handleGoingMainPage}
        backdrop="static"
+       centered
        >
            <Modal.Header className="bg-maroon text-light" closeButton>
                <h5>

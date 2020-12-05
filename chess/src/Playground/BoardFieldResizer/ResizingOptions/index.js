@@ -1,8 +1,7 @@
 import React from 'react';
 import FormControl from 'react-bootstrap/FormControl';
 import PawnSwitch from '@global-components/PawnSwitch';
-import classes from '../BoardFieldResizer.module.scss';
-
+import ShortField from '@global-components/ShortField';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 
@@ -14,7 +13,10 @@ export default     function ResizingOptions({
     handleUnitsChange
 }) {
     return (
-      <section className={`text-dark p-md-0 pt-5`} style={{minWidth: 240}}>
+      <section className={`text-dark mt-4 mt-md-2  mt-lg-0 p-lg-0 pt-5 mx-auto`} style={{
+        minWidth: 240,
+        maxWidth: 400
+        }}>
       <ListGroup>
         <ListGroup.Item>
         <div>
@@ -24,7 +26,7 @@ export default     function ResizingOptions({
               : "Bez zachowywania proporcji"}
           </span>
           <PawnSwitch
-            className={`mx-auto mt-2`}
+            className={`ml-2 mt-2`}
             isOn={areProportionsKept}
             onToggle={toggleProportionsKeeping}
           />
@@ -33,16 +35,17 @@ export default     function ResizingOptions({
     <ListGroup.Item>
     <div >
           <p>Aktualne jednostki:</p>
+          <ShortField>
           <FormControl
             as="select"
             value={actualUnit}
             onChange={handleUnitsChange}
-            className={classes.UnitSelector}
           >
             <option value="mm">mm</option>
             <option value="px">px</option>
             <option value="in">in</option>
           </FormControl>
+          </ShortField>
         </div>
 </ListGroup.Item>
   </ListGroup>

@@ -16,6 +16,10 @@ function PlaygroundMenu ({...props}) {
     id="resetOptions"
     menurole="Głównie opcje resetowania"
     {...props}
+    style={{
+      position: 'relative',
+      zIndex: 900
+    }}
   >
     <DropdownToggle  
     className="bg-maroon h-100"
@@ -72,7 +76,7 @@ export default function PlaygroundBar() {
       <TimeTravelButtons disabled/>
       <FireButton onClick={
         () =>  dispatch(gameActivated())}>
-       {movesDone === 0 ? "Rozpocznij" : "Wznów"} 
+       {movesDone === 0 ? "Start" : "Wznów"} 
       </FireButton>
       </ButtonGroup>
       </MainBar>

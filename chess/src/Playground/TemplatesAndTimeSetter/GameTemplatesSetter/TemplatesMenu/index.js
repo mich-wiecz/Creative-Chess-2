@@ -1,6 +1,5 @@
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
-import Col from 'react-bootstrap/Col';
 
 
 
@@ -15,11 +14,11 @@ export default function TemplatesMenu({
 
 
   const setTabColor = (temp, activeTemp, activeImage, index) => {
-    if (activeTemp === temp) {
-      return "bg-success"
-    }
     if (index === activeImage) {
       return 'bg-secondary'
+    }
+    if (activeTemp === temp) {
+      return "bg-success"
     }
 
     return 'bg-maroon'
@@ -27,7 +26,6 @@ export default function TemplatesMenu({
 
 
     return (
-     <Col xs={12} md={4}>
      <Nav 
      defaultActiveKey={0}
      activeKey={activeImage}
@@ -53,7 +51,5 @@ export default function TemplatesMenu({
       })
     }
 </Nav>
-
-</Col>
     )
   }

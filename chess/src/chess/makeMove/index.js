@@ -12,22 +12,6 @@ import { getCastlingData } from './getCastlingData';
 
 
 
- function logger(captured, mapping) {
-    for(let coord in mapping) {
-        for(let moveType in mapping[coord]) {
-            mapping[coord][moveType].forEach(id => {
-                const figId = id.split('##')[0];
-                if (captured.findIndex(captId => captId === figId) !== -1) {
-                    console.log(mapping[coord][moveType], coord, moveType, captured)
-                }
-            })
-            
-        }
-        
-    }
-    
-} 
-
 export default function makeMove(newState, 
     {
         figureId, 
@@ -44,7 +28,6 @@ export default function makeMove(newState,
         const {
             figures, 
             boardMap, 
-            possibleMovesMapping
         } = game; 
 
 
@@ -111,7 +94,6 @@ export default function makeMove(newState,
         newState.game = history[position];
         newState.game.statistics[team].wasBadCastling = true;
     }
-    logger(game.tags.status.captured, possibleMovesMapping)
             
 }
 

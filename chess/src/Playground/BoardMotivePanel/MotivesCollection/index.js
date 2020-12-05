@@ -31,7 +31,6 @@ export default function MotivesCollection({
     }
 
     const handleCloseModal = () => {
-        preventSingleClick.current = false;
         setShowingModal(false)
     }
 
@@ -57,7 +56,7 @@ export default function MotivesCollection({
 
 
     const handlePrepareNewMotive = (selectedMotive) => {
-        prepareNewMotive(selectedMotive)
+        prepareNewMotive(selectedMotive);
     }
 
 
@@ -94,6 +93,7 @@ export default function MotivesCollection({
             <Button {...props} variant="myblue" className="w-100" onClick={() => {
                 if (onClick) onClick();
                 setShowingModal(false);
+                preventSingleClick.current = false;
             } }>
                 {children}
             </Button>
@@ -137,7 +137,9 @@ export default function MotivesCollection({
 
                 }
             <UserOptions.Option>
-            <OptionButton>Nie rób nic</OptionButton>
+            <OptionButton>
+                Nie rób nic
+            </OptionButton>
             </UserOptions.Option>
             <UserOptions.Option>
             <OptionButton 

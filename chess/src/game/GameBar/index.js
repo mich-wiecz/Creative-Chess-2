@@ -17,25 +17,20 @@ export default function GameBar() {
     return (
       <>
         <MainBar >
-          <Navbar expand="xs" className="w-100 justify-content-center px-0" style={{position: 'relative'}}>
-          <Navbar.Toggle 
-          style={{width: '70px'}}
-            className="bg-myblue"
-          aria-controls="game-info" 
-          >
-            <FontAwesomeIcon icon={faInfo} size={'lg'}/>
-            </Navbar.Toggle>
+          <Navbar expand="xs" className="w-100 w-lg-50 justify-content-center p-0 m-0 flex-nowrap" style={{position: 'relative'}}>
           <Navbar.Collapse 
           className="bg-primary text-light m-0 rounded p-2"
           style={{
             position: 'absolute',
-            top: '80%',
+            top: '100%',
             left: 0,
             right: 0,
             zIndex: -1,
+            opacity: '0.8'
           }}
-          id="game-info">  
-                 <GameInfo/>
+          id="game-info"
+          >  
+                <GameInfo/>
             </Navbar.Collapse>  
              
                   <TimeTravelButtons 
@@ -48,6 +43,13 @@ export default function GameBar() {
                  > 
                    Stop
                     </Button>   
+          <Navbar.Toggle 
+          style={{width: '70px'}}
+            className="bg-myblue"
+          aria-controls="game-info" 
+          >
+            <FontAwesomeIcon icon={faInfo} size={'lg'}/>
+            </Navbar.Toggle>
                     </Navbar>
         </MainBar>
 

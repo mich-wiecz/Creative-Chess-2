@@ -17,8 +17,9 @@ export default function PawnSwitch({
     className={`${className} ${classes.Container}`}
       onClick={onToggle}
     >
-
-      <Col className={` rounded bg-light cursor-pointer border d-flex p-0`}  xs={12}>
+      <Col 
+      className={` rounded bg-light cursor-pointer border d-flex p-0`}  
+      xs={12}>
       <div
         className={`
         ${classes.Pawn}
