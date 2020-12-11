@@ -2,23 +2,28 @@ import React, {useState } from 'react';
 import FormControl from 'react-bootstrap/FormControl';
 import PawnSwitch from '@global-components/PawnSwitch';
 import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import {timeAdded, timeRemoved, selectTeams} from 'redux/chessSlice';
+import UserOptions from '@global-components/UserOptions';
+import ShortField from '@global-components/ShortField';
+import {timeAdded, timeRemoved, selectTeams, selectTime} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
+import clamp from '@global-functions/clamp';
 
 
-const initialTime = 2;
+const initialTime = 2,
+minTime = 0,
+maxTime = 90;
 
-export default function TimeSetter({
-  showToast
-}) {
+export default function TimeSetter() {
 
   const dispatch = useDispatch();
   const teams = useSelector(selectTeams);
+  const {isTimeGame, timeStarted} = useSelector(selectTime);
 
 
   const [time, setTime] = useState(initialTime);
-  const [timeBlocked, setTimeBlocked] = useState(true);
+  const [showWarning, setShowWarning] = useState(false);
 
 
   const addTime = () => {
@@ -27,28 +32,21 @@ export default function TimeSetter({
       return result;
     }, {})
     dispatch(timeAdded(timeObj));
-    showToast(`Czas gry to ${time} minut dla każdego gracza`)
   }
 
 
  const handleChangeLocalTime = (e) => {
    let {value} = e.currentTarget;
-   if(value > 90) {
-     value = 90
-   };
-   if(value < 0) {
-     value = 2;
-   }
+   value = clamp(value, minTime, maxTime);
   setTime(value);
   }
 
 
-  const toggleTimeBlocked = () => {
-   if (timeBlocked) {
-     setTimeBlocked(false)
+  const toggleTimeInGame = () => {
+   if (isTimeGame) {
+    dispatch(timeRemoved())
    } else {
-     setTimeBlocked(true)
-     dispatch(timeRemoved())
+    addTime();
    }
   }
 
@@ -56,29 +54,85 @@ export default function TimeSetter({
 
 
     return (
-
+           <>
           <Container className="mt-5 d-flex flex-column align-items-center ">
-          <h6>
-            Kliknij w piona, by wyłączyć czas w grze
+          <h6 className="mb-4">
+        Kliknij w piona, by 
+        {" "}
+            <strong 
+           className="text-secondary"
+            >
+            włączyć / wyłączyć
+            {" "}
+            </strong>
+         czas w grze
           </h6>
           <PawnSwitch 
-          isOn={!timeBlocked}
-          onToggle={toggleTimeBlocked}
+          isOn={isTimeGame}
+          onToggle={toggleTimeInGame}
           />
+          <Col
+          xs={8}
+          md={4}
+          className="d-flex flex-column align-items-center"
+          >
+            <ShortField>
         <FormControl 
-        className="mt-5 w-25"
+        className="mt-5"
         type="number"
-        placeholder="2 - 60 min"
+        placeholder={`${minTime} - ${maxTime} min`}
         aria-label="Set game time"
-        min="2"
-        max="60"
+        min={minTime}
+        max={maxTime}
         value={time}
         onChange={handleChangeLocalTime}
         />
-        <Button disabled={timeBlocked} onClick={addTime} className="w-25 mt-2 bg-secondary" >
+        </ShortField>
+        <ShortField>
+        <Button 
+        disabled={!isTimeGame} 
+        onClick={() => {
+          if (timeStarted) {
+            setShowWarning(true)
+          } else {
+            addTime()
+          }
+        }} 
+        className=" w-100 mt-2 bg-secondary" 
+        >
           Zatwierdź
         </Button>
+        </ShortField>
+        </Col>
          </Container> 
+         {
+           showWarning &&
+           <UserOptions.Modal
+           show={true}
+           onHide={() => setShowWarning(false)}
+           title={"Aktualny czas zostanie utracony. Na pewno tego chcesz?"}
+           > 
+             <UserOptions.Option>
+               <Button 
+               className="w-100"
+               onClick={() => {
+                 addTime();
+                 setShowWarning(false);
+               }}>
+                 Tak
+               </Button>
+             </UserOptions.Option>
+             <UserOptions.Option>
+               <Button 
+               className="w-100"
+               onClick={() => setShowWarning(false)}>
+                 Nie
+               </Button>
+             </UserOptions.Option>
+           </UserOptions.Modal>
+         }
+       
+         </>
     )
   
 

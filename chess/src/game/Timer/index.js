@@ -1,12 +1,14 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {splitTime} from '@global-functions/splitTime';
 import './Timer.scss';
-import {selectTime, selectStatistics, selectTeams, selectBoardMotive, officialGameEnded, selectAnimationsOn} from 'redux/chessSlice';
+import {selectTime, selectStatistics, selectTeams, selectBoardMotive, officialGameEnded, selectAnimationsOn, selectWinData} from 'redux/chessSlice';
 import {useSelector, useDispatch} from 'react-redux';
-// import variables from 'global.scss';
+
+const initialTime = Infinity;
+
+
 
 export default function Timer({ 
-    newWinner,
     updateTime,
     updateTimerFlag,
     markTimerAsUpdated,
@@ -15,24 +17,26 @@ export default function Timer({
 
     const dispatch = useDispatch();
     const time = useSelector(selectTime);
-    const {timeStarted} = time;
+    const {timeStarted, initial: initialTeamsTime, prevTeam} = time;
     const {moveFor} = useSelector(selectStatistics);
     const boardMotive = useSelector(selectBoardMotive);
     const animationsOn = useSelector(selectAnimationsOn);
     const teams = useSelector(selectTeams);
+    const {winner, winDone} = useSelector(selectWinData);
 
 
 
     const [animationClass, setAnimationClass] = useState('');
-    const [firstTeamTime, setFirstTeamTime] = useState(0);
-    const [secondTeamTime, setSecondTeamTime] = useState(0);
+    const [firstTeamTime, setFirstTeamTime] = useState(initialTime);
+    const [secondTeamTime, setSecondTeamTime] = useState(initialTime);
     const [firstTeamData, setFirstTeamData] = useState({name: 'team', color: 'black'});
     const [secondTeamData, setSecondTeamData] = useState({name: 'team', color: 'black'});
-    const [timerAlreadyRunning, setTimerAlreadyRunning] = useState(false);
-    const prevTeam = useRef(moveFor);
-    let timerId = useRef(null);
 
-    // officialGameEnded will stop remove time and timer
+
+
+ const timerAlreadyRunning = firstTeamTime !== initialTeamsTime[firstTeamData.name];
+
+    let timerId = useRef(null);
 
     const startFirstTeamTimer = useCallback(() => {
         timerId.current = setInterval(() => {
@@ -44,27 +48,60 @@ export default function Timer({
      const startSecondTeamTimer = useCallback(() => {
             timerId.current = setInterval(() => {
                 setSecondTeamTime(prev => prev - 1);
-                
             }, 1000)
      }, [])
 
 
+     useEffect(() => {
+
+        if (moveFor !== firstTeamData.name) return;
+
+        const serializedFirstTeamTime = localStorage.getItem('firstTeamTime');
+      if ((!serializedFirstTeamTime && firstTeamTime !== initialTime) 
+          || serializedFirstTeamTime > firstTeamTime) {
+        localStorage.setItem('firstTeamTime', firstTeamTime + '');
+      } 
+       
+     }, [firstTeamTime, moveFor, firstTeamData.name])
+
+
+     useEffect(() => {
+
+        if (moveFor !== secondTeamData.name) return;
+
+        const serializedSecondTeamTime = localStorage.getItem('secondTeamTime');
+      if ((!serializedSecondTeamTime && secondTeamTime !== initialTime) 
+          || serializedSecondTeamTime > secondTeamTime) {
+        localStorage.setItem('secondTeamTime', secondTeamTime + '');
+      } 
+       
+     }, [ secondTeamTime, moveFor, secondTeamData.name])
 
     useEffect(() => {
+
+        const serializedFirstTeamTime = localStorage.getItem('firstTeamTime');
+        const serializedSecondTeamTime = localStorage.getItem('secondTeamTime');
+
         const {name, color} = teams[0]
         setFirstTeamData({name, color});
-        setFirstTeamTime(time[name]);
+        setFirstTeamTime(serializedFirstTeamTime ? Number(serializedFirstTeamTime) : time[name]);
         const {name: secondTeamName, color: secondTeamColor} = teams[1]
         setSecondTeamData({name: secondTeamName, color: secondTeamColor});
-        setSecondTeamTime(time[secondTeamName])
+        setSecondTeamTime(serializedSecondTeamTime ? Number(serializedSecondTeamTime) : time[secondTeamName])
     }, [teams, time])
 
 
     useEffect(() => {
+
+        if (!timeStarted && timerId.current) {
+            clearInterval(timerId.current)
+        }
+
+        console.log(timeStarted, 999)
         if(timeStarted && !timerAlreadyRunning) {
+            console.log(timeStarted, 999)
             startFirstTeamTimer();
            if (animationsOn) setAnimationClass('game-breakpoint');
-            setTimerAlreadyRunning(true);
         } 
     }, [timeStarted, startFirstTeamTimer, timerAlreadyRunning, animationsOn])
 
@@ -72,7 +109,9 @@ export default function Timer({
 
     useEffect(() => {
         if (!updateTimerFlag) return;
-         if ( timerId) clearInterval(timerId.current);
+         if (timerId.current) {
+            clearInterval(timerId.current);
+         } 
          updateTime({
              [firstTeamData.name]: firstTeamTime, 
              [secondTeamData.name]: secondTeamTime
@@ -83,46 +122,49 @@ export default function Timer({
 
 
     useEffect(() => {
-        if (moveFor === prevTeam.current || !timerAlreadyRunning) return;
+        if (timerId.current || !timeStarted) return;
         if (moveFor === firstTeamData.name) {
             startFirstTeamTimer()
-            prevTeam.current = firstTeamData.name;
         }
         if (moveFor === secondTeamData.name) {
             startSecondTeamTimer();
-            prevTeam.current = secondTeamData.name;
         }
       if (animationsOn) setAnimationClass('turnCompleted');
         markTimerAsUpdated();
-    }, [moveFor, firstTeamData.name, secondTeamData.name, markTimerAsUpdated, dispatch, firstTeamTime, secondTeamTime, startSecondTeamTimer, startFirstTeamTimer, timerAlreadyRunning, animationClass, animationsOn])
+    }, [moveFor, firstTeamData.name, secondTeamData.name, markTimerAsUpdated, dispatch, firstTeamTime, secondTeamTime, startSecondTeamTimer, startFirstTeamTimer, timerAlreadyRunning, animationClass, animationsOn, prevTeam, timeStarted])
 
 
 
-
+    const endGame = useCallback((teamData) => {
+        
+ // officialGameEnded will remove time and whole Timer and not need for clearing interval
+        dispatch(officialGameEnded({
+            winner: teamData.name,
+            reason: 'time'
+        }));
+        localStorage.removeItem('firstTeamTime');
+        localStorage.removeItem('secondTeamTime');
+        clearInterval(timerId.current)
+    }, [dispatch])
 
     useEffect(() => {
 
         if(firstTeamTime < 0) {
-            dispatch(officialGameEnded({
-                winner: secondTeamData.name,
-                reason: 'time'
-            }))
+          endGame(secondTeamData)
         }  
 
-
         if(secondTeamTime < 0) {
-            dispatch(officialGameEnded({
-                winner: firstTeamData.name,
-                reason: 'time'
-            }))
+          endGame(firstTeamData);
         } 
-     }, [firstTeamTime, secondTeamData.name, secondTeamTime, firstTeamData.name, dispatch])
+     }, [firstTeamTime, secondTeamData, secondTeamTime, firstTeamData, dispatch, endGame])
 
 
 
     useEffect(() => {
-        if(newWinner && animationsOn) setAnimationClass('game-breakpoint');
-    }, [newWinner, animationsOn])
+        if(animationsOn && (winner && !winDone)) {
+            setAnimationClass('game-breakpoint');
+        } 
+    }, [winner, winDone, animationsOn])
 
 
 
@@ -210,3 +252,4 @@ export default function Timer({
                 </svg >
     )
 }
+

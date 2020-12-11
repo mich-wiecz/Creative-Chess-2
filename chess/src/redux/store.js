@@ -9,6 +9,8 @@ import axios from 'axios';
 
 
 
+
+
 const store =  configureStore({
     reducer: {
         chess: chessReducer,
@@ -28,7 +30,6 @@ if (decodedToken.exp * 1000 < Date.now()) {
   store.dispatch(logout());
 } else {
   axios.defaults.headers.common['Authorization'] = token;
-  // store.dispatch(getUserData());
 }
 }
 

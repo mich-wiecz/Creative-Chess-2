@@ -1,30 +1,49 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import PawnSwitch from '@global-components/PawnSwitch';
 import { useDispatch} from 'react-redux';
 import {boardFeatureChanged} from 'redux/chessSlice';
-import {useToasts} from 'contexts/ToastProvider';
 
 
 
   const InputSection = ({label, htmlFor, children}) => (
-    <section className="mt-4 w-50">
+    <Col 
+    className="mt-4"
+    xs={12}
+    >
     <label htmlFor={htmlFor}>{label}</label>
   <InputGroup className="mb-2 d-flex align-items-center">
     {children}
   </InputGroup>
-    </section>
+    </Col>
   )
+
+
+  function SubmitButton ({
+    onClick,
+    text
+  }) {
+    return (
+      <Button 
+      className="text-light" 
+      variant="outline-dark"
+      onClick={onClick}
+      >
+     {text}
+      </Button>
+    )
+  }
 
 
   function RotationInput ({value, onChange}) {
 
     return (
       <>
-      <InputGroup.Prepend>
-      </InputGroup.Prepend>
       <FormControl
         placeholder="0 - 360"
         aria-label="Kąt nachylenia pól na szachownicy"
@@ -33,6 +52,9 @@ import {useToasts} from 'contexts/ToastProvider';
         max={360}
         value={value}
         onChange={onChange}
+        style={{
+          maxWidth: 100
+        }}
       />
        <InputGroup.Append>
        <InputGroup.Text>
@@ -48,21 +70,24 @@ export default function AdditionalOptions () {
 
   const [localBoardRotation, setLocalBoardRotation] = useState(0);
   const [localFieldsRotation, setLocalFieldsRotation] = useState(0);
-  // const {fieldsRotation, boardRotation} = useSelector(selectBoardRotation);
   const dispatch = useDispatch();
 
-const [showToast, createToast] = useToasts();
-  useEffect(() => {
-    createToast('rotation');
-  })
 
 
     return (
-        <div className="d-flex flex-column w-75 justify-content-center align-items-center text-light" >
-
-          <section className="border w-100 p-3 mb-3">
+        <Container 
+        className="mt-5 d-flex flex-column justify-content-center align-items-start text-light" >
+<Row className="w-100">
+     <Col 
+     xs={12} 
+     sm={10} 
+     md={8} 
+     lg={7} 
+     xl={6}
+     >
+      <section className="p-3 mb-3">
           <InputSection
-          label="Kąt nachylenia pól na szachownicy"
+          label="Nachylenie pól na szachownicy"
           htmlFor="fields-rotation"
           >
             <RotationInput 
@@ -84,39 +109,37 @@ const [showToast, createToast] = useToasts();
         </section>
 
 
-      <div className="d-flex w-75 justify-content-around">        
-        <Button 
-    className="text-light" 
-    variant="outline-dark"
-    onClick={() => {
-      showToast('rotation', "Zmieniłeś/aś kąty szachownicy")
-      dispatch(boardFeatureChanged(['rotation', {
-        fieldsRotation: localFieldsRotation,
-        boardRotation: localBoardRotation
-      }]))
-    } }
-    >
-    Zatwierdź
-    </Button>
+      <div className="d-flex w-75 justify-content-around">   
 
 
-    <Button 
-    className="text-light" 
-    variant="outline-dark"
-    onClick={() => {
-      showToast('rotation', "Przywróciłeś/aś domyślne kąty szachownicy")
-      dispatch(boardFeatureChanged(['rotation', {
-        fieldsRotation: 0,
-        boardRotation: 0
-      }]))
-    }}
-    >
-      Zeruj
-    </Button>
-    </div>
+ <SubmitButton 
+onClick={() => {
+  dispatch(boardFeatureChanged(['rotation', {
+    fieldsRotation: 0,
+    boardRotation: 0
+  }]))
+}}
+text="Zeruj"
+/>          
+<SubmitButton 
+onClick={() => {
+  dispatch(boardFeatureChanged(['rotation', {
+    fieldsRotation: localFieldsRotation,
+    boardRotation: localBoardRotation
+  }]))
+} }
+text={"Zatwierdź"}
+/>
+
+  </div>
+  </Col>
+  </Row>
+
+<div className="w-100 my-4 border-bottom"/>
 
 
-
+<Row>
+  <Col>
         <InputSection
           label="Chronić figury przed łatwym usunięciem?"
           htmlFor="safeFigures"
@@ -125,7 +148,9 @@ const [showToast, createToast] = useToasts();
     </InputGroup.Prepend>
     <PawnSwitch isOn={true} className="ml-3"/>
         </InputSection>
-        </div>
+        </Col>
+    </Row>
+        </Container>
     )
 }
 

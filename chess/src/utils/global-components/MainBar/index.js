@@ -6,7 +6,7 @@ export default function MainBar({children, ...props}) {
 
     return (
         <Col 
-        lg={6}
+        lg={5}
         md={7}
         sm={10}
         xs={12}
@@ -14,7 +14,7 @@ export default function MainBar({children, ...props}) {
         zIndex: 4000,
         height: 45
       }}
-      className=" mx-auto d-flex"
+      className=" mx-auto d-flex p-0"
       aria-label="Główny pasek na stronie"
       {...props}
       >

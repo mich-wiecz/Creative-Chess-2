@@ -73,13 +73,15 @@ export const defaultMotives = [
         time: {
             isTimeGame: false,
             timeStarted: false,
+            initial: {}
+            // prevTeam: white
               // white:  90,
         },
         protectKings: true,
         winData: {
             winner: null,
             reasonForWinning: null,
-            movesDoneWhenWin: null
+            winDone: false
         },
         teams: [],
         boardExtremes: {},
@@ -181,6 +183,7 @@ export const defaultMotives = [
 
     })()
             
+
 
 
 

@@ -18,7 +18,8 @@ export function prepareStateBeforeGame(newState, templateName, templateReadConfi
             },
             time: {
                 isTimeGame: false,
-                timeStarted: false
+                timeStarted: false,
+                initial: {}
             },
             protectKings: true,
             winData: {
@@ -63,6 +64,10 @@ export function prepareStateBeforeGame(newState, templateName, templateReadConfi
     const [statistics, castlingMonitoring, time] = newState.game.teams.reduce((result, {name}, index) => {
         if(index === 0) {
             result[0].moveFor = name;
+            result[2] = {
+                prevTeam: name,
+                initial: {}
+            }
         }
         result[0][name] = {
             wasBadCastling: false,
@@ -73,6 +78,7 @@ export function prepareStateBeforeGame(newState, templateName, templateReadConfi
             rooks: {}
         };
         result[2][name] = null;
+        result[2].initial[name] = null;
         return result;
     }, [{}, {}, {}]);
         

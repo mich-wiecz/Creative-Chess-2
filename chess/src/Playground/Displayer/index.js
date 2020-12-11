@@ -6,116 +6,142 @@ import { faWindowClose, faEye, faArrowsAltV } from '@fortawesome/free-solid-svg-
 import Button from 'react-bootstrap/Button';
 
 
-const mobileIconsSize = "3x";
 
-function IconsGroup({mobileVersion, onClose, children}) {
+function Wrapper({
+    mobileVersion,
+    minWidth,
+    className,
+    show,
+    children,
+    onClose,
+    opacity,
+    handleOpacity,
+    icons,
+    ...props
+}) {
+
+    if (mobileVersion) {
+        return (
+            <div
+                className={`d-flex flex-column mb-4  bg-primary text-light rounded  fade ${show && "show"}`}
+                style={{
+                    position: 'relative',
+                    width: "100%",
+                    opacity,
+                }}
+                {...props}
+            >
+              {icons}
+                <div 
+                className=" border-maroon p-4  overflow-hidden" 
+                style={{ minHeight: '75vh',}}
+                >
+                {children}
+                </div>
+        </div>
+           
+        );
+    } else {
+        return (
+            <ResizableBox
+                className={`d-flex flex-column ${className} mb-5 react-resizable bg-primary text-light  overflow-auto rounded border-maroon fade ${show && "show"}`}
+                style={{
+                    width: minWidth,
+                    position: 'absolute',
+                    top: '3%',
+                    left: '50%',
+                    transform: `translateX(-50%)`,
+                    zIndex: 101,
+                    opacity
+                }}
+                handle={(h) => <FontAwesomeIcon
+                    icon={faArrowsAltV}
+                    size={mobileIconsSize}
+                    className={`mr-2 text-secondary react-resizable-handle react-resizable-handle-${h}`} />}
+                resizeHandles={['se']}
+                axis="y"
+                minConstraints={[minWidth, 100]}
+                maxConstraints={[minWidth, 800]}
+                width={minWidth}
+                height={600}
+                {...props}
+            >
+               {icons}
+               <div className="p-4 h-100">
+               {children}
+               </div>
+               
+            </ResizableBox>
+        );
+    }
+}
+
+
+
+
+
+
+const mobileIconsSize = "3x",
+normalIconsSize = '2x';
+
+
+function IconContainer ({children}) {
     return (
         <div 
-        className="d-inline-block bg-primary rounded border border-maroon p-1"
+        className="d-inline-block bg-primary rounded m-1"
+        >
+      {children}
+        </div>
+    )
+}
+
+function IconsGroup({mobileVersion, onClose, handleOpacity}) {
+
+
+    const getSize = () => {
+       return mobileVersion ? mobileIconsSize : normalIconsSize;
+    };
+    const size = getSize();
+    return (
+        <div 
+        className="d-flex justify-content-between"
         style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            cursor: 'pointer',
-            zIndex: 5000
+            backgroundColor: 'black'
         }}
         >
-            {children}
+    <IconContainer>
+                            <Button
+                            className="align-top m-0 p-0"
+                            onMouseDown={() => handleOpacity('transparentize')}
+                            onTouchStart={() => handleOpacity('transparentize')}
+                            onMouseUp={() => handleOpacity('normal')}
+                            onTouchEnd={() => handleOpacity('normal')}
+                            onMouseLeave={() => handleOpacity('normal')}
+                        >
+                            <FontAwesomeIcon
+                                icon={faEye}
+                                size={size}
+                                className="mr-2 text-secondary" />
+                        </Button>
+
+
+        </IconContainer>
+        <IconContainer>    
         <Button className="align-top m-0 p-0">
        <FontAwesomeIcon icon={faWindowClose} 
-        size={`${mobileVersion ? mobileIconsSize : "2x"}` }
+        size={size}
         color="darkred"
         onClick={onClose}
         />
         </Button>
-        </div>
+        </IconContainer>
+       </div>
     )
 }
 
 
 
 
-const Wrapper = ({
-    mobileVersion, 
-    minWidth, 
-    className, 
-    show, 
-    children, 
-    onClose, 
-    opacity,
-    handleOpacity,
-    ...props
-}) =>  {
-     
-  if (mobileVersion) {
-    return  (
-        <div 
-        className={`mb-2  bg-primary text-light p-4  overflow-auto rounded border-maroon fade ${show && "show"}`}
-        style={{
-            position: 'relative',
-            width: "100%",
-            height: "100%",
-            minHeight: 500,
-            opacity,
-        }}
-        {...props}
-        >
-       <IconsGroup 
-        onClose={onClose}
-        mobileVersion={mobileVersion}
-       >
-           <Button 
-           className="align-top m-0 p-0"
-           onMouseDown={() => handleOpacity('transparentize')}
-           onMouseUp={() => handleOpacity('normal')}
-           onMouseLeave={() => handleOpacity('normal')}
-           >
-           <FontAwesomeIcon 
-           icon={faEye}
-           size={mobileIconsSize}
-           className="mr-2 text-secondary"
-           />
-           </Button>
-        </IconsGroup>
-        {children}
-        </div>
-    )
-  }  else {
-      return    (
-        <ResizableBox
-        className={`${className} mb-5 react-resizable bg-primary text-light p-4  overflow-auto rounded border-maroon fade ${show && "show"}`}
-        style={{
-            width: minWidth,
-            position: 'absolute',
-            top: '3%',
-            left: '50%',
-            transform: `translateX(-50%)`,
-            zIndex: 101,
-        }}
-        handle={ (h) => 
-            <FontAwesomeIcon 
-            icon={faArrowsAltV}
-            size={mobileIconsSize}
-            className={`mr-2 text-secondary react-resizable-handle react-resizable-handle-${h}`}
-            />
-        }
-        resizeHandles={[ 'se']}
-        axis="y"
-        minConstraints={[minWidth, 200]}
-        maxConstraints={[minWidth, 800]}
-        width={minWidth}
-        height={400}
-        {...props}
-        >
-             <IconsGroup 
-        onClose={onClose}
-        mobileVersion={mobileVersion}
-       />
-       {children}
-        </ResizableBox>
-      ) 
-  }
-}
 
 
 
@@ -148,7 +174,8 @@ export default function Displayer({
 
 
    return (
-       <Wrapper 
+   
+           <Wrapper 
        mobileVersion={mobileVersion}
        width={width}
        className={className}
@@ -157,9 +184,17 @@ export default function Displayer({
         minWidth={minWidth}
         opacity={opacity}
         handleOpacity={handleOpacity}
+        icons={
+            <IconsGroup
+            onClose={onClose}
+            mobileVersion={mobileVersion}
+            handleOpacity={handleOpacity}
+        />
+        }
        >
             {children}
        </Wrapper>
+     
    )
 }
 

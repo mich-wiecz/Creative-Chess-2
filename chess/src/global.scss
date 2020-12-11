@@ -50,10 +50,14 @@ letter-spacing: 12px;
 }
 
 body {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     background-image:
     url("./assets/clouds-background.jpg");
   background-repeat: repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  width: calc(100vw - 12px);
 }
 
 .cursor-pointer {
@@ -65,8 +69,9 @@ body {
 }
 
 .playground-tabs {
+    margin: 0 auto;
     @extend .bg-light;
-    @extend .w-50;
+    @extend .w-75;
     @extend .nav-fill;
 }
 

@@ -158,7 +158,7 @@ export default function Signup() {
       
 
       return (
-          <Row className=" justify-content-center mx-auto" style={{width: 500}}>
+          <Row className=" justify-content-center mx-auto" style={{width: 500, maxWidth: '100vw'}}>
           <Col  className="flex-column rounded bg-primary  mx-auto mt-5 text-light border-maroon p-3" >
         <Form 
         noValidate onSubmit={handleSubmit}>

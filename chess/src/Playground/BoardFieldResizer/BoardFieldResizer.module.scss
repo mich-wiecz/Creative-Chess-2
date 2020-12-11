@@ -13,8 +13,8 @@ $font-size: 26px;
     left: 35%;
     cursor: pointer;
 
-    @media (max-width: 768px) {
-      left: 85%;
+    @media (max-width: 992px) {
+      left: 75%;
     }
 
     svg {
@@ -206,17 +206,5 @@ $font-size: 26px;
         background-color: #fff;
       }
     }
-  }
-}
-
-.BtnGroup {
-  display: flex;
-  justify-content: space-around;
-
-  display: flex;
-  flex-wrap: wrap;
-
-  button {
-    width: 200px;
   }
 }

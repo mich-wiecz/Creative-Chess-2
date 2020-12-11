@@ -2,14 +2,14 @@ import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
-import Col from 'react-bootstrap/Col';
 
 
-const boardSide = 250;
+
 
 
 
 function SlideBackground ( {
+  boardSide,
     tempName, 
     image, 
     ...props
@@ -29,13 +29,13 @@ function SlideBackground ( {
 
 
 export default   function BoardsSlides ({
+    boardSide,
     activeImage,
     setActiveImage,
     templatesOrder,
     activeGameTemplate,
     templates,
     templatesToShow,
-    showToast,
     handleChangingGameTemplate
 }) {
 
@@ -44,8 +44,8 @@ export default   function BoardsSlides ({
 
 
     return (
-<Col xs={12} md={8}>
 <Carousel 
+interval={null}
 activeIndex={activeImage}
 onSelect={(index) => {
 setActiveImage(index)
@@ -67,11 +67,11 @@ templatesOrder.map((tempName) => {
  const isTemplate = templates.hasOwnProperty(tempName);
  return (
    <Carousel.Item 
-   interval={10000}
    key={tempName} 
    >
      <div className="d-flex flex-column justify-content-center" style={{height: `${boardSide}`}}>
      <SlideBackground
+     boardSide={boardSide}
      image={templatesToShow[tempName].board}
      tempName={tempName}
      />
@@ -80,7 +80,6 @@ templatesOrder.map((tempName) => {
       variant={variant}
       disabled={!isTemplate}
       onClick={(tempName === '960' || !isActive) ? (() => {
-        showToast("Zmieniono tryb gry")
        handleChangingGameTemplate(tempName)
       }) : undefined }
       className="mx-3"
@@ -98,6 +97,5 @@ templatesOrder.map((tempName) => {
 })
 }
 </Carousel>
-</Col>
     )
   }

@@ -1,7 +1,11 @@
 .ToastContainer {
     position: fixed;
-    bottom: 10%;
-    left: 2%;
+    top: 20%;
+    right: 2%;
     z-index: 40000;
     width: 30%;
+
+    @media (max-width: 728px) {
+        width: 60%
+    }
 }

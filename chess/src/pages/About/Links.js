@@ -1,7 +1,9 @@
-import React, {} from 'react';
+import React from 'react';
  import ListGroupItem from 'react-bootstrap/ListGroupItem';
  import Button from 'react-bootstrap/Button';
+ import Col from 'react-bootstrap/Col';
 import {Link} from 'react-scroll';
+import {useTranslation} from 'contexts/TranslationProvider';
 
 
 
@@ -53,16 +55,25 @@ function SideLink ({ id, children, ...props}) {
 
 
 export function TableOfContent () {
+
+      const getTranslation = useTranslation();
+
     return (
         <section>
-     <article 
-className=" rounded p-4 text-center"
+     <Col 
+className=" rounded p-4 text-center mx-auto mb-5"
 style={{
     backgroundColor: '#b5a448',
-    margin: '3% 15% 3% 15%'
 }}
+xs={11}
+md={8}
+lg={7}
 >
-    <h5 style={{marginBottom: '3%'}}>
+    {
+        getTranslation({
+            pl: (
+                <>
+                <h5 style={{marginBottom: '3%'}}>
     Spis treści
     </h5>
 <TocLink 
@@ -89,7 +100,42 @@ id="bio"
 text="Historia strony"
 id="history"
 />
-</article>
+    </>
+    ),
+    en: (
+        <>
+        <h5 style={{marginBottom: '3%'}}>
+Table of content
+</h5>
+<TocLink 
+text="Introduction"
+id="prelude"
+/>
+<TocLink 
+text="Hard skills"
+id="hardSkills"
+/>
+<TocLink 
+text="Soft skills"
+id="softSkills"
+/>
+<TocLink 
+text="My motivation"
+id="motivation"
+/>
+<TocLink 
+text="Short biography"
+id="bio"
+/>
+<TocLink 
+text="Story of the site"
+id="history"
+/>
+</>
+),
+        })
+    }
+</Col>
    </section>
     )
 }
@@ -104,12 +150,14 @@ export const Navigation = ({
     windowHeight
 }) => {
 
-    if (!sections[0].current || !loaded || windowHeight < 500) return null;
+
+
+    if (!sections[0][0].current || !loaded || windowHeight < 500) return null;
     
     const {top, bottom} = container.current.getBoundingClientRect()
     const containerVisibleHeight = bottom - top;
     
-    return sections.map((ref, index) => {
+    return sections.map(([ref, text], index) => {
 
          return (
     <SideLink 
@@ -129,7 +177,7 @@ export const Navigation = ({
     id={ref.current.id}
     >
      <p className="m-0 p-0">
-         {ref.current.querySelector('.card-title').textContent}
+         {text}
      </p>
     </SideLink>
     

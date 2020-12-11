@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 // import ColorMotive from './ColorMotive';
 import MotivesCollection from './MotivesCollection';
 import MotivesCreator from './MotivesCreator';
@@ -8,6 +8,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {selectBoardMotive, boardFeatureChanged} from 'redux/chessSlice';
 import {defaultMotives} from 'chess/initialState'
 
+const userMotivesLimit = 10;
 
 export default function ColorMotivePanel () {
 
@@ -16,39 +17,28 @@ export default function ColorMotivePanel () {
 
     const activeMotive = useSelector(selectBoardMotive);
 
-    const [userMotives, setUserMotives] = useState([]);
+    const [userMotives, setUserMotives] = useState(() => {
+            const savedUserMotives = localStorage.getItem('userMotives');
+                return savedUserMotives 
+                ? 
+                JSON.parse(savedUserMotives) 
+                : 
+                [];
+
+    });
     const [preparedMotive, setPreparedMotive] = useState(null);
     const [activeKey, setActiveKey] = useState('collection');
 
    
-    // const localStoragePath = useRef('board-motives');
-    const userMotivesLimit = useRef(10);
-    const wereMotivesDownloaded = useRef(false);
+    
 
-    const isEnoughUserMotives  = userMotives.length >= userMotivesLimit.current ;
+    const isEnoughUserMotives  = userMotives.length >= userMotivesLimit;
 
     
     const areTheSameMotive = (motiveOne, motiveTwo) => {
         return motiveOne.first === motiveTwo.first && motiveOne.second === motiveTwo.second;
     }
-
-
-    useEffect(() => {
-
-        if (!wereMotivesDownloaded.current) {
-            const savedUserMotives = localStorage.getItem('userMotives');
-            if (savedUserMotives) {
-                setUserMotives(JSON.parse(savedUserMotives))
-            }
-            wereMotivesDownloaded.current = true;
-        }
-       
-    }, [dispatch, userMotives])
      
-
-    useEffect(() => {
-          localStorage.setItem('userMotives', JSON.stringify(userMotives))
-    }, [userMotives])
 
     useEffect(() => {
 
@@ -63,8 +53,13 @@ export default function ColorMotivePanel () {
 
     const handleAddUserMotive = (newMotive) => {
         const duplicateId = userMotives.findIndex(motive => areTheSameMotive(motive, newMotive));
+
         if(duplicateId !== -1) return; 
-        setUserMotives(prevArr => prevArr.concat(newMotive));
+
+        const updatedMotives = userMotives.concat(newMotive);
+        setUserMotives(updatedMotives);
+        localStorage.setItem('userMotives', JSON.stringify(updatedMotives))
+       
     }
 
     const deleteUserMotive = (selectedMotive) => {

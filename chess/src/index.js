@@ -6,6 +6,7 @@ import './global.scss';
 import App from './App';
 import ErrorBoundary from "utils/errors/ErrorBoundary";
 import {ToastProvider} from 'contexts/ToastProvider';
+import {TranslationProvider} from 'contexts/TranslationProvider';
 import {Provider} from 'react-redux';
 import store from 'redux/store';
 
@@ -21,7 +22,9 @@ ReactDOM.render(
     <ErrorBoundary entireAppLevel>
       <Provider store={store}>
       <ToastProvider>
+        <TranslationProvider>
       <App />
+      </TranslationProvider>
       </ToastProvider>
       </Provider>
     </ErrorBoundary>

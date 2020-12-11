@@ -29,7 +29,7 @@ function MiddleButton({
  return (
  <div className={classes.Starter}>
        {
-          !hasTimeStarted 
+         (isTimeGame && !hasTimeStarted) 
          ?
          <Button 
          variant="maroon"
@@ -91,7 +91,7 @@ export default function Board({isGameOn}) {
     const teams = useSelector(selectTeams);
     const {moveFor} = useSelector(selectStatistics);
     const {
-        rotation: { boardRotation}, 
+        rotation: { boardRotation, fieldsRotation}, 
         frozenFieldSize, 
         boardMotive,
         showPossibleMoves
@@ -105,7 +105,6 @@ export default function Board({isGameOn}) {
             updateTimerFlag,
             showPawnPromotion,
            showEndModal,
-           newWinner,
            loading
             },
             {
@@ -163,8 +162,8 @@ export default function Board({isGameOn}) {
             }
         } else {
             sizeStyles = {
-                gridAutoColumns: "minmax(30px, 6.5vmin)",
-                gridAutoRows: "minmax(30px, 6.5vmin)"
+                gridAutoColumns: "7.5vmin",
+                gridAutoRows: "7.5vmin"
             }
         }
 
@@ -172,7 +171,6 @@ export default function Board({isGameOn}) {
         return {
             ...modesStyles,
             ...sizeStyles,
-            transform: `rotate(${boardRotation ? boardRotation : 0}deg)`
         }
 
       
@@ -184,19 +182,22 @@ export default function Board({isGameOn}) {
     return (
         <>
         <div className={classes.Container}>
-            {
+        <div 
+        className={classes.BoardContainer}
+        style={{
+            transform: `rotate(${boardRotation ? boardRotation : 0}deg)`
+        }}
+        >
+        {
             isTimeGame &&  
             <Timer 
             className={classes.Timer}
-            newWinner={newWinner}
             updateTime={setUpdatedTime}
             updateTimerFlag={updateTimerFlag}
             markTimerAsUpdated={markTimerAsUpdated}
             />
-            }
-          
-        <div className={classes.BoardContainer}>
-            
+        }
+
             <div 
             style={setBoardStyles()}
             className={`${classes.BoardGrid} position-relative`}
@@ -223,6 +224,7 @@ export default function Board({isGameOn}) {
             isTimeGame={isTimeGame}
             hasTimeStarted={hasTimeStarted}
             handleClickOnField={handleClickOnField}
+            fieldsRotation={fieldsRotation}
             />
                  
                 <MiddleButton 

@@ -1,10 +1,9 @@
-import React, { lazy, Suspense, useState} from 'react';
-import MainNavbar from './ui/MainNavbar/MainNavbar'
+import React, { lazy, Suspense} from 'react';
+import MainNavbar from './ui/MainNavbar'
 import Footer from 'ui/Footer';
 import { IsolatedRoute, WaitingModal, MySwitch } from "utils/routing";
 import AuthRoute from 'utils/routing/AuthRoute';
 import Options from 'Game/Options';
-import {useHistory} from 'react-router-dom'
 
 const Game = lazy(() => import('Game'));
 const Signup = lazy(() => import('pages/Signup'));
@@ -18,16 +17,12 @@ const About = lazy(() => import('pages/About'));
 
 function App() {
 
-  const [wasAboutRendered, setWasAboutRendered] = useState(false);
-  const history = useHistory();
-
-  if (!wasAboutRendered) {
-    setWasAboutRendered(true);
-    history.push('/about')
-  }
-
   return (
-    <>
+    <div
+    style={{
+      maxWidth: '100vw'
+    }}
+    >
 {
 
 
@@ -87,7 +82,7 @@ function App() {
       </MySwitch>
 
       <Footer />
-    </>
+    </div>
  
   );
 }

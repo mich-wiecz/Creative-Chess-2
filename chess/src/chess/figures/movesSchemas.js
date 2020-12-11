@@ -19,6 +19,8 @@ const knightMoves = [
   { row: 2, col: -1 },
 ];
 
+const maxMovesAmount = 99;
+
 
 
 const allStandardMoves = straightMoves.concat(diagonalMoves);
@@ -49,13 +51,13 @@ const setPawnMoves = (amountOfWalkMoves, direction) => {
   }
 
 export const classicFiguresMoves = {
-  [names.queen]: [{ steps: allStandardMoves, amount: Infinity }],
+  [names.queen]: [{ steps: allStandardMoves, amount: maxMovesAmount }],
   [names.king]: [{ steps: allStandardMoves, amount: 1 }],
   [names.rook]: [{
     steps: straightMoves,
-    amount: Infinity,
+    amount: maxMovesAmount,
   }],
-  [names.bishop]: [{ steps: diagonalMoves, amount: Infinity }],
+  [names.bishop]: [{ steps: diagonalMoves, amount: maxMovesAmount }],
   [names.knight]: [{
     steps: knightMoves,
     amount: 1,
@@ -72,10 +74,10 @@ export const classicFiguresMoves = {
 export const capablancaFiguresMoves = {
   [names.chancellor]: [
     { steps: knightMoves, amount: 1 },
-    { steps: straightMoves, amount: Infinity },
+    { steps: straightMoves, amount: maxMovesAmount },
   ],
   [names.archbishop]: [
     { steps: knightMoves, amount: 1 },
-    { steps: diagonalMoves, amount: Infinity },
+    { steps: diagonalMoves, amount: maxMovesAmount },
   ],
 }

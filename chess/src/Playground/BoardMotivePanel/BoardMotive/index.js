@@ -12,22 +12,26 @@ export default function ColorMotive ({
     withoutPreview,
     onClick,
     onDoubleClick,
+    selectedField,
     ...props
 })  {
         // first color is the in the left bottom corner
 
 
-        function Quadrate ({color}) {
+        function Quadrate ({color, isSelected}) {
             return <div 
             onClick={onClick &&( () => onClick(id, color))}
             className="w-50 h-50" 
-            style={{backgroundColor: color}} />
+            style={{
+                backgroundColor: color,
+                boxShadow: isSelected ? "0 0 4px lightcyan" : null
+            }} />
         }
 
         function Container({ children }) {
         return (
             <div
-                className={`${className} ${classes.ColorMotive} ${isActive && classes.Chosen} cursor-pointer`}
+                className={`${className} ${classes.ColorMotive} ${isActive ? classes.Chosen : ""} cursor-pointer`}
                 onDoubleClick={onDoubleClick && (() => onDoubleClick({first, second}))}
                 {...props}
             >
@@ -36,21 +40,25 @@ export default function ColorMotive ({
         );
     }
 
+    const isFirstFieldSelected = selectedField === 'first',
+          isSecondFieldSelected = selectedField === 'second';
 
         const quadrates = (
             <>
-            <Quadrate color={second}/>
-            <Quadrate color={first}/>
-            <Quadrate color={first}/>
-            <Quadrate color={second}/>
+            <Quadrate color={second} isSelected={isSecondFieldSelected}/>
+            <Quadrate color={first} isSelected={isFirstFieldSelected} />
+            <Quadrate color={first} isSelected={isFirstFieldSelected} />
+            <Quadrate color={second} isSelected={isSecondFieldSelected} />
             </>
         )
 
-        const Preview = () => (
-             <div className={`${classes.ColorMotive} ${classes.Preview} bg-secondary`}>
-            {quadrates}
+        function Preview() {
+        return (
+            <div className={`${classes.ColorMotive} ${classes.Preview} bg-secondary`}>
+                {quadrates}
             </div>
-        )
+        );
+    }
 
 
 

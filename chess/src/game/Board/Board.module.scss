@@ -1,19 +1,12 @@
 @import 'global.scss';
 $padding-size: 25px;
 $chess-coords-size: $padding-size * 1.4;
-// $min-size: 8 * 40px + $padding-size + $chess-coords-size;
-
-// @mixin setBoardSize($length) {
-//   width: $length;
-//   height: $length;
-// }
-
-
 
 .Container {
   position: relative;
   display: inline-flex;
   justify-content: center;
+  z-index: 100;
 
 
   .Timer {
@@ -35,7 +28,7 @@ $chess-coords-size: $padding-size * 1.4;
   padding: $padding-size $padding-size $chess-coords-size
     $chess-coords-size;
   display: inline-grid;
-  background-color: transparentize($newPrimary, 0.2);
+  background-color: $newPrimary;
   cursor: crosshair;
 
 
@@ -93,7 +86,3 @@ $chess-coords-size: $padding-size * 1.4;
     }
   }
 }
-
-// .WithoutBackground {
-//   background-color: transparent !important;
-// }

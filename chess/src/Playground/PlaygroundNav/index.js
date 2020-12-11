@@ -5,7 +5,7 @@ import Tabs from 'react-bootstrap/Nav';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faMousePointer, faStar, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsAlt, faChessKnight, faGamepad, faPalette, faPlusSquare, faMousePointer, faStar, faBook, faCheck, faInfo } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -16,8 +16,8 @@ const TabIcon = ({icon}) =>  <FontAwesomeIcon icon={icon} style={{fontSize: 28}}
 
 export default function PlaygroundNav({
   isGameOn,
-  showAllTabs,
-  handleShowAllTabs,
+  showAllPopovers,
+  handleShowAllPopovers,
   mobileVersion
 }) {
 
@@ -29,19 +29,25 @@ export default function PlaygroundNav({
 
     return (
       <OverlayTrigger
-        show={showAllTabs}
+        show={showAllPopovers}
         placement={'right'}
-        overlay={<Popover id={`tooltip-${eventKey}`}>
+        overlay={
+        <Popover id={`tooltip-${eventKey}`}>
           <Popover.Content style={{zIndex: 2350}}>
             <span >
               {text}
             </span>
           </Popover.Content>
-        </Popover>}
+        </Popover>
+        }
       >
         <Tabs.Item 
-        style={mobileVersion ?  {width:  "20%", paddingTop: 50, paddingBottom: 50} : {}}
-        className=" py-2 text-center flex-grow-0"
+        style={mobileVersion ?  {
+          width:  "20%", 
+          paddingTop: 10, 
+          paddingBottom: 10
+        } : {}}
+        className=" text-center flex-grow-0"
         >
           <Tabs.Link 
           className=" px-0" 
@@ -62,15 +68,51 @@ export default function PlaygroundNav({
   return (
     <Row >
     <Col 
-    className="mt-5"
     xs={12}
-    md={1} 
+    md={12} 
+    className="d-flex flex-column justify-content-center position-relative"
+    style={!mobileVersion ? {
+      minHeight: 500,
+      maxHeight: 1000
+    } : {marginTop: 15}}
     >
+          
+          <OverlayTrigger
+        show={true}
+        placement={'top'}
+        overlay={
+          !mobileVersion 
+          ?
+          <Popover id={`toggle-all-popovers`}>
+          <Popover.Content 
+          className="text-center cursor-pointer"
+          style={{
+            zIndex: 2350,  
+          width: 100
+          }}
+          onClick={() => handleShowAllPopovers(!showAllPopovers)
+          }
+          >
+            <span 
+            className="text-uppercase d-flex justify-content-between align-items-center"
+            >
+              Pomoc
+              <FontAwesomeIcon 
+              icon={showAllPopovers ? faCheck : faInfo}
+              color={showAllPopovers ? "green": ""}
+              size="lg"
+              />
+            </span>
+          </Popover.Content>
+        </Popover>
+          :
+          // React Fragment will not work
+          <span />
+        }
+      >
       <Tabs variant="pills" 
-      style={{zIndex: 9400, minWidth: 40}}
-      className={`w-100  flex-md-column justify-content-start rounded bg-maroon flex-xs-wrap flex-md-nowrap `}
-      onMouseEnter={() => handleShowAllTabs(!showAllTabs)}
-      onMouseLeave={() => handleShowAllTabs(false)}
+      style={{zIndex: 9400, minWidth: 50}}
+      className={`w-100 ${mobileVersion ? "h-100" : "h-75"} flex-md-column justify-content-around rounded bg-maroon flex-xs-wrap flex-md-nowrap `}
       >
         <TabItem 
         text="Zasady gry"
@@ -121,6 +163,7 @@ export default function PlaygroundNav({
       />
      
       </Tabs>
+      </OverlayTrigger>
     </Col>
   </Row>
   )

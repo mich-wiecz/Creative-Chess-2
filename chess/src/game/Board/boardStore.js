@@ -1,6 +1,6 @@
 import {useState, useEffect, useCallback, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {moveMade, selectTime, selectStatistics, selectBoardExtremes, selectWinData, selectWholeChessState} from 'redux/chessSlice';
+import {moveMade, winCompleted, selectTime, selectStatistics, selectBoardExtremes, selectWinData, selectWholeChessState} from 'redux/chessSlice';
 import { splitCoord } from 'chess/figures/functions';
 import {useToasts} from 'contexts/ToastProvider';
 
@@ -21,7 +21,7 @@ export default function useBoardStore () {
     const state = useSelector(selectWholeChessState);
     const {isTimeGame} = useSelector(selectTime);
     const {moveFor, movesDone, ...restStatistics} = useSelector(selectStatistics);
-    const {winner, movesDoneWhenWin} = useSelector(selectWinData);
+    const {winner, winDone} = useSelector(selectWinData);
     const dispatch = useDispatch();
 
 
@@ -36,7 +36,6 @@ export default function useBoardStore () {
     const [pawnDirection, setPawnDirection] = useState(null);
     const [showPawnPromotion, setShowPawnPromotion] = useState(false);
     const [newIdentityOfPawn, setNewIdentityOfPawn] = useState(null);
-    const [newWinner, setNewWinner] = useState(null);
     const [showEndModal, setShowEndModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -96,13 +95,10 @@ export default function useBoardStore () {
 
 
     useEffect(() => {
-        if (winner !== newWinner && movesDoneWhenWin === movesDone) {
-            if(winner !== null) {
-                setShowEndModal(true);
-              } 
-            setNewWinner(winner);
+        if (winner && !winDone) {
+        setShowEndModal(true);
         }   
-    }, [winner, setNewWinner, newWinner, movesDoneWhenWin, movesDone]);
+    }, [winner, winDone, movesDone]);
 
 
 
@@ -138,7 +134,10 @@ export default function useBoardStore () {
 }, [newIdentityOfPawn, updatedTime, pawnDirection])
 
 
-
+const clearLoading = () => {
+    clearTimeout(loadingDeferId.current)
+    setLoading(false);
+  }
 
 
 useEffect(() => {
@@ -152,11 +151,6 @@ useEffect(() => {
     }
   }, [movesDone, clearMoveData])
 
-
-  const clearLoading = () => {
-    clearTimeout(loadingDeferId.current)
-    setLoading(false);
-  }
   
 
 
@@ -264,7 +258,8 @@ useEffect(() => {
     }
 
     const closeEndModal = () => {
-        setShowEndModal(false)
+        setShowEndModal(false);
+        dispatch(winCompleted());
     }
 
 
@@ -274,7 +269,6 @@ useEffect(() => {
         updateTimerFlag,
         showPawnPromotion,
        showEndModal,
-       newWinner,
        loading
         },
         {

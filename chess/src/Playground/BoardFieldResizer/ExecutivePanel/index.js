@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
-import classes from '../BoardFieldResizer.module.scss';
-import {useToasts} from 'contexts/ToastProvider';
+
 
 
 
@@ -10,31 +9,24 @@ import {useToasts} from 'contexts/ToastProvider';
 export default  function ExecutivePanel ({
 handleChangingBoardFieldSize,
 resetToDefault,
-handleSettingMinSize
 }) {
 
 
-
-    const [showToast, createToast] = useToasts();
-
-
-    useEffect(() => {
-     createToast('one');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-
-
-
     return (
-<section className={classes.BtnGroup}>
-<Button  onClick={() => {
-showToast('one', "Przywróciłeś/aś domyślny rozmiar pól")
+<section className={`d-flex flex-column flex-md-row align-items-center justify-content-md-around` }>
+<Button  
+style={{
+    width: 200
+}}
+onClick={() => {
 resetToDefault()
-} }>Przywróć domyślne</Button>
-<Button onClick={handleSettingMinSize}>Rozmiar minimalny</Button>
-<Button onClick={() => {
-showToast('one', "Zmieniłeś/aś rozmiar pól.")
+} }>Przywróć domyślne
+</Button>
+<Button 
+style={{
+    width: 200
+}}
+onClick={() => {
 handleChangingBoardFieldSize()
 } } variant="maroon">
 Zatwierdź

@@ -5,10 +5,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import {useToasts} from 'contexts/ToastProvider';
 
-
-
+const firstCol = '#555',
+secondCol = '#123';
 
 export default function MotivesCreator({
     addUserMotive,
@@ -17,17 +16,9 @@ export default function MotivesCreator({
 }) {
 
 
-    const [showToast, createToast] = useToasts();
-
-    const [firstColor, setFirstColor] = useState('#000');
-    const [secondColor, setSecondColor] = useState('#fff');
+    const [firstColor, setFirstColor] = useState(firstCol);
+    const [secondColor, setSecondColor] = useState(secondCol);
     const [selectedField, setSelectedField] = useState('first');
-
-
-    useEffect(() => {
-     createToast('motive-added');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
 
 
@@ -48,14 +39,15 @@ export default function MotivesCreator({
     return (
         <Container
         >
-     
-            <Row className="mt-4 d-flex ">
+            <Row 
+            className="mt-4 d-flex justify-content-center align-items-center">
           <Col 
-          className="bg-primary-light d-flex flex-column justify-content-center align-items-center rounded"
+          className="bg-primary-light d-flex flex-column justify-content-center align-items-center rounded mb-5 mb-md-0"
+          xs={12} 
+          md={6}
           >
           <Button  
           onClick={addUserMotive && (() => {
-              showToast('motive-added', "Dodałeś/aś nowy motyw");
             addUserMotive({
                 first: firstColor, 
                 second: secondColor
@@ -74,10 +66,15 @@ export default function MotivesCreator({
             transformOrigin: 'top',
             transform: 'scale(3)'
         }}
+        selectedField={selectedField}
         />
          </Col>
         
-            <Col>
+            <Col
+            xs={12}
+            md={6}
+            className="d-flex justify-content-center my-5 my-md-0"
+            >
             {
                        selectedField === 'first' 
                        ?
